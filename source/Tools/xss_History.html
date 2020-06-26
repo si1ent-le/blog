@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+<H3>Visited red</H3>
+<ul id="notvisited"></ul>
+<script>
+var websites = [
+"https://www.baidu.com/",
+"http://wwww.google.com/",
+"http://www.sina.com.cn/",
+"http://www.qq.com/",
+"http://www.163.com/",
+"http://www.sohu.com/",
+"http://www.playsec.com/",
+"http://hi.baidu.com/",
+"http://zhidao.baidu.com/",
+"http://www.taobao.com/",
+"http://weibo.com/",
+];
+for (var i = 0; i < websites.length; i++) {
+     var link = document.createElement("a");
+     link.id = "id" + i;
+     link.href = websites[i];
+     link.innerHTML = websites[i];
+     document.write('<style>');
+     document.write('#id' + i + ":visited {color: #FF0000;}");
+     document.write('</style>');
+     document.body.appendChild(link);
+     var color = document.defaultView.getComputedStyle(link,null).getPropertyValue ("color");
+     document.body.removeChild(link);
+if (color == "rgb(255, 0, 0)") {
+     var item = document.createElement('li');
+     item.appendChild(link);
+     document.getElementById('visited').appendChild(item);
+          } else {
+               var item = document.createElement('li');
+               item.appendChild(link);
+               document.getElementById('notvisited').appendChild(item);
+          }
+}
+</script>
+</body>
+</html>
