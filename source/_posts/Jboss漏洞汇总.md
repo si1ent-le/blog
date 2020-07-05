@@ -5,9 +5,9 @@ date: 2020-07-05 19:22:15
 
 JBoss是一套开源的企业级 Java 中间件系统，用于实现基于 SOA 的企业应用和服务
 
-JBoss AS 开源社区版本，发布比较频du繁。JBoss 7 ，先后发布了 7.0.0, 7.0.1, 7.0.2, 7.1.0, 7.1.1, 7.1.2, 7.1.3, 7.2.0，其中 7.1.1 比较经典，7.2.0 是 JBoss EAP 6.1 的基础zhi，但7.1.2, 7.1.3, 7.2.0 只是源代码dao打了 Tag，并没提供开放下载。
+JBoss AS 开源社区版本，发布比较频繁。JBoss 7 ，先后发布了 7.0.0, 7.0.1, 7.0.2, 7.1.0, 7.1.1, 7.1.2, 7.1.3, 7.2.0，其中 7.1.1 比较经典，7.2.0 是 JBoss EAP 6.1 的基础zhi，但7.1.2, 7.1.3, 7.2.0 只是源代码打了 Tag，并没提供开放下载。
 
-JBoss EAP（Enterprise Application Platform） 在开源版本上构建的企业版本，目前Redhat 已经将 JBoss EAP 放在 JBoss.org 开放下载，开发人无需注册 Redhat （之前是必须有 Redhat.com 账号才能下载 JBoss EAP）。商用请咨询 Redhat 客服。
+JBoss EAP（Enterprise Application Platform） 在开源版本上构建的企业版本，目前Redhat 已经将 JBoss EAP 放在 JBoss.org 开放下载，开发人无需注册 Redhat （之前是必须有 Redhat.com 账号才能下载 JBoss EAP）。
 
 Wildfly 是 JBoss AS 新的项目名称，从 8 开始，新的 JBoss AS 正式有一个名字，叫 WildFly， 目前已经发布 8 Beta 版本，针对开发人员的 Java EE 7 功能已经完全实现。
 
