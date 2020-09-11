@@ -1,3 +1,7 @@
+---
+title: Drozer检测学习
+date: 2020-06-20 22:40:04
+---
 Drozer是MWR Labs开发的一款针对Android系统的综合安全测试框架。Drozer可以通过与Dalivik 虚拟机,以及其它应用程序的IPC端点以及底层操作系统的交互，避免正处于开发阶段，或者部署于你的组织的android应用程序和设备暴露出不可接受的安全风险。
 
 #### 环境配置
@@ -18,7 +22,6 @@ fourgoats.apk
 ![image-20200628111010674](/images/drozer/image-20200628111010674.png)
 
 <center>部分组件概述</center>
-
 
 ### 环境部署
 
@@ -78,6 +81,8 @@ dz> run app.package.list
 ![image-20200628144457885](/images/drozer/image-20200628144457885.png)
 
 <center>部分APP</center>
+
+
 #### 2、sieve实例
 
 因Android内包名是唯一标识，所以可根据名称进行检索
@@ -167,7 +172,6 @@ dz> run scanner.provider.finduris -a com.mwr.example.sieve
 
 <center>Able to Query可查询数据</center>
 
-
 #### 8、ContentProvider攻击
 
 ```shell
@@ -179,7 +183,6 @@ dz> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Pas
 ![image-20200628152212737](/images/drozer/image-20200628152212737.png)
 
 <center>如上数据泄露</center>
-
 
 ##### 8.1、SQL注入
 
