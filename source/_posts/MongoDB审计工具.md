@@ -43,7 +43,6 @@ docker exec -it mongo mongo admin
 ![image-20200930111959162](/images/mongodb/image-20200930111959162.png)
 
 <center>Mongoaudit scan types</center>
-
 3、输入域名信息
 
 ![image-20200930112054225](/images/mongodb/image-20200930112054225.png)

@@ -12,6 +12,7 @@
     "version": "4.2.1"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "hexo": "^4.2.1",
     "hexo-asset-image": "^1.0.0",
     "hexo-generator-archive": "^1.0.0",
@@ -19,9 +20,11 @@
     "hexo-generator-feed": "^2.2.0",
     "hexo-generator-index": "^1.0.0",
     "hexo-generator-tag": "^1.0.0",
+    "hexo-images-watermark": "^2.3.0",
     "hexo-renderer-ejs": "^1.0.0",
     "hexo-renderer-marked": "^2.0.0",
     "hexo-renderer-stylus": "^1.1.0",
-    "hexo-server": "^1.0.0"
+    "hexo-server": "^1.0.0",
+    "phantomjs-prebuilt": "^2.1.16"
   }
 }

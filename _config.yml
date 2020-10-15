@@ -73,7 +73,7 @@ meta_generator: true
 # Date / Time format
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
-## http://momentjs.com/docs/#/displaying/format/
+### http://momentjs.com/docs/#/displaying/format/
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
 ## Use post's date for updated date unless set in front-matter
@@ -111,3 +111,4 @@ feed:
     content: 'true'
     content_limit:
     content_limit_delim: ' '
+# images
