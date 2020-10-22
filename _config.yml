@@ -112,3 +112,8 @@ feed:
     content_limit:
     content_limit_delim: ' '
 # images
+#watermark:
+#    enable: true
+#    textEnable: true
+#    rotate: -45
+#    gravity: centre
