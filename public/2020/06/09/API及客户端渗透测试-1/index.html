@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      API及客户端漏洞挖掘 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>API及客户端漏洞挖掘</h2>
+  <p class="post-date">2020-06-09</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="API及客户端漏洞挖掘"><a href="#API及客户端漏洞挖掘" class="headerlink" title="API及客户端漏洞挖掘"></a>API及客户端漏洞挖掘</h2><h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">* API文档(postman生成document文档或单功能测试)</span><br><span class="line">* 测试账户两个(权限不同账户)</span><br><span class="line">* Burp Suite工具</span><br><span class="line">* Postman</span><br><span class="line">* MobSF框架</span><br><span class="line">* 浏览器及插件(Chrome&amp;Modheader&amp;postman插件)</span><br><span class="line">* 更新....</span><br></pre></td></tr></table></figure>
+
+<h2 id="检测方式"><a href="#检测方式" class="headerlink" title="检测方式"></a>检测方式</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1、黑盒：只指定apk、ipa安全测试</span><br><span class="line">2、灰盒：API文档、apk、ipa等</span><br><span class="line">3、白盒：审计</span><br></pre></td></tr></table></figure>
+
+<h2 id="检测项目及可能存在漏洞"><a href="#检测项目及可能存在漏洞" class="headerlink" title="检测项目及可能存在漏洞"></a>检测项目及可能存在漏洞</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">备注：</span><br><span class="line">以下整理漏洞可能会存在各自负责待测系统上请谨慎测试.</span><br><span class="line">留意代码逻辑处理是否安全.</span><br></pre></td></tr></table></figure>
+
+<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><h4 id="APK"><a href="#APK" class="headerlink" title="APK"></a>APK</h4><ol>
+<li>反编译</li>
+<li>APK签名检测</li>
+<li>敏感信息泄露</li>
+<li>组件安全</li>
+<li>应用程序是否可备份</li>
+<li>应用程序权限检测</li>
+<li>敏感信息泄露</li>
+<li>UI泄露</li>
+<li>等等<h4 id="IPA"><a href="#IPA" class="headerlink" title="IPA"></a>IPA</h4></li>
+<li>安全编译选项</li>
+<li>加密缺陷(弱算法、密钥泄露)</li>
+<li>不安全随机数</li>
+<li>XcodeGhost漏洞</li>
+<li>AFNetworking SSL漏洞</li>
+<li>数据存储安全</li>
+<li>日志敏感信息</li>
+<li>网络传输安全</li>
+<li>存储测试服域名或IP地址</li>
+<li>等等</li>
+</ol>
+<h3 id="API及Web"><a href="#API及Web" class="headerlink" title="API及Web"></a>API及Web</h3><ol>
+<li>注册&amp;登陆入口<ol>
+<li>手机号注册登陆<ol>
+<li>短信验证码爆破</li>
+<li>短信验证码回传</li>
+<li>短信验证码失效时间较短</li>
+<li>等等验证码安全问题</li>
+</ol>
+</li>
+<li>昵称登陆<ol>
+<li>验证码复用</li>
+<li>爆破</li>
+<li>用户明文传输(可忽略不计,但建议加密处理)</li>
+</ol>
+</li>
+<li>任意账户注册<ol>
+<li>系统可随机注册不做手机号及昵称检测(检测是否已注册)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>用户个人信息<ol>
+<li>用户名修改处可能存在XSS(跨站脚本攻击)</li>
+<li>越权修改他人个人信息(通过修改用户uid越权修改他人信息)</li>
+<li>UI信息泄露(个人手机号及他人手机号隐藏展示)</li>
+<li>越权访问(通过UID越权访问他人信息)</li>
+</ol>
+</li>
+<li>文章/视频类<ol>
+<li>参数处存在SQL注入(未过滤)</li>
+<li>命令执行(未对用户输入命令进行转义)</li>
+<li>或其他Web漏洞</li>
+</ol>
+</li>
+<li>分享/红包<ol>
+<li>绕过系统检测分享获取红包(用户注册后台及时更新记录)</li>
+</ol>
+</li>
+<li>签到<ol>
+<li>用户可一直进行签到(绕过签到检测规则)</li>
+</ol>
+</li>
+<li>金额<ol>
+<li>绕过金额最低提现检测(后台检测金额并对比)</li>
+</ol>
+</li>
+<li>用户关系<ol>
+<li>越权访问(可对比用户个人信息项)</li>
+</ol>
+</li>
+<li>新手<ol>
+<li>参数未做处理(修改参数即可刷金额,每访问一次会自动加一)</li>
+</ol>
+</li>
+<li>系统报错<ol>
+<li>debug模式开启报错致信息泄漏(看所用框架类型)<ol>
+<li><strong>debug模式研发须在产品上线前进行关闭</strong></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<hr>
+<h2 id="实战API渗透测试"><a href="#实战API渗透测试" class="headerlink" title="实战API渗透测试"></a>实战API渗透测试</h2><p>(以下部分演示不完全来自一个API检测结果,同时内部包含部分移动端检测.)</p>
+<h2 id="客户端敏感信息"><a href="#客户端敏感信息" class="headerlink" title="客户端敏感信息"></a>客户端敏感信息</h2><h3 id="1、漏洞位置"><a href="#1、漏洞位置" class="headerlink" title="1、漏洞位置"></a>1、漏洞位置</h3><p>敏感数据存在app安装的数据目录中缓存用户的部分信息。</p>
+<h3 id="2、漏洞影响"><a href="#2、漏洞影响" class="headerlink" title="2、漏洞影响"></a>2、漏洞影响</h3><p>2.1、root手机ssh登陆所在安装目录<br><img src="/images/media/FB934E81-F2C3-4994-B399-FE384628D826.png"><br>2.2、查找敏感数据<br><img src="/images/media/8BF0DD98-9D32-4269-A2E5-A6E70F7D8FDD.png"></p>
+<h3 id="3、漏洞修复"><a href="#3、漏洞修复" class="headerlink" title="3、漏洞修复"></a>3、漏洞修复</h3><p>1、客户端不要缓存客户敏感信息<br>2、客户端脱密后存储</p>
+<h2 id="IPA内存在测试服域名信息"><a href="#IPA内存在测试服域名信息" class="headerlink" title="IPA内存在测试服域名信息"></a>IPA内存在测试服域名信息</h2><h3 id="1、漏洞位置-1"><a href="#1、漏洞位置-1" class="headerlink" title="1、漏洞位置"></a>1、漏洞位置</h3><p>IPA源码内存放部分域名信息，被静态分析得到(一般移动端建议经过安全加固进行处理,如果处于debug包可能会泄漏相关信息.)</p>
+<h3 id="2、漏洞影响-1"><a href="#2、漏洞影响-1" class="headerlink" title="2、漏洞影响"></a>2、漏洞影响</h3><p>2.1、使用本地移动框架自动检测ipa包<br><img src="/images/media/DB6EE945-6970-49D9-980F-1BFB50B9B59C.png"><br>2.2、URL信息获取<br><img src="/images/media/4EE52193-37CC-455B-B23A-AD4295F1B23A.png"></p>
+<h3 id="3、漏洞修复-1"><a href="#3、漏洞修复-1" class="headerlink" title="3、漏洞修复"></a>3、漏洞修复</h3><p>1、手工检查并清理<br>2、针对APK或IPA包进行第三方加固是实现自动清理</p>
+<h2 id="UI信息泄漏"><a href="#UI信息泄漏" class="headerlink" title="UI信息泄漏"></a>UI信息泄漏</h2><h3 id="1、漏洞位置-2"><a href="#1、漏洞位置-2" class="headerlink" title="1、漏洞位置"></a>1、漏洞位置</h3><p>用户个人信息及其他信息处(此类漏洞针对金融类APP必须进行后端隐藏处理.)</p>
+<h3 id="2、漏洞影响-2"><a href="#2、漏洞影响-2" class="headerlink" title="2、漏洞影响"></a>2、漏洞影响</h3><p>2.1、好友处手机号明文显示</p>
+<p><img src="/images/media/15823569889588.png"></p>
+<p><img src="/images/media/15823409378663.png"></p>
+<h3 id="3、漏洞修复-2"><a href="#3、漏洞修复-2" class="headerlink" title="3、漏洞修复"></a>3、漏洞修复</h3><p>1、后端对用户手机号或账户名进行隐藏处理</p>
+<p><img src="/images/media/15823410770897.png"></p>
+<h2 id="短信验证码爆破"><a href="#短信验证码爆破" class="headerlink" title="短信验证码爆破"></a>短信验证码爆破</h2><h3 id="1、漏洞位置-3"><a href="#1、漏洞位置-3" class="headerlink" title="1、漏洞位置"></a>1、漏洞位置</h3><p>漏洞主要出现用户注册、短信登陆,部分个人手机号绑定等功能处会存在这一安全问题.</p>
+<h3 id="2、漏洞影响-3"><a href="#2、漏洞影响-3" class="headerlink" title="2、漏洞影响"></a>2、漏洞影响</h3><p>2.1、验证码获取接口<br><img src="/images/media/15823354311582.png"><br>2.2、截获数据包并加载字典进行爆破<br><img src="/images/media/15823355728990.png"> </p>
+<h3 id="3、漏洞修复-3"><a href="#3、漏洞修复-3" class="headerlink" title="3、漏洞修复"></a>3、漏洞修复</h3><p>1、验证失效时间设置5分钟以内<br>2、验证码长度设置6为</p>
+<h2 id="短信轰炸"><a href="#短信轰炸" class="headerlink" title="短信轰炸"></a>短信轰炸</h2><h3 id="1、漏洞位置-4"><a href="#1、漏洞位置-4" class="headerlink" title="1、漏洞位置"></a>1、漏洞位置</h3><p>注册或个人密码修改获取验证码处如果未对获取进行次数限制会导致此类漏洞</p>
+<h3 id="2、漏洞影响-4"><a href="#2、漏洞影响-4" class="headerlink" title="2、漏洞影响"></a>2、漏洞影响</h3><p>2.1、获取验证码<br><img src="/images/media/15823511692830.png"><br>2.2、手机收到15条短信<br><img src="/images/media/15823511987787.png"></p>
+<h3 id="3、漏洞修复-4"><a href="#3、漏洞修复-4" class="headerlink" title="3、漏洞修复"></a>3、漏洞修复</h3><p>1、短信获取次数限制</p>
+<h2 id="越权访问"><a href="#越权访问" class="headerlink" title="越权访问"></a>越权访问</h2><h3 id="1、漏洞位置-5"><a href="#1、漏洞位置-5" class="headerlink" title="1、漏洞位置"></a>1、漏洞位置</h3><p>通过修改UID获取其他账户信息;</p>
+<h3 id="2、漏洞影响-5"><a href="#2、漏洞影响-5" class="headerlink" title="2、漏洞影响"></a>2、漏洞影响</h3><p>修改user_id获取其他用户信息</p>
+<p><img src="/images/media/15822804505543.png"></p>
+<h3 id="3、漏洞修复-5"><a href="#3、漏洞修复-5" class="headerlink" title="3、漏洞修复"></a>3、漏洞修复</h3><p>1、权限严格控制（后端进行不同账户权限分离）</p>
+<h2 id="权限绕过"><a href="#权限绕过" class="headerlink" title="权限绕过"></a>权限绕过</h2><h3 id="1、漏洞位置-6"><a href="#1、漏洞位置-6" class="headerlink" title="1、漏洞位置"></a>1、漏洞位置</h3><p>此漏洞是由于系统进行认证而导致的同一token可登录不同系统中，这类漏洞可以检测针对前后端分离且后端登录入口也是调API来登录的系统.</p>
+<h3 id="2、漏洞影响-6"><a href="#2、漏洞影响-6" class="headerlink" title="2、漏洞影响"></a>2、漏洞影响</h3><p>2.1、普通账户认证获取的token<br><img src="/images/media/15856606263756.png"><br>2.2、插件替换token，实现权限绕过<br><img src="/images/media/15856613206100.png"><br>2.3、其他操作需结合系统功能进行查找(这里建议查看JS或许能够获取大概请求信息以及F12)<br><img src="/images/media/15856613422173.png"><br>2.4、替换的token可直接调用此API<br><img src="/images/media/15856613834891.png"></p>
+<h3 id="3、漏洞修复-6"><a href="#3、漏洞修复-6" class="headerlink" title="3、漏洞修复"></a>3、漏洞修复</h3><p>1、权限控制严格</p>
+<h2 id="参数修改"><a href="#参数修改" class="headerlink" title="参数修改"></a>参数修改</h2><h3 id="1、漏洞位置-7"><a href="#1、漏洞位置-7" class="headerlink" title="1、漏洞位置"></a>1、漏洞位置</h3><p>此漏洞多出现用户访问指定文件或视屏后即可获取奖励，而参数未进行限制（数量未作限制）</p>
+<h3 id="2、漏洞影响-7"><a href="#2、漏洞影响-7" class="headerlink" title="2、漏洞影响"></a>2、漏洞影响</h3><p>2.1、用户数据修改参数即可完成刷红包<br><img src="/images/media/15856614616000.png"><br>2.2、后台未对参数进行数量限制导致修改sort即可刷红包<br><img src="/images/media/7991927F-0364-4E4A-A8C5-CF0916767091.png"></p>
+<h3 id="3、漏洞修复-7"><a href="#3、漏洞修复-7" class="headerlink" title="3、漏洞修复"></a>3、漏洞修复</h3><p>1、设定sort参数并做好数量限制</p>
+<h2 id="敏感信息泄露"><a href="#敏感信息泄露" class="headerlink" title="敏感信息泄露"></a>敏感信息泄露</h2><h3 id="1、漏洞位置-8"><a href="#1、漏洞位置-8" class="headerlink" title="1、漏洞位置"></a>1、漏洞位置</h3><p>此类漏洞因用户提交恶意字符而服务器端无法解析等问题导致的信息泄露均归属到敏感信息泄露；</p>
+<h3 id="2、漏洞影响-8"><a href="#2、漏洞影响-8" class="headerlink" title="2、漏洞影响"></a>2、漏洞影响</h3><p>2.1、URL访问如服务器端响应报错<br><img src="/images/media/15823482281156.png"><br>2.2、服务器端敏感文件泄露(某高校缴费系统泄露)<br><img src="/images/media/15823487150343.png"></p>
+<h3 id="3、漏洞修复-8"><a href="#3、漏洞修复-8" class="headerlink" title="3、漏洞修复"></a>3、漏洞修复</h3><p>1、关闭debug<br>2、清理不必要文件、日志等</p>
+<h2 id="扩展其他"><a href="#扩展其他" class="headerlink" title="扩展其他"></a>扩展其他</h2><h2 id="任意账户注册"><a href="#任意账户注册" class="headerlink" title="任意账户注册"></a>任意账户注册</h2><h3 id="1、漏洞位置-9"><a href="#1、漏洞位置-9" class="headerlink" title="1、漏洞位置"></a>1、漏洞位置</h3><p>手机号注册未对手机号或昵称进行是否注册检测,或敏感内部平台对外提供服务而为关闭注册入口等.</p>
+<h3 id="2、漏洞影响-9"><a href="#2、漏洞影响-9" class="headerlink" title="2、漏洞影响"></a>2、漏洞影响</h3><p>2.1、YAPI任意账户注册<br><img src="/images/media/5427A3FB-D549-444E-80CC-2870F17A3796.png"><br>2.2、项目信息,同时越权访问其他邮箱信息<br><img src="/images/media/8612A948-98C1-4D83-A017-5B3134691603.png"></p>
+<h3 id="3、漏洞修复-9"><a href="#3、漏洞修复-9" class="headerlink" title="3、漏洞修复"></a>3、漏洞修复</h3><p>1、关闭注册入口</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#API渗透" >
+    <span class="tag-code">API渗透</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/06/06/CDN%E5%AD%A6%E4%B9%A0%E4%B8%8E%E4%BB%8B%E7%BB%8D/">
+        <span class="nav-arrow">← </span>
+        
+          CDN学习与介绍
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/06/18/DNS-Log-Injection/">
+        
+          DNS Log Injection
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#API%E5%8F%8A%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">API及客户端漏洞挖掘</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%87%86%E5%A4%87"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">准备</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%A3%80%E6%B5%8B%E6%96%B9%E5%BC%8F"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">检测方式</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%A3%80%E6%B5%8B%E9%A1%B9%E7%9B%AE%E5%8F%8A%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E6%BC%8F%E6%B4%9E"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">检测项目及可能存在漏洞</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">客户端</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#APK"><span class="toc-nav-number">4.1.1.</span> <span class="toc-nav-text">APK</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#IPA"><span class="toc-nav-number">4.1.2.</span> <span class="toc-nav-text">IPA</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#API%E5%8F%8AWeb"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">API及Web</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AE%9E%E6%88%98API%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">实战API渗透测试</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">客户端敏感信息</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BD%8D%E7%BD%AE"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">1、漏洞位置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%BC%8F%E6%B4%9E%E5%BD%B1%E5%93%8D"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">2、漏洞影响</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">3、漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#IPA%E5%86%85%E5%AD%98%E5%9C%A8%E6%B5%8B%E8%AF%95%E6%9C%8D%E5%9F%9F%E5%90%8D%E4%BF%A1%E6%81%AF"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">IPA内存在测试服域名信息</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BD%8D%E7%BD%AE-1"><span class="toc-nav-number">7.1.</span> <span class="toc-nav-text">1、漏洞位置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%BC%8F%E6%B4%9E%E5%BD%B1%E5%93%8D-1"><span class="toc-nav-number">7.2.</span> <span class="toc-nav-text">2、漏洞影响</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-1"><span class="toc-nav-number">7.3.</span> <span class="toc-nav-text">3、漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#UI%E4%BF%A1%E6%81%AF%E6%B3%84%E6%BC%8F"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">UI信息泄漏</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BD%8D%E7%BD%AE-2"><span class="toc-nav-number">8.1.</span> <span class="toc-nav-text">1、漏洞位置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%BC%8F%E6%B4%9E%E5%BD%B1%E5%93%8D-2"><span class="toc-nav-number">8.2.</span> <span class="toc-nav-text">2、漏洞影响</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-2"><span class="toc-nav-number">8.3.</span> <span class="toc-nav-text">3、漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%9F%AD%E4%BF%A1%E9%AA%8C%E8%AF%81%E7%A0%81%E7%88%86%E7%A0%B4"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">短信验证码爆破</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BD%8D%E7%BD%AE-3"><span class="toc-nav-number">9.1.</span> <span class="toc-nav-text">1、漏洞位置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%BC%8F%E6%B4%9E%E5%BD%B1%E5%93%8D-3"><span class="toc-nav-number">9.2.</span> <span class="toc-nav-text">2、漏洞影响</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-3"><span class="toc-nav-number">9.3.</span> <span class="toc-nav-text">3、漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E7%9F%AD%E4%BF%A1%E8%BD%B0%E7%82%B8"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">短信轰炸</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BD%8D%E7%BD%AE-4"><span class="toc-nav-number">10.1.</span> <span class="toc-nav-text">1、漏洞位置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%BC%8F%E6%B4%9E%E5%BD%B1%E5%93%8D-4"><span class="toc-nav-number">10.2.</span> <span class="toc-nav-text">2、漏洞影响</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-4"><span class="toc-nav-number">10.3.</span> <span class="toc-nav-text">3、漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E8%B6%8A%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">越权访问</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BD%8D%E7%BD%AE-5"><span class="toc-nav-number">11.1.</span> <span class="toc-nav-text">1、漏洞位置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%BC%8F%E6%B4%9E%E5%BD%B1%E5%93%8D-5"><span class="toc-nav-number">11.2.</span> <span class="toc-nav-text">2、漏洞影响</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-5"><span class="toc-nav-number">11.3.</span> <span class="toc-nav-text">3、漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%9D%83%E9%99%90%E7%BB%95%E8%BF%87"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">权限绕过</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BD%8D%E7%BD%AE-6"><span class="toc-nav-number">12.1.</span> <span class="toc-nav-text">1、漏洞位置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%BC%8F%E6%B4%9E%E5%BD%B1%E5%93%8D-6"><span class="toc-nav-number">12.2.</span> <span class="toc-nav-text">2、漏洞影响</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-6"><span class="toc-nav-number">12.3.</span> <span class="toc-nav-text">3、漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%8F%82%E6%95%B0%E4%BF%AE%E6%94%B9"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">参数修改</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BD%8D%E7%BD%AE-7"><span class="toc-nav-number">13.1.</span> <span class="toc-nav-text">1、漏洞位置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%BC%8F%E6%B4%9E%E5%BD%B1%E5%93%8D-7"><span class="toc-nav-number">13.2.</span> <span class="toc-nav-text">2、漏洞影响</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-7"><span class="toc-nav-number">13.3.</span> <span class="toc-nav-text">3、漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2"><span class="toc-nav-number">14.</span> <span class="toc-nav-text">敏感信息泄露</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BD%8D%E7%BD%AE-8"><span class="toc-nav-number">14.1.</span> <span class="toc-nav-text">1、漏洞位置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%BC%8F%E6%B4%9E%E5%BD%B1%E5%93%8D-8"><span class="toc-nav-number">14.2.</span> <span class="toc-nav-text">2、漏洞影响</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-8"><span class="toc-nav-number">14.3.</span> <span class="toc-nav-text">3、漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%89%A9%E5%B1%95%E5%85%B6%E4%BB%96"><span class="toc-nav-number">15.</span> <span class="toc-nav-text">扩展其他</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BB%BB%E6%84%8F%E8%B4%A6%E6%88%B7%E6%B3%A8%E5%86%8C"><span class="toc-nav-number">16.</span> <span class="toc-nav-text">任意账户注册</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BD%8D%E7%BD%AE-9"><span class="toc-nav-number">16.1.</span> <span class="toc-nav-text">1、漏洞位置</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%E3%80%81%E6%BC%8F%E6%B4%9E%E5%BD%B1%E5%93%8D-9"><span class="toc-nav-number">16.2.</span> <span class="toc-nav-text">2、漏洞影响</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%E3%80%81%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-9"><span class="toc-nav-number">16.3.</span> <span class="toc-nav-text">3、漏洞修复</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/06/09/API及客户端渗透测试-1/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "API及客户端漏洞挖掘",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

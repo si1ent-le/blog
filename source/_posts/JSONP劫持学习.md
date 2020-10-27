@@ -1,3 +1,9 @@
+---
+title: JSONP劫持学
+date: 2020-10-10 16:57:27
+tags:
+ - JSONP
+---
 JSON 劫持又为“ JSON Hijacking ”，最开始提出这个概念大概是在 2008 年国外有安全研究人员提到这个 JSONP 带来的风险。其实这个问题属于 CSRF（ Cross-site request forgery 跨站请求伪造）攻击范畴。当某网站听过 JSONP 的方式来快域（一般为子域）传递用户认证后的敏感信息时，攻击者可以构造恶意的 JSONP 调用页面，诱导被攻击者访问来达到截取用户敏感信息的目的。																						--摘自网络
 
 ### JSON介绍

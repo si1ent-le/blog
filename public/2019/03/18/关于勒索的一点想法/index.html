@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      关于勒索的一点想法 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>关于勒索的一点想法</h2>
+  <p class="post-date">2019-03-18</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>最近经常收到一些客户被勒索,而且询问情况后,很多都是服务器没有进行备份，或备份服务器未进行隔离（逻辑隔离）一并被加密，所以今天也想简单聊下针对被勒索前后的一些建议和意见吧.</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>既然被勒索,那么系统、应用程序肯定存在漏洞抑或系统存在弱口令,而且漏洞明显可被攻击者直接利用,也可能被攻击者盯了很久（有些可能是APT攻击）确定系统能够在加密后勒索一番后才实施的全网攻击.</p>
+<h3 id="一、勒索前"><a href="#一、勒索前" class="headerlink" title="一、勒索前"></a>一、勒索前</h3><p>公司业务系统的重要性不言而喻，那么在进行系统、程序上线之前自然要进行整个安全检查,而针对那些单位有安全经费或有专门的安全人员就更好不过了,可以内容进行安全检测和检查;毕竟我国安全人才的稀缺还是很严重的,所以针对其他一些企业而言就只能请第三方安全公司进行全面的安全检测和检查,那么难道只能只能请第三方的公司进行安全检查了吗?</p>
+<p>其实并非如此，如果你进行勒索统计,大部分单位被勒索的都是windows系统,为什么这么说？因为针对一些小的企业更多还是喜欢使用桌面化系统,这样不管是后期运维还是进行其他操作都要相对简单很多.但是有些单位可能会说,关于*inux系统我们很多不会使用或者运维以及使用起来太麻烦.</p>
+<h4 id="壹、网络层"><a href="#壹、网络层" class="headerlink" title="壹、网络层"></a>壹、网络层</h4><p>1、互联网出口位置部署相关安全产品（FW、IDS、IPS、审计、堡垒极….根据系统重要性，特定部署安全设备）<br>2、网络各区域进行划分，不同区域的访问权限严格控制（DMZ到非DMZ区进行控制，非DMZ尽量控制指定端口可达DMZ服务）<br>…<br>……</p>
+<h4 id="贰、系统层"><a href="#贰、系统层" class="headerlink" title="贰、系统层"></a>贰、系统层</h4><p>1、系统补丁及时更新<br>2、系统不用端口进行封堵135、137、138、139、445等（比如系统只使用80，其他端口一并封堵）<br>3、系统软防火墙记得开启(根据业务处理情况来进行添加相关策略)<br>4、系统安全策略进行配置梳理(根据梳理表格进行check)<br>5、更换远程连接端口（3389），如不需要建议采用TeamView进行远程管理<br>6、系统口令情况进行定期梳理和更换，一定不能出现弱口令的情况，而造成整个内网服务器被攻击<br>…<br>……</p>
+<h4 id="叁、应用层"><a href="#叁、应用层" class="headerlink" title="叁、应用层"></a>叁、应用层</h4><p>1、时刻关注所使用程序是否存在漏洞并及时更新<br>2、可自行下载并安装互联网中的漏扫软件进行内网扫描处理<br>3、请第三方安全公司进行渗透测试，挖掘是否存在潜在安全问题<br>…<br>……</p>
+<h3 id="二、勒索中"><a href="#二、勒索中" class="headerlink" title="二、勒索中"></a>二、勒索中</h3><p>应急….<br>    如果单位部分服务器已经被勒索不要着急,一旦发现被勒索情况 ,首先进行断网处理以防内网扩散(注意：勒索不同挖矿类，不是抓包、策略添加进行封堵),让受影响服务器单独运行;查看被勒索病毒类型,并根据类型进行互联网查询是否有共享的解密软件尝试数据恢复.</p>
+<p>如发现数据无法恢复,请及时联系攻击者留下的联系方式并获取密钥进行数据恢复处理.<br>可以按照以下步骤进行处理:<br>1、受影响服务器进行断网处理，隔离开未受影响服务器、PC办公端等.<br>2、收集系统、安全设备产生日志（为后期漏洞定位提供帮助）<br>3、病毒类型进行google等查询<br>4、病毒样本收集并移除外部，tar包保存<br>5、配置防火墙封堵445等共享服务端口，<br>…<br>……</p>
+<h3 id="三、勒索后"><a href="#三、勒索后" class="headerlink" title="三、勒索后"></a>三、勒索后</h3><p>解密后自然尽快恢复网络、办公，但是肯定还是很担心服务器内或者其他未被加密的服务器内是否存在恶意病毒文件再进行传播;为了消除此类问题建议在同网段核心交换进行端口镜像,拉出一台分析设备进行网络行为分析查看内网主机某个端口是否存在进行外部请求或对内网某台主机进行恶意请求;并定位某台主机并独立出进行分析.</p>
+<p>针对勒索后的网络安全环境的建设和维护可以参考勒索前的一些安全加固建议、并自行构造安全检查文档实行下去进行检查,确保其他未受影响主机不会再被攻击.</p>
+<h3 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h3><p>国内一直关于勒索层出不穷,多数出现企业和医院类受影响的可能性较大;想要确保系统安全运行,养成好的安全管理(三分技术,七分管理)很大程度应对勒索.祝好运…</p>
+</section>
+    <!-- Tags START -->
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/03/11/Burpsuite%E6%8B%A6%E6%88%AA%E4%B8%8E%E4%BF%AE%E6%94%B9Response%E6%95%B0%E6%8D%AE%E5%8C%85/">
+        <span class="nav-arrow">← </span>
+        
+          Burpsuite拦截与修改Response数据包
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2019/04/02/%E5%AD%A6%E6%A0%A1%E6%BC%8F%E6%B4%9E%E4%B8%80%E7%82%B9%E7%82%B9%E6%80%9D%E8%B7%AF/">
+        
+          学校漏洞一点点思路...
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%80%E3%80%81%E5%8B%92%E7%B4%A2%E5%89%8D"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">一、勒索前</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%A3%B9%E3%80%81%E7%BD%91%E7%BB%9C%E5%B1%82"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">壹、网络层</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%B4%B0%E3%80%81%E7%B3%BB%E7%BB%9F%E5%B1%82"><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">贰、系统层</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8F%81%E3%80%81%E5%BA%94%E7%94%A8%E5%B1%82"><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text">叁、应用层</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%8C%E3%80%81%E5%8B%92%E7%B4%A2%E4%B8%AD"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">二、勒索中</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%B8%89%E3%80%81%E5%8B%92%E7%B4%A2%E5%90%8E"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">三、勒索后</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%9B%9B%E3%80%81%E6%80%BB%E7%BB%93"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">四、总结</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2019/03/18/关于勒索的一点想法/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "关于勒索的一点想法",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      学校漏洞一点点思路... | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>学校漏洞一点点思路...</h2>
+  <p class="post-date">2019-04-02</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>之前了解到一个关于大学类的SRC可以访问这里<a target="_blank" rel="noopener" href="https://src.edu-info.edu.cn/">EDU-SRC</a>,其他漏洞平台也会收这类漏洞,因此最近也开始学习总结测学校类方式.</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>不多赘述关于非法攻击类非法行为会被请去喝茶的,总之,不要“日站一时爽,进去万分悔”.</p>
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><p>当我们确定待测学校后,自然少不了针对此系统的一系列信息收集工作;关于子域名爆破也好、还是通过其他类端口探测等收集方式也罢,而这里全程只使用Google Hacking进行大部分信息收集工作(以后要多使用).</p>
+<h3 id="Google-Hacking"><a href="#Google-Hacking" class="headerlink" title="Google Hacking"></a>Google Hacking</h3><p>Google Hacking:是利用谷歌搜索的强大,来在浩瀚的互联网中搜索到我们需要的信息.轻量级的搜索可以搜素出一些遗留后门,不想被发现的后台入口,中量级的搜索出一些用户信息泄露,源代码泄露,未授权访问等等,重量级的则可能是mdb文件下载,CMS 未被锁定install页面,网站配置密码,php远程文件包含漏洞等重要信息.</p>
+<h4 id="基本检索"><a href="#基本检索" class="headerlink" title="基本检索"></a>基本检索</h4><ul>
+<li>逻辑与: and</li>
+<li>逻辑或: or</li>
+<li>逻辑非: -</li>
+<li>完整匹配: “关键词”</li>
+<li>通配符: * ?</li>
+<li>…</li>
+<li>……</li>
+</ul>
+<h4 id="高级检索"><a href="#高级检索" class="headerlink" title="高级检索"></a>高级检索</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.intext</span><br></pre></td></tr></table></figure>
+<p>检索某个正文中含有关键字的网页,例如:intext:”后台登录”,将只返回正文中包含后台登录的网页.</p>
+<p>intext:”后台登陆”</p>
+<p><img src="/images/edu/1.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2.intitle</span><br></pre></td></tr></table></figure>
+<p>检索标题中含有关键字的网页,例如:intitle:后台登录,将只返回标题中包含”后台登录”的网页,当然也可以使用其他关键字进行检索.</p>
+<p>intitle:”后台登陆”</p>
+<p><img src="/images/edu/2.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3.inurl</span><br></pre></td></tr></table></figure>
+<p>检索URL中包含关键词的网页:例如:inurl:Login,将返回URL中含有Login的网页,很多小伙伴应该还记得在学习SQL注入时这条检索应该运用很多次,inurl:php id=.</p>
+<p>inurl:login<br><img src="/images/edu/3.png"></p>
+<p>检索管理员登录页面<br>inurl:/admin/login.php</p>
+<p><img src="/images/edu/4.png"></p>
+<p>检索phpmyadmin管理页<br>inurl:/phpmyadmin/index.php</p>
+<p><img src="/images/edu/5.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4.site</span><br></pre></td></tr></table></figure>
+<p>检索指定域名/关键字,例如:site:baidu.com inurl:login,将只在baidu.com中检索含有Login的网页.</p>
+<p>site:baidu.com inurl:login</p>
+<p><img src="/images/edu/6.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5.filetype</span><br></pre></td></tr></table></figure>
+<p>检索指定域名内的指定文件类型,例如:<code>site:baidu.com filetype:doc</code>,将返回baidu.com内且文件类型为doc的网页.</p>
+<p>site:baidu.com filetype:doc</p>
+<p><img src="/images/edu/7.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">6.link</span><br></pre></td></tr></table></figure>
+<p>检索指定域名的网页,例:<code>link:www.baidu.com</code>,将返回所有包含<code>www.baidu.com</code>关键字的网页.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">link:www.baidu.com</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/edu/8.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">7.related</span><br></pre></td></tr></table></figure>
+
+<p>检索相似类型的网页,例如:<code>related:www.hebut.edu.cn</code>,将返回与<code>www.hebut.edu.cn</code>相似的页面,相似指的是网页的布局相似.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">related:www.hebut.edu.cn</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/edu/9.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">8.Index of</span><br></pre></td></tr></table></figure>
+<p>Index of语法去发现允许目录浏览的web网站,就像在本地的普通目录一样,下面是一些有趣的查询.</p>
+<ul>
+<li><p>index of /admin</p>
+</li>
+<li><p>index of /passwd</p>
+</li>
+<li><p>index of /password</p>
+</li>
+<li><p>index of /logs</p>
+</li>
+<li><p>index of /config</p>
+</li>
+<li><p>index of /mail</p>
+</li>
+<li><p>….</p>
+<p>index of /logs</p>
+</li>
+</ul>
+<p><img src="/images/edu/10.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">小姐(结)</span><br></pre></td></tr></table></figure>
+<p>关于Google Hacking还有很多可用语法使用,具体可以网上查找这里不做更深入介绍.已选择移步到:<a target="_blank" rel="noopener" href="https://www.exploit-db.com/google-hacking-database">Google Hacing DB</a>.</p>
+<h2 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h2><h3 id="子域名收集"><a href="#子域名收集" class="headerlink" title="子域名收集"></a>子域名收集</h3><p><img src="/images/edu/11.png"></p>
+<p>找到一个HR系统<br>针对学校的很多是工号进行登陆,检索学校老师工号两种方式:学校官网&amp;其他系统、Google Hacking(企业类测试基本相符)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">site:XXXX.edu.cn intext:&quot;工号&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/edu/12.png"></p>
+<h3 id="获取工号"><a href="#获取工号" class="headerlink" title="获取工号"></a>获取工号</h3><p>尝试登陆,提示密码错误.<br><img src="/images/edu/13.png"></p>
+<h3 id="爆破"><a href="#爆破" class="headerlink" title="爆破"></a>爆破</h3><p><img src="/images/edu/14.png"></p>
+<p>显示只是普通老师的个人信息,没什么利用价值, 看到审批信息需人事审核,想必人事可获取很多信息.</p>
+<h3 id="Google检索"><a href="#Google检索" class="headerlink" title="Google检索"></a>Google检索</h3><p>找到人事工号了<br>(这里说下,这个学校的邮箱是通过工号作为前缀)</p>
+<p><img src="/images/edu/15.png"></p>
+<h3 id="爆破-1"><a href="#爆破-1" class="headerlink" title="爆破"></a>爆破</h3><p>393条老师信息<br><img src="/images/edu/16.png"></p>
+<h3 id="撸下邮箱"><a href="#撸下邮箱" class="headerlink" title="撸下邮箱"></a>撸下邮箱</h3><p>Google后提示邮箱默认密码是身份证号后6位,借此之前hr系统内可以获取身份证号信息,随机登陆测试.<br><img src="/images/edu/17.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>不管是针对学校类还是企业的测试,弱口令总是存在,则测试中此漏洞的利用程度较高;其中以上大部分占比还是信息收集部分做了充足的准备.</p>
+<h3 id="小建议"><a href="#小建议" class="headerlink" title="小建议"></a>小建议</h3><ol>
+<li>因这个测试基本都是使用Google Hacking测试,则在信息收集部分只做了此类部分介绍;其他类还请自行补充.(希望后期学习Google Hacking再单独贴出).</li>
+<li>针对学校类测试建议多google、多查学校通知类文件信息,总有一款适合你.</li>
+<li>如果企业的SRC挖不到或许可以通过测试学校类来学习更多方式吧,总之,多测、多练、多收集.</li>
+<li>多看书,多学习,多总结,多笔记,多回顾,多完善….</li>
+</ol>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#渗透思路" >
+    <span class="tag-code">渗透思路</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/03/18/%E5%85%B3%E4%BA%8E%E5%8B%92%E7%B4%A2%E7%9A%84%E4%B8%80%E7%82%B9%E6%83%B3%E6%B3%95/">
+        <span class="nav-arrow">← </span>
+        
+          关于勒索的一点想法
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2019/07/11/%E5%8A%A0%E5%AF%86%E7%94%B5%E6%A2%AF%E5%8D%A1%E6%88%90%E5%8A%9F%E5%A4%8D%E5%88%B6%E8%87%B3%E7%B1%B33%E6%89%8B%E7%8E%AF/">
+        
+          加密电梯卡成功复制至米3手环
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">信息收集</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Google-Hacking"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Google Hacking</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A3%80%E7%B4%A2"><span class="toc-nav-number">2.1.1.</span> <span class="toc-nav-text">基本检索</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%AB%98%E7%BA%A7%E6%A3%80%E7%B4%A2"><span class="toc-nav-number">2.1.2.</span> <span class="toc-nav-text">高级检索</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">实战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%AD%90%E5%9F%9F%E5%90%8D%E6%94%B6%E9%9B%86"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">子域名收集</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%8E%B7%E5%8F%96%E5%B7%A5%E5%8F%B7"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">获取工号</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%88%86%E7%A0%B4"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">爆破</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Google%E6%A3%80%E7%B4%A2"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">Google检索</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%88%86%E7%A0%B4-1"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">爆破</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%92%B8%E4%B8%8B%E9%82%AE%E7%AE%B1"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">撸下邮箱</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">总结</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%B0%8F%E5%BB%BA%E8%AE%AE"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">小建议</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2019/04/02/学校漏洞一点点思路/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "学校漏洞一点点思路...",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

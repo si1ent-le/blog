@@ -1,3 +1,10 @@
+---
+title: MongoDB审计工具
+date: 2020-10-14 16:57:27
+tags:
+ - MongoDB
+---
+
 #### 概述
 
 强大的 MongoDB 审计和渗透性测试（pentesting）工具。用于审计 MongoDB 服务器，检测不良安全设置和执行自动渗透测试。

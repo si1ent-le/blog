@@ -1,6 +1,8 @@
 ---
 title: Jboss漏洞汇总
 date: 2020-07-05 19:22:15
+tags:
+ - Jboss
 ---
 
 JBoss是一套开源的企业级 Java 中间件系统，用于实现基于 SOA 的企业应用和服务

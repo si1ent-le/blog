@@ -1,6 +1,8 @@
 ---
 title: CDN学习与介绍
 date: 2020-06-06 14:14:27
+tag:
+	- CDN
 ---
 
 CDN 其实是 Content Delivery Network 的缩写,即“内容分发网络”源站内容(image、html、js、css等)一种合理解决因网络请求较大并自动分配因地域分开而实现的网络加速技术.

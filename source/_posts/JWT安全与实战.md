@@ -1,6 +1,8 @@
 ---
 title: JWT安全与实战
 date: 2020-10-21 16:57:27
+tags:
+ - JWT
 ---
 ![1_XkmnsJ6Joa6EDFVGUw0tfA](/images/jwt/1_XkmnsJ6Joa6EDFVGUw0tfA.png)
 

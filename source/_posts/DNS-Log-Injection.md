@@ -1,6 +1,8 @@
 ---
 title: DNS Log Injection
 date: 2020-06-18 22:40:04
+tags:
+ - DNS-Injection
 ---
 注入类漏洞我们都了解,比如之前整理SQL Injection时介绍和说明的一样,而今天学习的DNS Log 注入通过名称我们应该也知道,是利用DNS来完成的带外注入的攻击手段,而这些又如何实现的呢?一起慢慢来学习分析.
 

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      重放攻击 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>重放攻击</h2>
+  <p class="post-date">2020-10-14</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>重放攻击(Replay Attacks)属于业务逻辑类漏洞范围内，因用户(攻击者)对目标系统请求过程中进行拦截/截获数据包，并修改其中参数或部分信息进行重放而造成的漏洞。</p>
+<h4 id="漏洞概述"><a href="#漏洞概述" class="headerlink" title="漏洞概述"></a>漏洞概述</h4><p>重放攻击(Replay Attacks)又称重播攻击、回放攻击，是指攻击者发送一个目的主机已接收过的包，来达到欺骗系统的目的，主要用于身份认证过程，破坏认证的正确性。</p>
+<p>重放攻击可以由发起者，也可以由拦截并重发该数据的敌方进行。攻击者利用网络监听或者其他方式盗取认证凭据，之后再把它重新发给认证服务器。</p>
+<h4 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h4><p>由于服务器端未对用户每次提交数据进行及时认证或销毁，导致攻击者截获数据包后再重新发送恶意数据而造成攻击。</p>
+<h4 id="漏洞危害"><a href="#漏洞危害" class="headerlink" title="漏洞危害"></a>漏洞危害</h4><p>重放攻击本身只是一种行为和方式，并不会直接造成系统的危害，可能在某些系统中，过多和高频次的重复会对系统造成压力。重放攻击的重要点在于重放的是可以造成目的效果的数据包，从而达到修改和多次执行的效果。</p>
+<p>重放攻击主要是针对系统没有效验请求的有效性和时效性，对于多次请求执行，系统将多次响应。在重放攻击利用最多的形式中，短信轰炸算是重放攻击最直接的利用表现。</p>
+<h4 id="漏洞分类"><a href="#漏洞分类" class="headerlink" title="漏洞分类"></a>漏洞分类</h4><h5 id="1-短信轰炸"><a href="#1-短信轰炸" class="headerlink" title="1.短信轰炸"></a>1.短信轰炸</h5><p>短线轰炸是重放攻击中最为直接的利用形式，当系统端没有效验请求的时间差或者只在前端做请求限制的时候，可以无限的请求短信来达到短信轰炸的目的。</p>
+<p>例如，如下APP请求注册时可以使用手机号和验证码注册登录，但是没有限制短信请求次数和时间间隔。</p>
+<p><img src="/images/replay&attack/15823511987787.jpg" alt="15823511987787"></p>
+<h5 id="2-暴力破解"><a href="#2-暴力破解" class="headerlink" title="2.暴力破解"></a>2.暴力破解</h5><p>暴力破解属于重放攻击，典型的非只重放而达到的攻击类型，而是利用重放这个动作来达到暴力破解的目的。当系统端未做请求验证和错误次数限制时，就可以根据字典或者设定的字符串来破解特定的参数。</p>
+<h6 id="2-1-密码爆破"><a href="#2-1-密码爆破" class="headerlink" title="2.1.密码爆破"></a>2.1.密码爆破</h6><p>当用户登陆时，缺少验证码或者验证码复用，并且账号没有错误的次数限制。可通过暴力破解碰撞密码来登录。</p>
+<p><img src="/images/replay&attack/5C3068EC-B7BF-4B02-A7E4-792BA0F85C31.png" alt="5C3068EC-B7BF-4B02-A7E4-792BA0F85C31"></p>
+<h6 id="2-2-用户名爆破"><a href="#2-2-用户名爆破" class="headerlink" title="2.2.用户名爆破"></a>2.2.用户名爆破</h6><p>系统登陆处开发人员对用户名或密码输入错误未进行报错提示规范处理，导致输入错误账户提示用户名不存在等字符，可能导致攻击者进行用户名遍历并收集成字典后再根据收集到的用户名进行口令爆破行为。</p>
+<p><img src="/images/replay&attack/05A29BBA-E3DD-4C09-A69D-F9CA72EB6822.png" alt="05A29BBA-E3DD-4C09-A69D-F9CA72EB6822"></p>
+<h6 id="2-3-验证码爆破"><a href="#2-3-验证码爆破" class="headerlink" title="2.3.验证码爆破"></a>2.3.验证码爆破</h6><p>短信验证码常被用于网站用户注册、安全登录以及忘记密码、修改绑定手机号码等应用场景，特别是一些涉及到用户个人敏感行为时候，为了确认操作是用户本人执行的通常会使用短信验证码进行二次认证。那么很多网站的短信验证码接口都会或多或少的存在一些逻辑漏洞。</p>
+<p><img src="/images/replay&attack/3EB24068-0BC1-49E7-B634-2FC1F5D06AA8.png" alt="3EB24068-0BC1-49E7-B634-2FC1F5D06AA8"></p>
+<h6 id="2-4-参数爆破"><a href="#2-4-参数爆破" class="headerlink" title="2.4.参数爆破"></a>2.4.参数爆破</h6><p>此情况大都在尝试越权的时候，还有尝试修改某些不可知但是可预测的参数。</p>
+<h5 id="3-支付重放"><a href="#3-支付重放" class="headerlink" title="3.支付重放"></a>3.支付重放</h5><p>支付到最后一个请求包时，系统收到请求就会确定已支付下单。这时候在系统没有做出准确效验的时候就会根据是否支付成功的验证字段来确定下单，多次重放的时候，系统会根据暂无失效且正常的请求下单。来达到使用同一请求多次获取成功的订单。</p>
+<h5 id="4-密码修改"><a href="#4-密码修改" class="headerlink" title="4.密码修改"></a>4.密码修改</h5><p>可以参考CSRF漏洞。</p>
+<p>如果在最后确认修改的时候抓包多次重放，可以达到免验证来达到修改密码的作用。也就是这里并没有强制效验手机号和验证码。也就存在了任意修改密码的可能，当然要是效验了手机号和验证码的对应关系，也许就不可以了。</p>
+<p>当只是简单的重置的时候，先不谈越权问题，这个包都可能造成多次修改多次重置密码。而并不用验证。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">POST /userpwd?p=2 HTTP/1.1</span><br><span class="line">Host: xxx.com</span><br><span class="line"></span><br><span class="line">phone=1111111111&amp;code=123456&amp;pwd=123456&amp;newpwd=123456</span><br></pre></td></tr></table></figure>
+
+<h5 id="5-条件竞争"><a href="#5-条件竞争" class="headerlink" title="5.条件竞争"></a>5.条件竞争</h5><p>条件竞争是后台对共享数据读写的时候，多线程没有对共享数据执行线程锁，导致在多个线程获取到的值并不是当前线程操作的实时值，典型的例子是，一份钱买多份。</p>
+<p>这类漏洞一般测试方式直接高并发进行检测即可；JMeter</p>
+<h4 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h4><ol>
+<li>添加图片验证码，为了应对偏爆破类的重放攻击，添加验证字段是最简单有效的手段。当然你要保证验证是在一次使用后及时失效。</li>
+<li>限制请求次数，有些地方并不适用于添加验证码，或者不能添加验证码。这时候针对同一账户的错误次数限制就显得很有必要。例如，当错误次数连续达到五次的时候，暂时十分钟内不能登陆。</li>
+<li>效验验证码和用户身份，某些重放攻击是利用了手机号和验证码之间的不对应性，特别是在修改密码等处，这时候需要把验证码和请求的用户手机号做联系，当重放或者越权的时候根据验证码次数和对应关系来判断是否允许修改。</li>
+</ol>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Web" >
+    <span class="tag-code">Web</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/10/10/JSONP%E5%8A%AB%E6%8C%81%E5%AD%A6%E4%B9%A0/">
+        <span class="nav-arrow">← </span>
+        
+          JSONP劫持学
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/10/14/MongoDB%E5%AE%A1%E8%AE%A1%E5%B7%A5%E5%85%B7/">
+        
+          MongoDB审计工具
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">漏洞概述</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8D%B1%E5%AE%B3"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">漏洞危害</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E7%B1%BB"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">漏洞分类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1-%E7%9F%AD%E4%BF%A1%E8%BD%B0%E7%82%B8"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">1.短信轰炸</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-%E6%9A%B4%E5%8A%9B%E7%A0%B4%E8%A7%A3"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">2.暴力破解</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#2-1-%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4"><span class="toc-nav-number">4.2.1.</span> <span class="toc-nav-text">2.1.密码爆破</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#2-2-%E7%94%A8%E6%88%B7%E5%90%8D%E7%88%86%E7%A0%B4"><span class="toc-nav-number">4.2.2.</span> <span class="toc-nav-text">2.2.用户名爆破</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#2-3-%E9%AA%8C%E8%AF%81%E7%A0%81%E7%88%86%E7%A0%B4"><span class="toc-nav-number">4.2.3.</span> <span class="toc-nav-text">2.3.验证码爆破</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#2-4-%E5%8F%82%E6%95%B0%E7%88%86%E7%A0%B4"><span class="toc-nav-number">4.2.4.</span> <span class="toc-nav-text">2.4.参数爆破</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-%E6%94%AF%E4%BB%98%E9%87%8D%E6%94%BE"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">3.支付重放</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#4-%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9"><span class="toc-nav-number">4.4.</span> <span class="toc-nav-text">4.密码修改</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89"><span class="toc-nav-number">4.5.</span> <span class="toc-nav-text">5.条件竞争</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/10/14/重放攻击/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "重放攻击",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

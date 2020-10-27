@@ -1,6 +1,8 @@
 ---
 title: Real-World-Bug-Hunting
 date: 2020-04-18 08:48:40
+tags:
+ - Books
 ---
 《Real-World Bug Hunting: A Field Guide to Web Hacking》是一本2019年面向Web安全初学者的安全入门书籍.本书主要分享一些厂商的实际漏洞案例,并给出奖金额度、PoC和报告链接,覆盖了许多常见的Web漏洞类型,比如XSS、SQL注入、XXE等等.
 

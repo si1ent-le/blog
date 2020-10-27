@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Sysmon学习 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Sysmon学习</h2>
+  <p class="post-date">2020-10-22</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h4 id="Sysmon概述"><a href="#Sysmon概述" class="headerlink" title="Sysmon概述"></a>Sysmon概述</h4><p>Sysmon 是 Windows Sysinternals 系列中的一款工具。如果你想实时监控 Windows 系统又对其他第三方软件有顾虑，使用 Sysmon 这款轻量级 Microsoft 自带内部软件是最好的选择。</p>
+<p>应用打开或任何进程创建行为发生时，Sysmon 会使用 sha1（默认），MD5，SHA256 或 IMPHASH 记录进程镜像文件的 hash 值，包含进程创建过程中的进程 GUID，每个事件中包含 session 的 GUID。除此之外记录磁盘和卷的读取请求 / 网络连接（包括每个连接的源进程，IP 地址，端口号，主机名和端口名），重要的是还可在生成初期进程事件能记录在复杂的内核模式运行的恶意软件。</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sysinternals/downloads/sysmon">Sysmon</a></p>
+<h4 id="Sysmon原理"><a href="#Sysmon原理" class="headerlink" title="Sysmon原理"></a>Sysmon原理</h4><p>它通过系统服务和驱动程序实现记录进程创建、文件访问以及网络信息的记录，并把相关的信息写入并展示在windows的日志事件里。</p>
+<p>更多参考：<a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/156704">Sysmon原理与分析</a></p>
+<h5 id="Sysmon安装"><a href="#Sysmon安装" class="headerlink" title="Sysmon安装"></a>Sysmon安装</h5><p><a href="">补丁</a></p>
+<p>Sysmon安装在VM中时会出现以下报错，则补丁更新即可解决。</p>
+<p>报错如下，说明系统缺少wevtapi的dll库文件，需更新<code>KB2533623</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error getting the evt dll (wevtapi.dll): 87</span><br></pre></td></tr></table></figure>
+
+<p>但出现以下报错，需更新此补丁<code>KB3033929</code><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/download/details.aspx?id=46148">补丁</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">StartService failed for SysmonDrv:</span><br></pre></td></tr></table></figure>
+
+<p>安装方式一</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Sysmon64.exe -i -h md5 -l -n</span><br><span class="line">-i 即install</span><br><span class="line">-n会监听network连接</span><br><span class="line">sysmon有32位和64位两种，根据系统选择。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Sysmon/image-20201016115903675.png" alt="image-20201016115903675"></p>
+<p>安装方式二</p>
+<p>网上提供对应配置文件</p>
+<p>sysmon可以使用xml配置文件进行安装，需要先配置好xml文件，该配置文件为大家过滤了一些不必要监控的系统行为以及选择捕捉适当的条目，可以在应急响应中，将注意力集中真正有意义的日志上，并尽可能减少性能影响。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/SwiftOnSecurity/sysmon-config">配置文件</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Sysmon64 -accepteula -i sysmonconfig-export.xml</span><br><span class="line">Sysmon64 -c sysmonconfig-export.xml</span><br></pre></td></tr></table></figure>
+
+<p>已经安装的话,无法再进行安装，可以使用<code>-c</code>参数进行更新安装方式即可。</p>
+<p><img src="/images/Sysmon/image-20201016135041924.png" alt="image-20201016135041924"></p>
+<h5 id="Sysmon卸载"><a href="#Sysmon卸载" class="headerlink" title="Sysmon卸载"></a>Sysmon卸载</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 通过以下方式对Sysmon进行卸载操作</span></span><br><span class="line">Sysmon64.exe -u</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Sysmon/image-20201016135157467.png" alt="image-20201016135157467"></p>
+<p>日志通过事件查看器查看，因为Sysmon的日志是以<code>evtx</code>格式存储。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eventvwr.msc</span><br></pre></td></tr></table></figure>
+
+<p>应用程序和服务日志-Microsoft-Windows-Sysmon-Operational</p>
+<p>如同Windows自带的系统日志，安全日志有事件ID一样，sysmon日志也有对应的事件ID，最新版本支持24种事件。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">Event ID <span class="number">1</span>: <span class="keyword">Process</span> creation</span><br><span class="line">Event ID <span class="number">2</span>: A <span class="keyword">process</span> changed a file creation time</span><br><span class="line">Event ID <span class="number">3</span>: Network connection</span><br><span class="line">Event ID <span class="number">4</span>: Sysmon service state changed</span><br><span class="line">Event ID <span class="number">5</span>: <span class="keyword">Process</span> terminated</span><br><span class="line">Event ID <span class="number">6</span>: Driver loaded</span><br><span class="line">Event ID <span class="number">7</span>: Image loaded</span><br><span class="line">Event ID <span class="number">8</span>: CreateRemoteThread</span><br><span class="line">Event ID <span class="number">9</span>: RawAccessRead</span><br><span class="line">Event ID <span class="number">10</span>: ProcessAccess</span><br><span class="line">Event ID <span class="number">11</span>: FileCreate</span><br><span class="line">Event ID <span class="number">12</span>: RegistryEvent (Object create and delete)</span><br><span class="line">Event ID <span class="number">13</span>: RegistryEvent (Value <span class="built_in">Set</span>)</span><br><span class="line">Event ID <span class="number">14</span>: RegistryEvent (Key and Value Rename)</span><br><span class="line">Event ID <span class="number">15</span>: FileCreateStreamHash</span><br><span class="line">Event ID <span class="number">17</span>: PipeEvent (Pipe Created)</span><br><span class="line">Event ID <span class="number">18</span>: PipeEvent (Pipe Connected)</span><br><span class="line">Event ID <span class="number">19</span>: WmiEvent (WmiEventFilter activity detected)</span><br><span class="line">Event ID <span class="number">20</span>: WmiEvent (WmiEventConsumer activity detected)</span><br><span class="line">Event ID <span class="number">21</span>: WmiEvent (WmiEventConsumerToFilter activity detected)</span><br><span class="line">Event ID <span class="number">22</span>: DNSEvent (DNS query)</span><br><span class="line">Event ID <span class="number">23</span>: FileDelete</span><br><span class="line">Event ID <span class="number">24</span>: Clipboard Changed</span><br><span class="line">Event ID <span class="number">255</span>: Error</span><br></pre></td></tr></table></figure>
+
+<h5 id="事件ID"><a href="#事件ID" class="headerlink" title="事件ID"></a>事件ID</h5><h6 id="事件-ID-1"><a href="#事件-ID-1" class="headerlink" title="事件 ID 1"></a>事件 ID 1</h6><p>进程创建事件ID，恶意进程的创建，包括他的父进程，PID，执行命令及对应文件所在目录记录信息等等。</p>
+<p><img src="/images/Sysmon/image-20201016142613582.png" alt="image-20201016142613582"></p>
+<h6 id="事件-ID-3"><a href="#事件-ID-3" class="headerlink" title="事件 ID 3"></a>事件 ID 3</h6><p>网络连接事件ID，当恶意程序外连CC服务器或者矿地址池等操作的时候，可监控到是哪个进程发起的连接，并找到对应程序所在目录进行清理操作。</p>
+<p><img src="/images/Sysmon/image-20201016143121787.png" alt="image-20201016143121787"></p>
+<h6 id="事件-ID-11"><a href="#事件-ID-11" class="headerlink" title="事件 ID 11"></a>事件 ID 11</h6><p>文件创建事件ID，创建或覆盖文件时，这些创建操作会被记录下来。此事件对于监控自动启动位置，如启动文件夹目录、临时目录、下载目录非常有用，而这些目录正是初始感染阶段恶意运行要用到的目录。</p>
+<p><img src="/images/Sysmon/image-20201016154726431.png" alt="image-20201016154726431"></p>
+<h6 id="事件-ID-15"><a href="#事件-ID-15" class="headerlink" title="事件 ID 15"></a>事件 ID 15</h6><p>创建命名文件流时记录。</p>
+<h6 id="事件-ID-22"><a href="#事件-ID-22" class="headerlink" title="事件 ID 22"></a>事件 ID 22</h6><p>记录DNS查询，容易受该功能影响的一种场景就是基于DNS的C2通信，其中大量请求会被记录下来。</p>
+<p>过滤Event ID 22，可以重点关注“DNS query”（DNS请求）事件。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/302292/1563418822549-1c945bff-a194-4c71-b5d8-4f9c71169f7b.png?x-oss-process=image/watermark,type_d3F5LW1pY3JvaGVp,size_14,text_U3djaGFyeg==,color_FFFFFF,shadow_50,t_80,g_se,x_10,y_10" alt="img"></p>
+<center>图片来自"语雀"</center>
+###### 事件 ID 23
+
+<p>文件删除记录，</p>
+<p>Sysmon版本在12之后多了一个<code>事件 ID 24</code>用于记录剪切板事件。</p>
+<h6 id="事件-ID-24"><a href="#事件-ID-24" class="headerlink" title="事件 ID 24"></a>事件 ID 24</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 事件 ID 24</span><br><span class="line">https:&#x2F;&#x2F;www.bleepingcomputer.com&#x2F;news&#x2F;microsoft&#x2F;microsoft-sysmon-now-logs-data-copied-to-the-windows-clipboard&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Sysmon/logged-event.jpg" alt="logged-event"></p>
+<center>图片来自以上链接</center>
+#### Sysmon辅助
+
+<p><a target="_blank" rel="noopener" href="https://github.com/nshalabi/SysmonTools.git">Sysmon辅助工具</a></p>
+<p>Sysmon View：Sysmon日志可视化</p>
+<p>Sysmon Shell：Sysmon配置文件生成</p>
+<p>Sysmon Box：Sysmon和网络捕获日志记录</p>
+<h5 id="Sysmon-View"><a href="#Sysmon-View" class="headerlink" title="Sysmon View"></a>Sysmon View</h5><p>Sysmon View是Sysmon产生日志的可视化查看进程信息的辅助工具。</p>
+<p>cmd下执行以下命令导出<code>xml</code>格式的日志文档，可通过<code>Sysmon View</code>辅助工具实现对其可视化显示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WEVTUtil query-events &quot;Microsoft-Windows-Sysmon&#x2F;Operational&quot; &#x2F;format:xml &#x2F;e:sysmonview &gt; eventlog.xml</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Sysmon/image-20201017155404956.png" alt="image-20201017155404956"></p>
+<p><img src="/images/Sysmon/image-20201017155424676.png" alt="image-20201017155424676"></p>
+<p>如软件进程存在关联性会显示关联关系。</p>
+<p><img src="/images/Sysmon/image-20201017155537676.png" alt="image-20201017155537676"></p>
+<h5 id="Sysmon-Shell"><a href="#Sysmon-Shell" class="headerlink" title="Sysmon Shell"></a>Sysmon Shell</h5><p>Sysmon Shell是Sysmon用户自定义配置文档的GUI辅助工具。方便用户完成根据自己需求来自己书写自己的xml配置文档。</p>
+<p><img src="/images/Sysmon/image-20201017164457978.png" alt="image-20201017164457978"></p>
+<h5 id="Sysmon-Box"><a href="#Sysmon-Box" class="headerlink" title="Sysmon Box"></a>Sysmon Box</h5><p>可以通过Sysmon Box捕获sysmon和网络流量的数据库.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">启动Sysmon Box使用如下命令：SysmonBox -in Wi-Fi</span><br></pre></td></tr></table></figure>
+
+<p>然后该工具将执行以下操作：</p>
+<ol>
+<li><p>开始捕获流量(在后台使用tshark，这就是你必须指定捕获接口的原因)，完成后点击CTRL + C结束会话</p>
+</li>
+<li><p>然后，Sysmon Box将停止流量捕获，将所有捕获的数据包转储到文件，并使用EVT实用程序导出在会话的开始和结束时间之间记录的Sysmon日志</p>
+</li>
+<li><p>使用来自Sysmon的导入日志和捕获的流量构建Sysmon View数据库(备份现有)文件，您所要做的就是从同一文件夹运行Sysmon视图或将数据库文件(SysmonViewDB)放在与Sysmon View相同的文件夹中(保持数据包捕获在同一位置)</p>
+</li>
+</ol>
+<h4 id="Sysmon与SIEM系统"><a href="#Sysmon与SIEM系统" class="headerlink" title="Sysmon与SIEM系统"></a>Sysmon与SIEM系统</h4><h5 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h5><p>Windows操作系统因本身的安全特点经常成为内网安全渗透的首选目标，如果终端上没有安装EDR产品，基于Windows本身的日志很难监控到入侵行为。</p>
+<p>因此需使用Sysmon及其他日志分析工具相结合来对系统或整个网络环境进行监控和分析。</p>
+<h5 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h5><p><a target="_blank" rel="noopener" href="https://nxlog.co/">nxlog</a></p>
+<p>Nxlog主要作用是进行日志转换并发送至syslog服务器中的一款工具。</p>
+<p><img src="/images/Sysmon/image-20201020085647637.png" alt="image-20201020085647637"></p>
+<p>配置安装路径</p>
+<p><img src="/images/Sysmon/image-20201020085722321.png" alt="image-20201020085722321"></p>
+<p><img src="/images/Sysmon/image-20201020085743662.png" alt="image-20201020085743662"></p>
+<p><img src="/images/Sysmon/image-20201020085801552.png" alt="image-20201020085801552"></p>
+<p><img src="/images/Sysmon/image-20201020085823438.png" alt="image-20201020085823438"></p>
+<p>受限于Splunk与国内出口协议规定，目前无法下载。</p>
+<p>后期再补上吧！！</p>
+<h4 id="Referer"><a href="#Referer" class="headerlink" title="Referer"></a>Referer</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;cloud.tencent.com&#x2F;developer&#x2F;article&#x2F;1041591</span><br><span class="line">https:&#x2F;&#x2F;www.anquanke.com&#x2F;post&#x2F;id&#x2F;156704</span><br><span class="line">Sysmon DNS查询</span><br><span class="line">https:&#x2F;&#x2F;www.anquanke.com&#x2F;post&#x2F;id&#x2F;180418</span><br><span class="line">报错解决：</span><br><span class="line">https:&#x2F;&#x2F;superuser.com&#x2F;questions&#x2F;1482486&#x2F;installation-error-of-sysmon-on-windows-7-vm-sysmondrv-driver-and-startservice</span><br><span class="line">辅助工具：</span><br><span class="line">https:&#x2F;&#x2F;www.yuque.com&#x2F;p1ut0&#x2F;xer98r&#x2F;ugrtrf</span><br><span class="line">Sysmon官方文档</span><br><span class="line">https:&#x2F;&#x2F;docs.microsoft.com&#x2F;zh-cn&#x2F;sysinternals&#x2F;downloads&#x2F;sysmon</span><br></pre></td></tr></table></figure>
+
+<h4 id="实战参考"><a href="#实战参考" class="headerlink" title="实战参考"></a>实战参考</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># Sysmon实战分析Word恶意文件</span><br><span class="line">https:&#x2F;&#x2F;www.syspanda.com&#x2F;index.php&#x2F;2017&#x2F;10&#x2F;10&#x2F;threat-hunting-sysmon-word-document-macro&#x2F;</span><br></pre></td></tr></table></figure>
+
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Sysmon" >
+    <span class="tag-code">Sysmon</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/10/21/JWT%E5%AE%89%E5%85%A8%E4%B8%8E%E5%AE%9E%E6%88%98/">
+        <span class="nav-arrow">← </span>
+        
+          JWT安全与实战
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Sysmon%E6%A6%82%E8%BF%B0"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">Sysmon概述</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Sysmon%E5%8E%9F%E7%90%86"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Sysmon原理</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Sysmon%E5%AE%89%E8%A3%85"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">Sysmon安装</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Sysmon%E5%8D%B8%E8%BD%BD"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">Sysmon卸载</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E4%BA%8B%E4%BB%B6ID"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">事件ID</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#%E4%BA%8B%E4%BB%B6-ID-1"><span class="toc-nav-number">2.3.1.</span> <span class="toc-nav-text">事件 ID 1</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#%E4%BA%8B%E4%BB%B6-ID-3"><span class="toc-nav-number">2.3.2.</span> <span class="toc-nav-text">事件 ID 3</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#%E4%BA%8B%E4%BB%B6-ID-11"><span class="toc-nav-number">2.3.3.</span> <span class="toc-nav-text">事件 ID 11</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#%E4%BA%8B%E4%BB%B6-ID-15"><span class="toc-nav-number">2.3.4.</span> <span class="toc-nav-text">事件 ID 15</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#%E4%BA%8B%E4%BB%B6-ID-22"><span class="toc-nav-number">2.3.5.</span> <span class="toc-nav-text">事件 ID 22</span></a></li><li class="toc-nav-item toc-nav-level-6"><a class="toc-nav-link" href="#%E4%BA%8B%E4%BB%B6-ID-24"><span class="toc-nav-number">2.3.6.</span> <span class="toc-nav-text">事件 ID 24</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Sysmon-View"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">Sysmon View</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Sysmon-Shell"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">Sysmon Shell</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#Sysmon-Box"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">Sysmon Box</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Sysmon%E4%B8%8ESIEM%E7%B3%BB%E7%BB%9F"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">Sysmon与SIEM系统</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">背景</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">实战</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Referer"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">Referer</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%AE%9E%E6%88%98%E5%8F%82%E8%80%83"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">实战参考</span></a></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/10/22/Sysmon学习/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Sysmon学习",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

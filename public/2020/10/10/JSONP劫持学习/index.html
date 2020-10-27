@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      JSONP劫持学 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>JSONP劫持学</h2>
+  <p class="post-date">2020-10-10</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>JSON 劫持又为“ JSON Hijacking ”，最开始提出这个概念大概是在 2008 年国外有安全研究人员提到这个 JSONP 带来的风险。其实这个问题属于 CSRF（ Cross-site request forgery 跨站请求伪造）攻击范畴。当某网站听过 JSONP 的方式来快域（一般为子域）传递用户认证后的敏感信息时，攻击者可以构造恶意的 JSONP 调用页面，诱导被攻击者访问来达到截取用户敏感信息的目的。                                                                                        –摘自网络</p>
+<h3 id="JSON介绍"><a href="#JSON介绍" class="headerlink" title="JSON介绍"></a>JSON介绍</h3><p><a target="_blank" rel="noopener" href="https://www.json.org/json-zh.html">JSON官网</a></p>
+<p>JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。 易于人阅读和编写。同时也易于机器解析和生成。 它基于JavaScript Programming Language, Standard ECMA-262 3rd Edition - December 1999的一个子集。 JSON采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C, C++, C#, Java, JavaScript, Perl, Python等）。 这些特性使JSON成为理想的数据交换语言.</p>
+<h4 id="JSON建构于两种结构"><a href="#JSON建构于两种结构" class="headerlink" title="JSON建构于两种结构"></a>JSON建构于两种结构</h4><p>“名称/值”对的集合（A collection of name/value pairs）。不同的语言中，它被理解为<em>对象（object）</em>、纪录（record）、结构（struct）、字典（dictionary）、哈希表（hash table）、有键列表（keyed list），或者关联数组 （associative array）。 </p>
+<p>值的有序列表（An ordered list of values）。在大部分语言中，它被理解为数组（array）。</p>
+<p>这些都是常见的数据结构。事实上大部分现代计算机语言都以某种形式支持它们。这使得一种数据格式在同样基于这些结构的编程语言之间交换成为可能。</p>
+<p>JSON具有以下这些形式</p>
+<p><code>对象</code>是一个无序的“‘名称/值’对”集合。一个对象以 {  }。每个“名称”后跟一个 “<code>:</code>“ ；“名称/值’ 对”之间使用 ,(逗号) 分隔。</p>
+<p><img src="https://www.json.org/img/object.png" alt="img"></p>
+<p><code>数组</code>是值（value）的有序集合。一个数组以 [左中括号 开始， ]右中括号 结束。值之间使用 ,逗号分隔</p>
+<p><img src="https://www.json.org/img/array.png" alt="img"></p>
+<p><code>值</code>（<em>value</em>）可以是双引号括起来的字符串（<em>string</em>）、数值(number)、<code>true</code>、<code>false</code>、 <code>null</code>、对象（object）或者数组（array）。这些结构可以嵌套。</p>
+<p><img src="https://www.json.org/img/value.png" alt="img"></p>
+<p><code>字符串</code>（<em>string</em>）是由双引号包围的任意数量Unicode字符的集合，使用反斜线转义。一个字符（character）即一个单独的字符串（character string）。</p>
+<p>字符串（string）与C或者Java的字符串非常相似。</p>
+<p><img src="https://www.json.org/img/string.png" alt="img"></p>
+<p><code>数值</code>（<em>number</em>）也与C或者Java的数值非常相似。除去未曾使用的八进制与十六进制格式。除去一些编码细节。</p>
+<p><img src="https://www.json.org/img/number.png" alt="img"></p>
+<p>空白可以加入到任何符号之间。 以下描述了完整的语言。</p>
+<p><img src="https://www.json.org/img/whitespace.png" alt="img"></p>
+<h3 id="JSONP介绍"><a href="#JSONP介绍" class="headerlink" title="JSONP介绍"></a>JSONP介绍</h3><p>JSONP(JSON with Padding) 是 JSON 的一种”使用模式”，可以让网页从别的域名（网站）那获取资料，即跨域读取数据。</p>
+<p>为什么我们从不同的域（网站）访问数据需要一个特殊的技术( JSONP )呢？这是因为同源策略的限制。</p>
+<p><code>同源策略</code>，它是由 Netscape 提出的一个著名的安全策略，现在所有支持 JavaScript 的浏览器都会使用这个策略。</p>
+<p>文件存放另一域名下：</p>
+<p><code>http://yourls.me:4444/json.txt</code></p>
+<p><img src="/images/jsonp/image-20200627094956151.png" alt="image-20200627094956151"></p>
+<h4 id="XHR调用"><a href="#XHR调用" class="headerlink" title="XHR调用"></a>XHR调用</h4><p><code>http://bwapp.me:4444/bwAPP/xhr.html</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;XHR&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    var request &#x3D; new XMLHttpRequest();</span><br><span class="line"></span><br><span class="line">    request.onreadystatechange &#x3D; function () &#123;</span><br><span class="line">        if (request.readyState &#x3D;&#x3D;&#x3D; 4) &#123;</span><br><span class="line">            if (request.status &#x3D;&#x3D;&#x3D; 200) &#123;</span><br><span class="line">                alert(&#39;success!&#39;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    request.open(&#39;GET&#39;, &#39;http:&#x2F;&#x2F;yourls.me:4444&#x2F;json.txt&#39;);</span><br><span class="line">    request.send();</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>会因跨域而被浏览器拦截（因同源策略原因无法直接获取其他主机文档信息）</p>
+<p><img src="/images/jsonp/image-20200627094603295.png" alt="image-20200627094956151"></p>
+<h4 id="跨域访问"><a href="#跨域访问" class="headerlink" title="跨域访问"></a>跨域访问</h4><p>1、html在这个域名下</p>
+<p><code>http://bwapp.me:4444/data.html</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>Test<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">data</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    alert(<span class="string">&quot;name:&quot;</span>+data.name+<span class="string">&quot;\n&quot;</span><span class="string">&quot;age:&quot;</span>+data.age);</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://yourls.me:4444/data.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2、JS文件在此域名下</p>
+<p><code>http://yourls.me:4444/data.js</code></p>
+<p><img src="/images/jsonp/image-20200627114105044.png" alt="image-20200627114105044"></p>
+<p>3、访问<code>http://bwapp.me:4444/data.html</code>跨域访问成功</p>
+<p><img src="/images/jsonp/image-20200627114330651.png" alt="image-20200627114330651"></p>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>bwapp.me直接获取data.js内的数据，因data.js内只有一个函数，如涉及多个函数，data.html(客户端)将导致客户端无法确定调哪个函数。而无法输出对应数据。</p>
+<p>data.html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>Test<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">data</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    alert(<span class="string">&quot;name:&quot;</span>+data.name+<span class="string">&quot;age:&quot;</span>+data.age);</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="javascript"><span class="comment">//新建一个test1函数</span></span></span><br><span class="line"><span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params">test3</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    alert(<span class="string">&quot;name:&quot;</span>=test3.name+<span class="string">&quot;city:&quot;</span>+test3.city);</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">//访问后并不能直接输出对应数据信息。</span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://yourls.me:4444/data.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="JSONP动态调用"><a href="#JSONP动态调用" class="headerlink" title="JSONP动态调用"></a>JSONP动态调用</h4><p>在客户端中添加callback回调函数</p>
+<p>data.html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Test<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">        <span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params">data</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">            alert(<span class="string">&quot;name:&quot;</span> + data.name + <span class="string">&quot;city:&quot;</span> + data.city);</span></span><br><span class="line">        &#125;</span><br><span class="line"><span class="javascript">        <span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params">data</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">            alert(<span class="string">&quot;name:&quot;</span> + data.name);</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://yourls.me:4444/data.php?callback=test1&amp;name=si1ent&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--&lt;script src=&quot;http://yourls.me:4444/data.php?callback=test1&amp;name=si1ent&quot;&gt;&lt;/script&gt;--&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>data.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$data1=<span class="keyword">array</span>(<span class="string">&quot;name&quot;</span>=&gt;<span class="string">&quot;si1ent&quot;</span>,<span class="string">&quot;city&quot;</span>=&gt;<span class="string">&quot;Anhui&quot;</span>);</span><br><span class="line">$data2=<span class="keyword">array</span>(<span class="string">&quot;name&quot;</span>=&gt;<span class="string">&quot;admin&quot;</span>,<span class="string">&quot;city&quot;</span>=&gt;<span class="string">&quot;SH&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> ($_GET[<span class="string">&#x27;name&#x27;</span>]===<span class="string">&#x27;si1ent&#x27;</span>) &#123;</span><br><span class="line">    $data=$data1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ($_GET[<span class="string">&#x27;name&#x27;</span>]===<span class="string">&#x27;admin&#x27;</span>) &#123;</span><br><span class="line">    $data=$data2;</span><br><span class="line">&#125;</span><br><span class="line">$callback = $_GET[<span class="string">&#x27;callback&#x27;</span>];</span><br><span class="line"><span class="keyword">exit</span>($callback.<span class="string">&quot;(&quot;</span>.json_encode($data).<span class="string">&quot;)&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>访问</p>
+<p><code>http://bwapp.me:4444/data.html</code></p>
+<p><code>http://yourls.me:4444/data.php?callback=test1&amp;name=si1ent</code></p>
+<p><img src="/images/jsonp/image-20200627134931765.png" alt="image-20200627134931765"></p>
+<p>注：</p>
+<p>因前后端都存在两条以上数据，这里指定了callback==test1因此会弹出名字及城市信息。</p>
+<p>如callback=test2，则只会显示name对应值，不显示城市信息。</p>
+<p><img src="/images/jsonp/image-20200627135745378.png" alt="image-20200627135745378"></p>
+<h4 id="jQuery调用JSONP"><a href="#jQuery调用JSONP" class="headerlink" title="jQuery调用JSONP"></a>jQuery调用JSONP</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html &gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Test&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;script src&#x3D;&quot;http:&#x2F;&#x2F;libs.baidu.com&#x2F;jquery&#x2F;1.9.0&#x2F;jquery.js&quot; type&#x3D;&quot;text&#x2F;javascript&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span><br><span class="line">    $(document).ready(function()&#123;</span><br><span class="line">        $.ajax(&#123;</span><br><span class="line">             type: &quot;get&quot;,</span><br><span class="line">             url: &quot;http:&#x2F;&#x2F;yourls.me:4444&#x2F;data.php?name&#x3D;admin&quot;,</span><br><span class="line">             dataType: &quot;jsonp&quot;,</span><br><span class="line">             jsonp: &quot;callback&quot;,&#x2F;&#x2F;传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)</span><br><span class="line">             jsonpCallback:&quot;test1&quot;,&#x2F;&#x2F;自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以写&quot;?&quot;，jQuery会自动为你处理数据</span><br><span class="line">             success: function(data)&#123;</span><br><span class="line">                 alert(&quot;name:&quot;+data.name+&quot;city:&quot;+data.city);</span><br><span class="line">             &#125;,</span><br><span class="line">             error: function()&#123;</span><br><span class="line">                 alert(&#39;fail&#39;);</span><br><span class="line">             &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/jsonp/image-20200627140710365.png" alt="image-20200627140710365"></p>
+<p>jQuery会自动调用callback函数。</p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>由以上实例及演示得知，JSONP是为了解决跨域而传输JSON格式数据的一种方式。</p>
+<h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><h4 id="JSONP劫持"><a href="#JSONP劫持" class="headerlink" title="JSONP劫持"></a>JSONP劫持</h4><p>JSONP本质上属于CSRF(跨站请求伪造：利用更多是修改密码等攻击)，而JSONP主要是攻击目标站点并获取数据的一种攻击方式。</p>
+<p>而造成这一问题的主要原因：目标站点未对请求的referer进行限制和检查，导致任何站点都可以访问JSON数据。</p>
+<h4 id="攻击流程"><a href="#攻击流程" class="headerlink" title="攻击流程"></a>攻击流程</h4><p>后台数据还是以data.php<code>http://yourls.me:4444/data.php</code>为主，而此时referer不再是<code>http://bwapp.me:4444/</code>而是新的地址<code>http://jsonp.me:4444/</code></p>
+<p> 新建jsonp.html文件（放到<code>http://jsonp.me:4444/</code>下）</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">csrf</span>(<span class="params">data</span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">    alert(<span class="string">&quot;name:&quot;</span>+data.name+<span class="string">&quot;city:&quot;</span>+data.city);</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;http://yourls.me:4444/data.php?callback=csrf&amp;name=admin&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<p><code>http://jsonp.me:4444/jsonp.html</code></p>
+<p><img src="/images/jsonp/image-20200627142742830.png" alt="image-20200627142742830"></p>
+<h4 id="修复"><a href="#修复" class="headerlink" title="修复"></a>修复</h4><p>1、限制referer</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ($_SERVER[<span class="string">&#x27;HTTP_REFERER&#x27;</span>]!==<span class="string">&#x27;http://bwapp.me:4444/jquery.html&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">exit</span>(<span class="string">&quot;非法访问&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下简单添加referer验证</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$data1=<span class="keyword">array</span>(<span class="string">&quot;name&quot;</span>=&gt;<span class="string">&quot;si1ent&quot;</span>,<span class="string">&quot;city&quot;</span>=&gt;<span class="string">&quot;Anhui&quot;</span>);</span><br><span class="line">$data2=<span class="keyword">array</span>(<span class="string">&quot;name&quot;</span>=&gt;<span class="string">&quot;admin&quot;</span>,<span class="string">&quot;city&quot;</span>=&gt;<span class="string">&quot;SH&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> ($_SERVER[<span class="string">&#x27;HTTP_REFERER&#x27;</span>]!==<span class="string">&#x27;http://bwapp.me:4444/jquery.html&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span>(<span class="string">&quot;非法访问&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ($_GET[<span class="string">&#x27;name&#x27;</span>]===<span class="string">&#x27;si1ent&#x27;</span>) &#123;</span><br><span class="line">    $data=$data1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ($_GET[<span class="string">&#x27;name&#x27;</span>]===<span class="string">&#x27;admin&#x27;</span>) &#123;</span><br><span class="line">    $data=$data2;</span><br><span class="line">&#125;</span><br><span class="line">$callback = $_GET[<span class="string">&#x27;callback&#x27;</span>];</span><br><span class="line"><span class="keyword">exit</span>($callback.<span class="string">&quot;(&quot;</span>.json_encode($data).<span class="string">&quot;)&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/jsonp/image-20200627145813752.png" alt="image-20200627145813752"></p>
+<p>2、使用token</p>
+<p>随机的生成一段token值，每次提交表单都要检查，攻击者没有token就不能访问（token后台服务随机分配）</p>
+<h4 id="绕过方式"><a href="#绕过方式" class="headerlink" title="绕过方式"></a>绕过方式</h4><p>利用<code>ftp://,http://,https://,file://,javascript:,data:</code>这个时候浏览器地址栏是file://开头的，如果这个HTML页面向任何http站点提交请求的话，这些请求的Referer都是空的。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">&quot;data:text/html;base64,PHNjcmlwdD4KZnVuY3Rpb24gY3NyZihkYXRhKXsKICAgIGFsZXJ0KCJuYW1lOiIrZGF0YS5uYW1lKyJjaXR5OiIrZGF0YS5jaXR5KTsKfQo8L3NjcmlwdD4KPHNjcmlwdCBzcmM9Imh0dHA6Ly95b3VybHMubWU6NDQ0NC9kYXRhLnBocD9jYWxsYmFjaz1jc3JmJm5hbWU9YWRtaW4iPgo8L3NjcmlwdD4=&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.smi1e.top&#x2F;%E6%B5%85%E8%B0%88-jsonp&#x2F;</span><br><span class="line">https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;6539</span><br><span class="line">https:&#x2F;&#x2F;blog.knownsec.com&#x2F;2015&#x2F;03&#x2F;jsonp_security_technic&#x2F;</span><br><span class="line">之前乌云drops文档</span><br></pre></td></tr></table></figure>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#JSONP" >
+    <span class="tag-code">JSONP</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/09/24/%E6%A0%91%E8%8E%93%E6%B4%BE/">
+        <span class="nav-arrow">← </span>
+        
+          树莓派
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/10/14/%E9%87%8D%E6%94%BE%E6%94%BB%E5%87%BB/">
+        
+          重放攻击
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#JSON%E4%BB%8B%E7%BB%8D"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">JSON介绍</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JSON%E5%BB%BA%E6%9E%84%E4%BA%8E%E4%B8%A4%E7%A7%8D%E7%BB%93%E6%9E%84"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">JSON建构于两种结构</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#JSONP%E4%BB%8B%E7%BB%8D"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">JSONP介绍</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#XHR%E8%B0%83%E7%94%A8"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">XHR调用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%B7%A8%E5%9F%9F%E8%AE%BF%E9%97%AE"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">跨域访问</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E9%97%AE%E9%A2%98"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">问题</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JSONP%E5%8A%A8%E6%80%81%E8%B0%83%E7%94%A8"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">JSONP动态调用</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#jQuery%E8%B0%83%E7%94%A8JSONP"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">jQuery调用JSONP</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-nav-number">2.6.</span> <span class="toc-nav-text">小结</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%AE%89%E5%85%A8"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">安全</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JSONP%E5%8A%AB%E6%8C%81"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">JSONP劫持</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%94%BB%E5%87%BB%E6%B5%81%E7%A8%8B"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">攻击流程</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E4%BF%AE%E5%A4%8D"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">修复</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F"><span class="toc-nav-number">3.4.</span> <span class="toc-nav-text">绕过方式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/10/10/JSONP劫持学习/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "JSONP劫持学",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

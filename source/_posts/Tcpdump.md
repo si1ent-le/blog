@@ -1,6 +1,8 @@
 ---
 title: Tcpdump
 date: 2020-07-16 22:11:39
+tags:
+ - Tcpdump
 ---
 
 tcpdump - dump traffic on a network

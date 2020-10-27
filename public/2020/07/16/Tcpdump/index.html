@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="si1ent">
+  <meta name="keyword" content="hexo-theme, vuejs">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Tcpdump | si1ent
+    
+  </title>
+  <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+
+  
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  
+    
+<script src="/js/qrious.js"></script>
+
+  
+  
+    
+<script src="/js/gitment.js"></script>
+
+  
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png" />
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>si1ent</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Tcpdump</h2>
+  <p class="post-date">2020-07-16</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>tcpdump - dump traffic on a network</p>
+<p>根据使用者的定义对网络上的数据包进行截获的包分析工具。 tcpdump可以将网络中传送的数据包的“头”完全截获下来提供分析。它支持针对网络层、协议、主机、网络或端口的过滤，并提供and、or、not等逻辑语句来帮助你去掉无用的信息。</p>
+<p>tcpdump的报文获取功能是通过libpcap库实现。tcpdump需要root权限才可执行，不然攻击者有普通账户权限就能获取很多信息啊！</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 获取版本信息时会显示libpcap对应版本信息</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> tcpdump --version</span></span><br><span class="line">tcpdump version 4.9.2</span><br><span class="line">libpcap version 1.7.4</span><br><span class="line">OpenSSL 1.0.2g  1 Mar 2016</span><br></pre></td></tr></table></figure>
+
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>linux下的抓包是通过注册一种虚拟的<code>底层网络协议</code>来完成对网络报文(准确的说是网络设备)消息的处理权。当网卡接收到一个网络报文之后，它会遍历系统中所有已经注册的网络协议，例如以太网协议、x25协议处理模块来尝试进行报文的解析处理，这一点和一些文件系统的挂载相似，就是让系统中所有的已经注册的文件系统来进行尝试挂载，如果哪一个认为自己可以处理，那么就完成挂载。</p>
+<p>当抓包模块把自己伪装成一个网络协议的时候，系统在收到报文的时候就会给这个伪协议一次机会，让它来对网卡收到的报文进行一次处理，此时该模块就会趁机对报文进行窥探，也就是把这个报文完完整整的复制一份，假装是自己接收到的报文，汇报给抓包模块。</p>
+<h4 id="如何实现"><a href="#如何实现" class="headerlink" title="如何实现"></a>如何实现</h4><p>包传递流程：网卡–&gt;内存–&gt;内核态–&gt;用户程序；tcpdump程序运行在用户态，那如何实现从内核态的抓包？</p>
+<p><img src="/images/tcpdump/793dd841e89e5eb113c041860dfeea234153cfa4.png" alt="793dd841e89e5eb113c041860dfeea234153cfa4"></p>
+<p>此时通过<code>libpcap库</code>来实现的，tcpdump调用libpcap的api函数，由libpcap进入到内核态到链路层来抓包,如下图：</p>
+<p>BPF是过滤器，可以根据用户设置用于数据包过滤减少应用程序的数据包的包数和字节数从而提高性能。</p>
+<p>BufferQ是缓存供应用程序读取的数据包；可以说tcpdump底层原理其实就是libpcap的实现原理。</p>
+<p><img src="/images/tcpdump/bc8a1dd22a5130474a0fa6945089fa2a4ccda680.png" alt="bc8a1dd22a5130474a0fa6945089fa2a4ccda680"></p>
+<p>而libpcap在linux系统链路层中抓包是通过PF_PACKET套接字来实现的(不同的系统其实现机制是由差异的)，该方法在创建的时候，可以指定第二参数为SOCK_DGRAM或者SOCK_RAW，影响是否扣除链路层的首部。</p>
+<p>libpcap在内核收发包的接口处将skb_clone()拿走的包。</p>
+<h4 id="libpcap"><a href="#libpcap" class="headerlink" title="libpcap"></a>libpcap</h4><p>最早的编译系统和过滤引擎是在tcpdump项目中的，后来为了编译其他抓包的应用，将其独立出来。现在libpcap提供独立于平台的库和API，来满足执行网络嗅探。</p>
+<p>tcpdump.c正式使用libpcap里的函数完成两个最关键的动作：获取捕获报文的接口，和捕获报文并将报文交给callback。</p>
+<p>libpcap支持“伯克利包过滤（BPF）”语法。BPF能够通过比较第2、3、4层协议中各个数据字段值的方法对流量进行过滤。Libpcap的使用逻辑如下图:</p>
+<p><img src="/images/tcpdump/9fc92b7b41bb8d51fcb471f76ce6c3be3f564e2a.png" alt="9fc92b7b41bb8d51fcb471f76ce6c3be3f564e2a"></p>
+<h5 id="libpcap函数"><a href="#libpcap函数" class="headerlink" title="libpcap函数"></a>libpcap函数</h5><p>函数分类：<a target="_blank" rel="noopener" href="https://yq.aliyun.com/go/articleRenderRedirect?spm=a2c4e.11153940.0.0.4532acc0MF0CgG&url=http://www.tcpdump.org/manpages/pcap.3pcap.html">tcpdmp_pcap官方</a></p>
+<p>1、读包打开句柄</p>
+<p>2、抓包选择链路层</p>
+<p>3、抓包函数</p>
+<p>4、过滤器</p>
+<p>5、选定抓包方向（进还是出）</p>
+<p>6、抓统计信息</p>
+<p>7、将包写入文件打开句柄</p>
+<p>8、写包</p>
+<p>9、注入包</p>
+<p>10、报告错误</p>
+<p>11、获取库版本信息</p>
+<h5 id="常见函数"><a href="#常见函数" class="headerlink" title="常见函数"></a>常见函数</h5><ul>
+<li>pcap_lookupdev      如果分组捕获设备未曾指定(-i命令行选项)，该函数选择一个设备。</li>
+<li>pcap_open_offine    打开一个保存的文件。</li>
+<li>pcap_setfilter            设置过滤器</li>
+<li>pcap_open_live         打开选择的设备。</li>
+<li>pcap_next                   接收一个包</li>
+<li>pcap_dump                将包写入到pcap_dump_t结构体</li>
+<li>pcap_loopupnet        返回分组捕获设备的网络地址和子网掩码，然后在调用pcap_compile时必须指定这个子网掩码。</li>
+<li>pcap_compile             把cmd字符数组中构造的过滤器字符串编译成一个过滤器程序，存放在fcode中。</li>
+<li>pcap_setfilter              把编译出来的过滤器程序装载到分组捕获设备，同时引发用该过滤器选取的分组的捕获。</li>
+<li>pcap_datalink              返回分组捕获设备的数据链路类型。</li>
+</ul>
+<h4 id="协议注册"><a href="#协议注册" class="headerlink" title="协议注册"></a>协议注册</h4><p>对于以上介绍的协议，也只有在需要的时候才会注册，因为它毕竟增加了系统报文的处理速度并且会消耗大量的系统skb。当抓包开始的时候，它会创建一个对应的网络套接口，这种套接口的类型就是<code>af_packet</code>类型。相关实现参考C源码：<a target="_blank" rel="noopener" href="http://lxr.linux.no/linux+v3.4/net/packet/af_packet.c">af_packet.c</a>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">packet_create</span><span class="params">(struct socket *sock, <span class="keyword">int</span> protocol)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sock</span> *<span class="title">sk</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">packet_opt</span> *<span class="title">po</span>;</span></span><br><span class="line">    <span class="keyword">int</span> err;</span><br><span class="line">    <span class="keyword">if</span> (!capable(CAP_NET_RAW))</span><br><span class="line">        <span class="keyword">return</span> -EPERM;</span><br><span class="line">    <span class="keyword">if</span> (sock-&gt;type != SOCK_DGRAM &amp;&amp; sock-&gt;type != SOCK_RAW</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_SOCK_PACKET</span></span><br><span class="line">     &amp;&amp; sock-&gt;type != SOCK_PACKET</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">     )</span><br><span class="line">        <span class="keyword">return</span> -ESOCKTNOSUPPORT;</span><br><span class="line">    sock-&gt;state = SS_UNCONNECTED;</span><br><span class="line">    err = -ENOBUFS;</span><br><span class="line">    sk = sk_alloc(PF_PACKET, GFP_KERNEL, <span class="number">1</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (sk == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">goto</span> out;</span><br><span class="line">    sock-&gt;ops = &amp;packet_ops;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_SOCK_PACKET</span></span><br><span class="line">    <span class="keyword">if</span> (sock-&gt;type == SOCK_PACKET)</span><br><span class="line">        sock-&gt;ops = &amp;packet_ops_spkt;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    sock_init_data(sock,sk);</span><br><span class="line">    sk_set_owner(sk, THIS_MODULE);</span><br><span class="line"></span><br><span class="line">    po = sk-&gt;sk_protinfo = kmalloc(<span class="keyword">sizeof</span>(*po), GFP_KERNEL);</span><br><span class="line">    <span class="keyword">if</span> (!po)</span><br><span class="line">        <span class="keyword">goto</span> out_free;</span><br><span class="line">    <span class="built_in">memset</span>(po, <span class="number">0</span>, <span class="keyword">sizeof</span>(*po));</span><br><span class="line">    sk-&gt;sk_family = PF_PACKET;</span><br><span class="line">    po-&gt;num = protocol;</span><br><span class="line"></span><br><span class="line">    sk-&gt;sk_destruct = packet_sock_destruct;</span><br><span class="line">    atomic_inc(&amp;packet_socks_nr);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     *    Attach a protocol block</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    spin_lock_init(&amp;po-&gt;bind_lock);</span><br><span class="line">    po-&gt;prot_hook.func = packet_rcv;       ----- 这个地方挂接处理函数，注册为packet_rcv。</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_SOCK_PACKET</span></span><br><span class="line">    <span class="keyword">if</span> (sock-&gt;type == SOCK_PACKET)</span><br><span class="line">        po-&gt;prot_hook.func = packet_rcv_spkt;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    po-&gt;prot_hook.af_packet_priv = sk;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (protocol) &#123;</span><br><span class="line">        po-&gt;prot_hook.type = protocol;</span><br><span class="line">        dev_add_pack(&amp;po-&gt;prot_hook);      ----- dev_add_pack将协议加入到ptype_all链表中，具体参考下面函数代码</span><br><span class="line">        sock_hold(sk);</span><br><span class="line">        po-&gt;running = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    write_lock_bh(&amp;packet_sklist_lock);</span><br><span class="line">    sk_add_node(sk, &amp;packet_sklist);</span><br><span class="line">    write_unlock_bh(&amp;packet_sklist_lock);</span><br><span class="line">    <span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">out_free:</span><br><span class="line">    sk_free(sk);</span><br><span class="line">out:</span><br><span class="line">    <span class="keyword">return</span> err;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> tcpdump -n -vvvv -i ens33 host 172.16.144.141 and port 80 -w web.pcap</span></span><br><span class="line"></span><br><span class="line">-n：不转换主机名、端口号（开启后看到的是IP地址，而不是主机名，实际使用中我们一般都比较关注服务器IP地址）</span><br><span class="line">-v：显示详细信息，v越多信息越多</span><br><span class="line">-i：指定网络接口，也就网卡的名字，常用的有eth0,eth1等，如果要监听所有网卡就是用-i any。</span><br><span class="line">-w：抓取的包写入到文件，方便后续分析。实际中经常使用tcpdump抓包保存，然后使用Wireshark分析</span><br><span class="line">-r：抓到的包也可以tcpdump打开再分析，tcpdump -n -vvvv -r data.cap</span><br><span class="line">-c：指定抓取的包的数目</span><br><span class="line">-s：指定抓取的数据的长度</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tcpdump/image-20200716175428104.png" alt="image-20200716175428104"></p>
+<p>Wireshark打开</p>
+<p><img src="/images/tcpdump/image-20200716184023410.png" alt="image-20200716184023410"></p>
+<h4 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h4><p>这部分简单演示了tcpdump的使用，如需常见语法可直接查看<code>基本语法</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="string">&quot;GET&quot;</span>的十六进制是 47455420</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 监听对本地进行GET请求数据包</span></span><br><span class="line">tcpdump -i ens33 &#x27;tcp[(tcp[12]&gt;&gt;2):4] = 0x47455420&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tcpdump/image-20200716185547770.png" alt="image-20200716185547770"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> <span class="string">&quot;SSH-&quot;</span>的十六进制是 0x5353482D</span></span><br><span class="line">tcpdump -i ens33 &#x27;tcp[(tcp[12]&gt;&gt;2):4] = 0x5353482D&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/tcpdump/image-20200716184806562.png" alt="image-20200716184806562"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 截获DNS请求数据</span></span><br><span class="line">tcpdump -i ens33 udp dst port 53</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 截获大于600字节</span></span><br><span class="line">tcpdump -i ens33 &#x27;ip[2:2] &gt; 600&#x27;</span><br></pre></td></tr></table></figure>
+
+<h4 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h4><ul>
+<li><p>过滤器的关键词有：host、port、 net、src、 dst、icmp、tcp、udp、http</p>
+</li>
+<li><p>逻辑关键词：and、or、not</p>
+</li>
+<li><p>包头过滤</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcp[tcpflags] &amp; tcp-syn != 0 and tcp[tcpflags] &amp; tcp-ack != 0</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="数据分析"><a href="#数据分析" class="headerlink" title="数据分析"></a>数据分析</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tcpdump: listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes</span><br><span class="line">21:45:10.830435 IP (tos 0x0, ttl 64, id 63824, offset 0, flags [DF], proto TCP (6), length 60)</span><br><span class="line">    18:54:59.000951 IP 172.16.144.1.64074 &gt; 172.16.144.141.http: Flags [P.], seq 352511301:352511594, ack 1460171085, win 4117, options [nop,nop,TS val 872905073 ecr 10965627], length 293: HTTP: GET /robots.txt HTTP/1.1</span><br></pre></td></tr></table></figure>
+
+<p><code>172.16.144.1.64074 &gt; 172.16.144.141.http</code> 这里源地址(<code>172.16.144.1.64074</code>)到目的地址(<code>172.16.144.141.http</code>)</p>
+<p><code>Flags [S]</code>是包的标志，<code>[S]</code>表示是<code>SYC</code>:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[S] – SYN (开始连接)</span><br><span class="line">[.] – 没有标记 (一般是确认)</span><br><span class="line">[P] – PSH (数据推送)</span><br><span class="line">[F] – FIN (结束连接)</span><br><span class="line">[R] – RST (重启连接)</span><br></pre></td></tr></table></figure>
+
+<p>为了提高网络效率，一个包也可以包含标志的组合，比如<code>[S.]</code>，<code>[FP.]</code></p>
+<ul>
+<li><code>seq</code>：同步序列编号，Synchronize Sequence Numbers；</li>
+<li><code>ack</code>：确认编号，Acknowledgement Number；</li>
+<li><code>win</code>：滑动窗口大小</li>
+<li><code>length</code>：承载的数据(payload)长度length，如果没有数据则为0</li>
+</ul>
+<p><img src="/images/tcpdump/1760830-e18fbb8480375fcd.jpeg" alt="1760830-e18fbb8480375fcd"></p>
+<h4 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h4><h5 id="1-过滤主机"><a href="#1-过滤主机" class="headerlink" title="1.过滤主机"></a>1.过滤主机</h5><p>抓取所有经过ens33，目的或源地址是172.16.144.141的网络数据</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i ens33 host 172.16.144.141</span><br></pre></td></tr></table></figure>
+
+<p>指定源地址</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i ens33 src host 172.16.144.141</span><br></pre></td></tr></table></figure>
+
+<p>指定目的地址</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i ens33 dst host 172.16.144.1</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-过滤端口"><a href="#2-过滤端口" class="headerlink" title="2.过滤端口"></a>2.过滤端口</h5><p>抓取所有经过ens33，目的或源端口是80的网络数据</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i ens33 port 80</span><br></pre></td></tr></table></figure>
+
+<p>指定源端口</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i ens33 src port 80</span><br></pre></td></tr></table></figure>
+
+<p>指定目的端口</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i ens33 dst port 80</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-网络过滤"><a href="#3-网络过滤" class="headerlink" title="3.网络过滤"></a>3.网络过滤</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i ens33 net 172.16</span><br><span class="line">tcpdump -i ens33 src net 172.16</span><br><span class="line">tcpdump -i ens33 dst net 172.16</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-协议过滤"><a href="#4-协议过滤" class="headerlink" title="4.协议过滤"></a>4.协议过滤</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i ens33 arp</span><br><span class="line">tcpdump -i ens33 ip</span><br><span class="line">tcpdump -i eth1 tcp</span><br><span class="line">tcpdump -i eth1 udp</span><br><span class="line">tcpdump -i eth1 icmp</span><br></pre></td></tr></table></figure>
+
+<h5 id="5-表达式"><a href="#5-表达式" class="headerlink" title="5.表达式"></a>5.表达式</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">非 : ! or &quot;not&quot; (去掉双引号)  </span><br><span class="line">且 : &amp;&amp; or &quot;and&quot;  </span><br><span class="line">或 : || or &quot;or&quot;</span><br></pre></td></tr></table></figure>
+
+<p>抓取所有经过ens33，目的地址是172.16.144.141或172.16.141.1端口是80的TCP数据</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i ens33 &#x27;((tcp) and (port 80) and ((dst host 172.16.144.141) or (dst host 172.16.141.1)))&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>抓取所有经过ens33，目标MAC地址是00:0c:29:aa:b2:93的ICMP数据</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i ens33 &#x27;((icmp) and ((ether dst host 00:0c:29:aa:b2:93)))&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>抓取所有经过ens33，目的ip是172.16，但目的主机不是172.16.144.1的TCP数据</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -i ens33 &#x27;((tcp) and ((dst net 172.16) and (not dst host 172.16.144.141)))&#x27;</span><br></pre></td></tr></table></figure>
+
+<h5 id="6-运维"><a href="#6-运维" class="headerlink" title="6.运维"></a>6.运维</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -s 0 -w filename</span><br><span class="line">-s 0是抓取完整数据包，否则默认只抓68字节</span><br></pre></td></tr></table></figure>
+
+<p><code>-c</code>参数对于运维人员来说也比较常用，因为流量比较大的服务器，靠人工CTRL+C还是抓的太多，甚至导致服务器宕机，于是可以用<code>-c</code>参数指定抓多少个包。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tcpdump -nn -i ens33 &#x27;tcp[tcpflags] = tcp-syn&#x27; -c 10000</span><br></pre></td></tr></table></figure>
+
+<h5 id="7-高级"><a href="#7-高级" class="headerlink" title="7.高级"></a>7.高级</h5><p>高级包头过滤可参考<a target="_blank" rel="noopener" href="https://linuxwiki.github.io/NetTools/tcpdump.html">这里</a></p>
+<h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><ul>
+<li>如果数据包中出现很多的<code>cksum 0xxxx incorrect</code>错误：是因为操作系统为了提高网络效率不再计算校验码，而是交给网卡计算</li>
+</ul>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Linux抓包原理:</span><br><span class="line">https:&#x2F;&#x2F;www.iyunv.com&#x2F;thread-149869-1-1.html</span><br><span class="line">tcpdump源码分析:</span><br><span class="line">https:&#x2F;&#x2F;yq.aliyun.com&#x2F;articles&#x2F;573120</span><br><span class="line">tcpdump语法:</span><br><span class="line">https:&#x2F;&#x2F;linuxwiki.github.io&#x2F;NetTools&#x2F;tcpdump.html</span><br></pre></td></tr></table></figure>
+
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Tcpdump" >
+    <span class="tag-code">Tcpdump</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2020/07/11/%E5%B8%B8%E8%A7%81%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE/">
+        <span class="nav-arrow">← </span>
+        
+          常见未授权访问
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2020/07/27/%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E6%8E%A5%E5%8F%A3%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%E7%A0%94%E7%A9%B6%E6%8A%A5%E5%91%8A/">
+        
+          应用程序接口(API)数据安全研究报告
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- Gitment START -->
+      <div id="comments"></div>
+      <!-- Gitment END -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">原理</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">如何实现</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#libpcap"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">libpcap</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#libpcap%E5%87%BD%E6%95%B0"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">libpcap函数</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#%E5%B8%B8%E8%A7%81%E5%87%BD%E6%95%B0"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">常见函数</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8D%8F%E8%AE%AE%E6%B3%A8%E5%86%8C"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">协议注册</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#Options"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">Options</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">常见命令</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">过滤器</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">数据分析</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">基本语法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#1-%E8%BF%87%E6%BB%A4%E4%B8%BB%E6%9C%BA"><span class="toc-nav-number">9.1.</span> <span class="toc-nav-text">1.过滤主机</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-%E8%BF%87%E6%BB%A4%E7%AB%AF%E5%8F%A3"><span class="toc-nav-number">9.2.</span> <span class="toc-nav-text">2.过滤端口</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#3-%E7%BD%91%E7%BB%9C%E8%BF%87%E6%BB%A4"><span class="toc-nav-number">9.3.</span> <span class="toc-nav-text">3.网络过滤</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#4-%E5%8D%8F%E8%AE%AE%E8%BF%87%E6%BB%A4"><span class="toc-nav-number">9.4.</span> <span class="toc-nav-text">4.协议过滤</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#5-%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-nav-number">9.5.</span> <span class="toc-nav-text">5.表达式</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#6-%E8%BF%90%E7%BB%B4"><span class="toc-nav-number">9.6.</span> <span class="toc-nav-text">6.运维</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#7-%E9%AB%98%E7%BA%A7"><span class="toc-nav-number">9.7.</span> <span class="toc-nav-text">7.高级</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">常见问题</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#%E5%8F%82%E8%80%83"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">参考</span></a></li></ol>
+    
+  </div>
+</aside>
+
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'http://example.com/2020/07/16/Tcpdump/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+    // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+  })();
+</script>
+
+
+  <script>
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+  </script>
+
+
+
+  <script>
+    var gitmentConfig = "si1ent";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Tcpdump",
+        owner: "si1ent",
+        repo: "",
+        oauth: {
+          client_id: "0f87e490e00ee3fd87ef",
+          client_secret: "4a9d2b148e7971c2201ad12131ce8bf8159ccd2e"
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  </script>
+
+
+
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2020 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    </p>
+    <p class="copyright">
+    皖ICP备19004273
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+
+<script src="/js/script.js"></script>
+
+
+  </body>
+</html>
